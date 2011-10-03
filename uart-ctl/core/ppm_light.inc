@@ -26,61 +26,29 @@
 ;-----bko-----------------------------------------------------------------
 ; external interrupt = rc pulse input
 .macro __ext_micp_isr
-                in      i_sreg, SREG
-
-; evaluate edge of this interrupt
-                in      i_temp1, MCUCR
-                sbrs    i_temp1, micp_m_test
-                rjmp    falling_edge                              ; bit is clear = falling edge
-
-; should be rising edge - test rc impuls level state for possible jitter
-                sbis    PIND, rcp_in
-                rjmp    micp_exit                                 ; jump, if low state
-
-; rc impuls is at high state
-                ldi     i_temp1, micp_f_edge
-                out     MCUCR, i_temp1                            ; set next int to falling edge
-
-; get timer1 values
                 in      i_temp1, TCNT1L
                 in      i_temp2, TCNT1H
+                in      i_sreg, SREG
+                sbis    PIND, rcp_in
+                rjmp    falling_edge
+                
+                ldi     i_temp3, micp_f_edge
+                out     MCUCR, i_temp3                            ; set next int to falling edge
                 mov     start_rcpuls_l, i_temp1
                 mov     start_rcpuls_h, i_temp2
-; test rcpulse interval
-                cbr     flags2, (1<<RC_INTERVAL_OK)               ; preset to not ok
-                lds     i_temp3, stop_rcpuls_l
-                sub     i_temp1, i_temp3
-                lds     i_temp3, stop_rcpuls_h
-                sbc     i_temp2, i_temp3
-                cpi     i_temp1, low (MAX_INT_FR*CLK_SCALE)
-                ldi     i_temp3, high(MAX_INT_FR*CLK_SCALE)       ; test range high
-                cpc     i_temp2, i_temp3
-                brsh    micp_fail                                 ; through away
-                cpi     i_temp1, low (MIN_INT_FR*CLK_SCALE)
-                ldi     i_temp3, high(MIN_INT_FR*CLK_SCALE)       ; test range low
-                cpc     i_temp2, i_temp3
-                brlo    micp_fail                                 ; through away
-                sbr     flags2, (1<<RC_INTERVAL_OK)               ; set to rc impuls value is ok !
                 rjmp    micp_exit
+
 micp_fail:      tst     control_timeout
                 breq    micp_exit
                 dec     control_timeout
                 rjmp    micp_exit
-                ; rc impuls is at low state
-falling_edge:   sbic    PIND, rcp_in                              ; test level of rc impuls
-                rjmp    micp_exit                                 ; seems to be a spike
-                ldi     i_temp1, micp_r_edge
-                out     MCUCR, i_temp1                            ; set next int to rising edge
-                sbrc    flags1, RC_PULS_UPDATED
-                rjmp    micp_exit
-                ; get timer1 values
-                in      i_temp1, TCNT1L
-                in      i_temp2, TCNT1H
+                
+falling_edge:
+                ldi     i_temp3, micp_r_edge
+                out     MCUCR, i_temp3                            ; set next int to rising edge
+                
                 sts     stop_rcpuls_l, i_temp1                    ; prepare next interval evaluation
                 sts     stop_rcpuls_h, i_temp2
-                sbrs    flags2, RC_INTERVAL_OK
-                rjmp    micp_exit
-                cbr     flags2, (1<<RC_INTERVAL_OK)               ; flag is evaluated
                 sub     i_temp1, start_rcpuls_l
                 sbc     i_temp2, start_rcpuls_h
                 ; save impuls length

@@ -1,15 +1,15 @@
-.include "ppm.inc"
+#define _include_ppm_inc_
 
-.equ    POWER_RANGE   = 100
-.equ    MIN_RC_PULS   = 1100
+#define    POWER_RANGE   100
+#define    MIN_RC_PULS   1100
 
 ; falling->rising intervals
-.equ    MAX_INT_FR    = 25000
-.equ    MIN_INT_FR    = 100
+#define    MAX_INT_FR    25000
+#define    MIN_INT_FR    100
 
 ; rising->falling intervals
-.equ    MAX_INT_RF    = 2200
-.equ    MIN_INT_RF    = 800
+#define    MAX_INT_RF    2200
+#define    MIN_INT_RF    800
 
 .macro EvaluatePWC
                 cbr     flags1, (1<<EVAL_RC_PULS)

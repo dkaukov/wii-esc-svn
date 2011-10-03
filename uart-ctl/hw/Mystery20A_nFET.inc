@@ -10,59 +10,59 @@
 ;*********************
 ; PORT D 
 ;*********************  
-;.equ                   = 7     ;
-.equ    c_comp          = 6     ;i common comparator input (AIN0)
-.equ    AnFET           = 5     ;o
-.equ    ApFET           = 4     ;o
-;.equ                   = 3     ;
-.equ    rcp_in          = 2     ;i r/c pulse input
-;.equ                   = 1     ;
-;.equ                   = 0     ;
+;#define                7     ;
+#define c_comp          6     ;i common comparator input (AIN0)
+#define AnFET           5     ;o
+#define ApFET           4     ;o
+;#define                3     ;
+#define rcp_in          2     ;i r/c pulse input
+;#define                1     ;
+;#define                0     ;
 
 
-.equ    INIT_PD         = (1<<ApFET)
-.equ    DIR_PD      = (1<<ApFET)+(1<<AnFET)
-.equ    BRAKE_PD        = (1<<AnFET)
+#define INIT_PD         (1<<ApFET)
+#define DIR_PD          (1<<ApFET)+(1<<AnFET)
+#define BRAKE_PD        (1<<AnFET)
 
 
 ;*********************
 ; ADC definitions
 ;*********************
 
-.equ    mux_c           = 0     ; ADC0
-.equ    mux_a           = 6     ; ADC6
-.equ    mux_b           = 7     ; ADC7
-.equ    ACCU_MUX        = 2     ; ADC2 voltage control input 
+#define mux_c           0     ; ADC0
+#define mux_a           6     ; ADC6
+#define mux_b           7     ; ADC7
+#define ACCU_MUX        2     ; ADC2 voltage control input 
 
 ;*********************
 ; PORT C definitions *
 ;*********************
-.equ    AnRef           = 1
-.equ    CpFET           = 3
-.equ    BnFET           = 4
-.equ    BpFET           = 5  
+#define AnRef           1
+#define CpFET           3
+#define BnFET           4
+#define BpFET           5  
 
 
-.equ    INIT_PC         = (1<<AnRef)+(1<<CpFET)+(1<<BpFET)
-.equ    DIR_PC          = (1<<AnRef)+(1<<CpFET)+(1<<BnFET)+(1<<BpFET)
-.equ    BRAKE_PC        = (1<<BnFET)
+#define INIT_PC         (1<<AnRef)+(1<<CpFET)+(1<<BpFET)
+#define DIR_PC          (1<<AnRef)+(1<<CpFET)+(1<<BnFET)+(1<<BpFET)
+#define BRAKE_PC        (1<<BnFET)
 
 
 ;*********************
 ; PORT B definitions *
 ;*********************
-;.equ           = 7     
-;.equ           = 6     
-.equ    DbgLED  = 5;    (sck stk200 interface) 
-;.equ           = 4     (miso stk200 interface)
-;.equ           = 3     (mosi stk200 interface) 
-;.equ           = 2     
-;.equ           = 1     
-.equ    CnFET   = 0
+;#define           7     
+;#define           6     
+#define    DbgLED  5;    (sck stk200 interface) 
+;#define           4     (miso stk200 interface)
+;#define           3     (mosi stk200 interface) 
+;#define           2     
+;#define           1     
+#define    CnFET   0
 
-.equ    INIT_PB         = 0
-.equ    DIR_PB          = (1<<CnFET)+(1<<DbgLED)
-.equ    BRAKE_PB        = (1<<CnFET)
+#define INIT_PB         0
+#define DIR_PB          (1<<CnFET)+(1<<DbgLED)
+#define BRAKE_PB        (1<<CnFET)
 
 
 #define DbgLEDOn        sbi     PORTB,5
@@ -111,30 +111,30 @@
   ACChannel mux_c
 .endmacro
 
-
 ;*************************
 ; Parameters             *
 ;*************************
-.equ MOT_BRAKE        = 0
-.equ CLK_SCALE        = 2                       ; 16Mhz external crystal
-.equ READ_CALIBRATION = 0                       ;
+#undef     MOT_BRAKE      
+#undef     READ_CALIBRATION
+#define    F_CPU           16000000              ; 16Mhz internal RC oscilator 
+#define    ZCF_CONST       7
 
 ;*************************
 ; Timings                *
 ;*************************
-.equ    MIN_DUTY        = 3*POWER_RANGE/100     ; Min power 3%
+#define    MIN_DUTY        3*POWER_RANGE/100     ; Min power 3%
 
-.equ    PWR_MAX_RPM1    = POWER_RANGE/4
-.equ    PWR_MAX_RPM2    = POWER_RANGE/2
+#define    PWR_MAX_RPM1    POWER_RANGE/4
+#define    PWR_MAX_RPM2    POWER_RANGE/2
 
-.equ    PWR_STARTUP     = 5*POWER_RANGE/100     ;  5%
-.equ    PWR_MAX_STARTUP = 12*POWER_RANGE/100    ; 15%
+#define    PWR_STARTUP     5*POWER_RANGE/100     ;  5%
+#define    PWR_MAX_STARTUP 12*POWER_RANGE/100    ; 15%
 
 
-.equ    timeoutSTART    = 65000
-.equ    timeoutMIN      = 48000
+#define    timeoutSTART    65000
+#define    timeoutMIN      48000
 
-.equ    PWR_RANGE1      = 0x40  ; ( ~2400 RPM )
-.equ    PWR_RANGE2      = 0x20  ; ( ~4800 RPM )
+#define    PWR_RANGE1      0x40  ; ( ~2400 RPM )
+#define    PWR_RANGE2      0x20  ; ( ~4800 RPM )
 
-.equ    ENOUGH_GOODIES  = 60
+#define    ENOUGH_GOODIES  60

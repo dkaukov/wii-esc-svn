@@ -17,15 +17,20 @@
 ;4. Auch nach den Änderungen sollen die Software weiterhin frei sein, d.h. kostenlos bleiben.
 ;
 ;!! Wer mit den Nutzungbedingungen nicht einverstanden ist, darf die Software nicht nutzen !!
-.include "m8def.inc"
 
-.equ    NO_POWER         = 256-MIN_DUTY         ; (POWER_OFF)
-.equ    MAX_POWER        = 256-POWER_RANGE      ; (FULL_POWER)
+#if defined(_include_ppm_inc_)
+  .include "ppm.inc"
+#endif 
+
+
+.equ    NO_POWER         = 256 - MIN_DUTY       ; (POWER_OFF)
+.equ    MAX_POWER        = 256 - POWER_RANGE    ; (FULL_POWER)
 .equ    CONTROL_TOT      = 50                   ; time = NUMBER x 64ms
 .equ    CURRENT_ERR_MAX  = 3                    ; performs a reset after MAX errors
 
-.equ    T1STOP     = 0x00
-.equ    T1CK8      = 0x02
+.equ    T1STOP           = 0x00
+.equ    T1CK8            = 0x02
+.equ    CLK_SCALE        = F_CPU / 8000000
 
 ;**** **** **** **** ****
 ; Register Definitions
@@ -48,14 +53,14 @@
 .def    run_control      = r15
 
 
-.def    temp1   = r16                   ; main temporary
-.def    temp2   = r17                   ; main temporary
-.def    temp3   = r18                   ; main temporary
-.def    temp4   = r19                   ; main temporary
+.def    temp1            = r16  ; main temporary
+.def    temp2            = r17  ; main temporary
+.def    temp3            = r18  ; main temporary
+.def    temp4            = r19  ; main temporary
 
-.def    i_temp1 = r20                   ; interrupt temporary
-.def    i_temp2 = r21                   ; interrupt temporary
-.def    i_temp3 = r22                   ; interrupt temporary
+.def    i_temp1          = r20  ; interrupt temporary
+.def    i_temp2          = r21  ; interrupt temporary
+.def    i_temp3          = r22  ; interrupt temporary
 
 .def    flags0  = r23   ; state flags
         .equ    OCT1_PENDING    = 0     ; if set, output compare interrunpt is pending
@@ -71,7 +76,7 @@
 .def    flags1  = r24   ; state flags
         .equ    POWER_OFF       = 0     ; switch fets on disabled
         .equ    FULL_POWER      = 1     ; 100% on - don't switch off, but do OFF_CYCLE working
-        .equ    CALC_NEXT_OCT1  = 2     ; calculate OCT1 offset, when wait_OCT1_before_switch is called
+        .equ    CALC_NEXT_OCT1  = 2     ; calculate OCT1 offset, when wait_for_commutation is called
         .equ    RC_PULS_UPDATED = 3     ; new rc-puls value available
         .equ    EVAL_RC_PULS    = 4     ; if set, new rc puls is evaluated, while waiting for OCT1
         .equ    EVAL_SYS_STATE  = 5     ; if set, overcurrent and undervoltage are checked
@@ -114,14 +119,14 @@ rpm_l:          .byte   1       ; holds the average time of 4 commutations
 rpm_h:          .byte   1
 rpm_x:          .byte   1
 
-wt_comp_scan_l: .byte   1       ; time from switch to comparator scan
-wt_comp_scan_h: .byte   1       
+zc_blanking_time_l: .byte   1   ; time from switch to comparator scan
+zc_blanking_time_h: .byte   1       
 com_timing_l:   .byte   1       ; time from zero-crossing to switch of the appropriate FET
 com_timing_h:   .byte   1
 wt_OCT1_tot_l:  .byte   1       ; OCT1 waiting time
 wt_OCT1_tot_h:  .byte   1
-zero_wt_l:      .byte   1
-zero_wt_h:      .byte   1
+zc_wait_time_l: .byte   1
+zc_wait_time_h: .byte   1
 last_com_l:     .byte   1
 last_com_h:     .byte   1
 
@@ -161,15 +166,7 @@ uart_data:      .byte   100             ; only for debug requirements
 ;.equ   SPMaddr =$012   ; SPM complete Interrupt Vector Address
 ;.equ   SPMRaddr =$012  ; SPM complete Interrupt Vector Address
 ;-----bko-----------------------------------------------------------------
-
-;**** **** **** **** ****
-.cseg
-.org 0
-;**** **** **** **** ****
-
-;-----bko-----------------------------------------------------------------
-; reset and interrupt jump table
-
+; helper macroses
 #if !defined(__ext_int0)
  #define __ext_int0 reti 
  .macro __ext_int0_isr
@@ -181,6 +178,11 @@ uart_data:      .byte   100             ; only for debug requirements
  .macro __ext_int1_isr
  .endmacro
 #endif
+;**** **** **** **** ****
+.cseg
+.org 0
+;-----bko-----------------------------------------------------------------
+; reset and interrupt jump table
 
                 rjmp    reset
                 __ext_int0          ; ext_int0
@@ -235,7 +237,7 @@ reset:          ldi     temp1, high(RAMEND)     ; stack = RAMEND
                 ldi     temp1, low(RAMEND)
                 out     SPL, temp1
 
-.if READ_CALIBRATION == 1
+#ifdef READ_CALIBRATION
                 ; oscillator calibration byte is written into the uppermost position
                 ; of the eeprom - by the script 1n1p.e2s an ponyprog
                 ;CLEARBUFFER
@@ -251,7 +253,7 @@ reset:          ldi     temp1, high(RAMEND)     ; stack = RAMEND
                 sbi     EECR,EERE
                 in      temp1,EEDR
                 out     osccal ,temp1  ;schreiben
-.endif
+#endif
 
         ; portB
                 ldi     temp1, INIT_PB
@@ -726,8 +728,8 @@ set_all_timings:
                 sts     wt_OCT1_tot_h, YH
                 ldi     temp3, 0xff
                 ldi     temp4, 0x1f
-                sts     wt_comp_scan_l, temp3
-                sts     wt_comp_scan_h, temp4
+                sts     zc_blanking_time_l, temp3
+                sts     zc_blanking_time_h, temp4
                 sts     com_timing_l, temp3
                 sts     com_timing_h, temp4
 set_timing_v:   
@@ -764,14 +766,16 @@ update_timing:  rcall   tcnt1_to_temp
                 lds     temp2, timing_h
                 lds     ZL, timing_x
 
-                sts     zero_wt_l, temp1        ; save for zero crossing timeout
-                sts     zero_wt_h, temp2
+/*
+                sts     zc_wait_time_l, temp1        ; save for zero crossing timeout
+                sts     zc_wait_time_h, temp2
                 tst     ZL
                 breq    update_t00
                 ldi     temp4, 0xff
-                sts     zero_wt_l, temp4        ; save for zero crossing timeout
-                sts     zero_wt_h, temp4
+                sts     zc_wait_time_l, temp4        ; save for zero crossing timeout
+                sts     zc_wait_time_h, temp4
 update_t00:
+*/
                 lsr     ZL                      ; build a quarter
                 ror     temp2
                 ror     temp1
@@ -852,14 +856,19 @@ update_t99:     lds     temp1, timing_acc_l
                 lsr     ZL
                 ror     temp4
                 ror     temp3
+                
+                sts     zc_wait_time_l, temp3   ; save for zero crossing timeout (Expected time +30 deg)
+                sts     zc_wait_time_h, temp4
+                
                 lsr     ZL
                 ror     temp4
                 ror     temp3
                 lsr     ZL
                 ror     temp4
                 ror     temp3
-                sts     wt_comp_scan_l, temp3
-                sts     wt_comp_scan_h, temp4
+
+                sts     zc_blanking_time_l, temp3
+                sts     zc_blanking_time_h, temp4
 
         ; use the same value for commutation timing (15-)
                 sts     com_timing_l, temp3
@@ -868,19 +877,19 @@ update_t99:     lds     temp1, timing_acc_l
                 ret
 ;-----bko-----------------------------------------------------------------
 calc_next_timing:
-                lds     YL, wt_comp_scan_l      ; holds wait-before-scan value
-                lds     YH, wt_comp_scan_h
+                lds     YL, com_timing_l
+                lds     YH, com_timing_h
                 rcall   update_timing
 
                 ret
 
-wait_OCT1_tot:  sbrc    flags0, OCT1_PENDING
-                rjmp    wait_OCT1_tot
+wait_for_commutation:
+                sbrc    flags0, OCT1_PENDING
+                rjmp    wait_for_commutation
 
-set_OCT1_tot:   AcInit
-
-                lds     YH, zero_wt_h
-                lds     YL, zero_wt_l
+set_zc_blanking_time:
+                lds     YH, zc_blanking_time_h
+                lds     YL, zc_blanking_time_l
                 rcall   tcnt1_to_temp
                 add     temp1, YL
                 adc     temp2, YH
@@ -894,21 +903,7 @@ set_OCT1_tot:   AcInit
                 enable_input
                 ret
 ;-----bko-----------------------------------------------------------------
-wait_OCT1_before_switch:
-                rcall   tcnt1_to_temp
-                lds     YL, com_timing_l
-                lds     YH, com_timing_h
-                add     temp1, YL
-                adc     temp2, YH
-                ldi     temp3, (1<<TOIE1)+(1<<TOIE0)
-                out     TIMSK, temp3
-                out     OCR1AH, temp2
-                out     OCR1AL, temp1
-                sbr     flags0, (1<<OCT1_PENDING)
-                ldi     temp3, (1<<TOIE1)+(1<<OCIE1A)+(1<<TOIE0)
-                out     TIMSK, temp3
-                enable_input
-
+wait_for_zc_blank:
         ; don't waste time while waiting - do some controls, if indicated
                 sbrc    flags1, EVAL_RC_PULS
                 rcall   evaluate_rc_puls
@@ -921,8 +916,23 @@ wait_OCT1_before_switch:
                 sbrc    flags1, EVAL_RPM
                 rcall   evaluate_rpm
 
-OCT1_wait:      sbrc    flags0, OCT1_PENDING
-                rjmp    OCT1_wait
+wait_for_zc_blank_loop:      
+                sbrc    flags0, OCT1_PENDING
+                rjmp    wait_for_zc_blank_loop
+        ; set ZC timeout
+                lds     YH, zc_wait_time_h
+                lds     YL, zc_wait_time_l
+                rcall   tcnt1_to_temp
+                add     temp1, YL
+                adc     temp2, YH
+                ldi     temp4, (1<<TOIE1)+(1<<TOIE0)
+                out     TIMSK, temp4
+                out     OCR1AH, temp2
+                out     OCR1AL, temp1
+                sbr     flags0, (1<<OCT1_PENDING)
+                ldi     temp4, (1<<TOIE1)+(1<<OCIE1A)+(1<<TOIE0)
+                out     TIMSK, temp4
+                enable_input
                 ret
 ;-----bko-----------------------------------------------------------------
 start_timeout:  lds     YL, wt_OCT1_tot_l
@@ -976,7 +986,7 @@ wait_for_poweroff:
                 ret
 ;-----bko-----------------------------------------------------------------
 motor_brake:
-.if MOT_BRAKE == 1
+#ifdef MOT_BRAKE
                 ldi     temp2, 40               ; 40 * 0.065ms = 2.6 sec
                 ldi     temp1, BRAKE_PB         ; all N-FETs on
                 out     PORTB, temp1
@@ -1003,7 +1013,7 @@ mot_brk90:
                 out     PORTC, temp1
                 ldi     temp1, INIT_PD          ; all off
                 out     PORTD, temp1
-.endif  ; MOT_BRAKE == 1
+#endif
                 ret
 
 
@@ -1266,9 +1276,11 @@ s6_goodies:     lds     temp1, goodies
 
 s6_run1:        ldi     temp1, 0xff
                 mov     run_control, temp1
+                mov     sys_control, ZH
 
                 rcall   calc_next_timing
-                rcall   set_OCT1_tot
+                rcall   wait_for_commutation    ; needed to align phases 
+                rcall   wait_for_zc_blank       ; the ZC timeout should start at: ZC + comm_time + zc_blank_time
 
                 DbgLEDOff
 
@@ -1291,10 +1303,10 @@ run1:           rcall   wait_for_low
                 sbrs    flags0, OCT1_PENDING
                 rjmp    run_to_start
                 sbr     flags1, (1<<EVAL_RPM)
-                rcall   wait_OCT1_before_switch
-                rcall   com1com2
                 rcall   calc_next_timing
-                rcall   wait_OCT1_tot
+                rcall   wait_for_commutation
+                rcall   com1com2
+                rcall   wait_for_zc_blank
                 
 ; run 2 = A(p-on) + C(n-choppered) - comparator B evaluated
 ; out_cB changes from high to low
@@ -1306,10 +1318,10 @@ run2:           rcall   wait_for_high
                 sbrs    flags0, OCT1_PENDING
                 rjmp    run_to_start
                 sbr     flags1, (1<<EVAL_RC_PULS)
-                rcall   wait_OCT1_before_switch
-                rcall   com2com3
                 rcall   calc_next_timing
-                rcall   wait_OCT1_tot
+                rcall   wait_for_commutation
+                rcall   com2com3
+                rcall   wait_for_zc_blank
 
 ; run 3 = A(p-on) + B(n-choppered) - comparator C evaluated
 ; out_cC changes from low to high
@@ -1321,10 +1333,10 @@ run3:           rcall   wait_for_low
                 sbrs    flags0, OCT1_PENDING
                 rjmp    run_to_start
                 sbr     flags1, (1<<EVAL_PWM)
-                rcall   wait_OCT1_before_switch
-                rcall   com3com4
                 rcall   calc_next_timing
-                rcall   wait_OCT1_tot
+                rcall   wait_for_commutation
+                rcall   com3com4
+                rcall   wait_for_zc_blank
 
 ; run 4 = C(p-on) + B(n-choppered) - comparator A evaluated
 ; out_cA changes from high to low
@@ -1334,10 +1346,10 @@ run4:           rcall   wait_for_high
                 rcall   wait_for_low
                 sbrs    flags0, OCT1_PENDING
                 rjmp    run_to_start
-                rcall   wait_OCT1_before_switch
-                rcall   com4com5
                 rcall   calc_next_timing
-                rcall   wait_OCT1_tot
+                rcall   wait_for_commutation
+                rcall   com4com5
+                rcall   wait_for_zc_blank
 
 ; run 5 = C(p-on) + A(n-choppered) - comparator B evaluated
 ; out_cB changes from low to high
@@ -1349,10 +1361,10 @@ run5:           rcall   wait_for_low
                 sbrs    flags0, OCT1_PENDING
                 rjmp    run_to_start
                 sbr     flags1, (1<<EVAL_SYS_STATE)
-                rcall   wait_OCT1_before_switch
-                rcall   com5com6
                 rcall   calc_next_timing
-                rcall   wait_OCT1_tot
+                rcall   wait_for_commutation
+                rcall   com5com6
+                rcall   wait_for_zc_blank
 
 ; run 6 = B(p-on) + A(n-choppered) - comparator C evaluated
 ; out_cC changes from high to low
@@ -1363,10 +1375,10 @@ run6:           rcall   wait_for_high
                 rcall   wait_for_low
                 sbrs    flags0, OCT1_PENDING
                 rjmp    run_to_start
-                rcall   wait_OCT1_before_switch
-                rcall   com6com1
                 rcall   calc_next_timing
-                rcall   wait_OCT1_tot
+                rcall   wait_for_commutation
+                rcall   com6com1
+                rcall   wait_for_zc_blank
 
 ;               rjmp    run6_2
 
@@ -1422,22 +1434,28 @@ wait_for_filter_2:
 wait_for_low:   
                 ldi     temp1, 0xFF
                 ldi     temp2, 8
+                ldi     temp3, (8-ZCF_CONST) + 1
+                sbrc    flags2, RPM_RANGE1
+                ldi     temp3, (8-8) + 1
 wait_for_low_loop:
                 sbrs    flags0, OCT1_PENDING
                 ret
                 __wait_for_filter
-                cpi     temp2, 4
+                cp      temp2, temp3
                 brcc    wait_for_low_loop
                 ret
                                
 wait_for_high:   
                 ldi     temp1, 0x0
                 ldi     temp2, 0
+                ldi     temp3, ZCF_CONST
+                sbrc    flags2, RPM_RANGE1
+                ldi     temp3, 8
 wait_for_high_loop:
                 sbrs    flags0, OCT1_PENDING
                 ret
                 __wait_for_filter
-                cpi     temp2, 5
+                cp      temp2, temp3
                 brcs    wait_for_high_loop
                 ret
 ;-----bko-----------------------------------------------------------------
