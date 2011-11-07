@@ -1,0 +1,111 @@
+com1com2_s:       
+                BpFET_off                             ; Bp off
+                CpFET_off                             ; Cp off
+                ApFET_off
+                AcPhaseB
+                ret
+com1com2_e:       
+                sbrs    flags1, POWER_OFF
+                ApFET_on                              ; Ap on
+                ret
+
+
+com2com3_s:       
+                PwmCSEnter
+                cbr     flags0, (1<<A_FET) + (1<<B_FET) + (1<<C_FET)   
+                sbrc    flags1, NO_COMM               ; 
+                rjmp    c21_done                      ; .. yes - futhermore work is done in timer0 interrupt
+                CnFET_off                             ; Cn off
+                AnFET_off 
+                BnFET_off
+c21_done:        
+                PwmCSLeave
+                AcPhaseC
+                ret
+                
+com2com3_e:       
+                PwmCSEnter
+                sbr     flags0, (1<<B_FET)            ; next nFET = BnFET
+                sbrc    flags1, NO_COMM               ; 
+                rjmp    c22_done                      ; .. yes - futhermore work is done in timer0 interrupt
+                sbrs    flags1, POWER_OFF
+                BnFET_on                              ; Bn on
+c22_done:        
+                PwmCSLeave
+                ret
+                
+
+com3com4_s:       
+                ApFET_off                             ; Ap off
+                BpFET_off                             ; Bp off
+                CpFET_off                             ; Cp off
+                AcPhaseA
+                ret
+
+com3com4_e:       
+                sbrs    flags1, POWER_OFF
+                CpFET_on                              ; Cp on
+                ret
+
+com4com5_s:       
+                PwmCSEnter 
+                cbr     flags0, (1<<A_FET) + (1<<B_FET) + (1<<C_FET)   
+                sbrc    flags1, NO_COMM               ; 
+                rjmp    c41_done                      ; .. yes - futhermore work is done in timer0 interrupt
+                BnFET_off                             ; Bn off
+                CnFET_off                             ; Cn off
+                AnFET_off                             ; An on
+c41_done:        
+                PwmCSLeave
+                AcPhaseB
+                ret
+                
+
+com4com5_e:       
+                PwmCSEnter 
+                sbr     flags0, (1<<A_FET)            ; next nFET = AnFET
+                sbrc    flags1, NO_COMM               ; 
+                rjmp    c42_done                      ; .. yes - futhermore work is done in timer0 interrupt
+                sbrs    flags1, POWER_OFF
+                AnFET_on                              ; An on
+c42_done:        
+                PwmCSLeave
+                ret
+                
+                
+
+com5com6_s:       
+                CpFET_off                             ; Cp off
+                ApFET_off                             ; Ap off
+                BpFET_off                             ; Bp off
+                AcPhaseC
+                ret
+
+com5com6_e:     
+                sbrs    flags1, POWER_OFF
+                BpFET_on                              ; Bp on
+                ret
+
+com6com1_s:       
+                PwmCSEnter
+                cbr     flags0, (1<<A_FET) + (1<<B_FET) + (1<<C_FET)   
+                sbrc    flags1, NO_COMM               ; 
+                rjmp    c61_done                      ; .. yes - futhermore work is done in timer0 interrupt
+                AnFET_off                             ; An off
+                BnFET_off                             ; Bn off
+                CnFET_off                             ; Cn on
+c61_done:        
+                PwmCSLeave
+                AcPhaseA
+                ret
+
+com6com1_e:       
+                PwmCSEnter
+                sbr     flags0, (1<<C_FET)            ; next nFET = CnFET
+                sbrc    flags1, NO_COMM               ; 
+                rjmp    c62_done                      ; .. yes - futhermore work is done in timer0 interrupt
+                sbrs    flags1, POWER_OFF
+                CnFET_on                              ; Cn on
+c62_done:        
+                PwmCSLeave
+                ret

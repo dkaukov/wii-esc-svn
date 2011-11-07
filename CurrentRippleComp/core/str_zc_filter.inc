@@ -1,0 +1,16 @@
+#if (POWER_RANGE == 200)
+  #define STRT_ZC_FILTER_DELAY    33
+  #define STRT_ZC_FILTER_FACTOR   7
+#elif(POWER_RANGE == 250)
+  #define STRT_ZC_FILTER_DELAY    40
+  #define STRT_ZC_FILTER_FACTOR   7
+#elif(POWER_RANGE == 125)
+  #define STRT_ZC_FILTER_DELAY    20
+  #define STRT_ZC_FILTER_FACTOR   6
+#elif(POWER_RANGE == 100)
+  #define STRT_ZC_FILTER_DELAY    30
+  #define STRT_ZC_FILTER_FACTOR   5
+#elif(POWER_RANGE == 50)
+  #define STRT_ZC_FILTER_DELAY    36
+  #define STRT_ZC_FILTER_FACTOR   5
+#endif

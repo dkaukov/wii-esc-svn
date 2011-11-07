@@ -1,0 +1,2602 @@
+
+AVRASM ver. 2.1.43  E:\Backup\RC\ESC\wii-esc\trunk\wii-esc\wii-esc\bldc.asm Fri Oct 21 17:49:17 2011
+
+[builtin](2): Including file 'C:\Program Files (x86)\Atmel\AVR Studio 5.0\avrassembler\include\m8def.inc'
+E:\Backup\RC\ESC\wii-esc\trunk\wii-esc\wii-esc\bldc.asm(21): Including file 'E:\Backup\RC\ESC\wii-esc\trunk\wii-esc\wii-esc\Mystery20A.inc'
+E:\Backup\RC\ESC\wii-esc\trunk\wii-esc\wii-esc\Mystery20A.inc(1): Including file 'E:\Backup\RC\ESC\wii-esc\trunk\wii-esc\wii-esc\common.inc'
+E:\Backup\RC\ESC\wii-esc\trunk\wii-esc\wii-esc\bldc.asm(22): Including file 'E:\Backup\RC\ESC\wii-esc\trunk\wii-esc\wii-esc\pwm_rc_200.inc'
+E:\Backup\RC\ESC\wii-esc\trunk\wii-esc\wii-esc\bldc.asm(25): Including file 'E:\Backup\RC\ESC\wii-esc\trunk\wii-esc\wii-esc\ppm.inc'
+                 
+                 ;**** **** **** **** ****
+                 
+                 ;***** Created: 2011-02-09 12:03 ******* Source: ATmega8.xml *************
+                 ;*************************************************************************
+                 ;* A P P L I C A T I O N   N O T E   F O R   T H E   A V R   F A M I L Y
+                 ;* 
+                 ;* Number            : AVR000
+                 ;* File Name         : "m8def.inc"
+                 ;* Title             : Register/Bit Definitions for the ATmega8
+                 ;* Date              : 2011-02-09
+                 ;* Version           : 2.35
+                 ;* Support E-mail    : avr@atmel.com
+                 ;* Target MCU        : ATmega8
+                 ;* 
+                 ;* DESCRIPTION
+                 ;* When including this file in the assembly program file, all I/O register 
+                 ;* names and I/O register bit names appearing in the data book can be used.
+                 ;* In addition, the six registers forming the three data pointers X, Y and 
+                 ;* Z have been assigned names XL - ZH. Highest RAM address for Internal 
+                 ;* SRAM is also defined 
+                 ;* 
+                 ;* The Register names are represented by their hexadecimal address.
+                 ;* 
+                 ;* The Register Bit names are represented by their bit number (0-7).
+                 ;* 
+                 ;* Please observe the difference in using the bit names with instructions
+                 ;* such as "sbr"/"cbr" (set/clear bit in register) and "sbrs"/"sbrc"
+                 ;* (skip if bit in register set/cleared). The following example illustrates
+                 ;* this:
+                 ;* 
+                 ;* in    r16,PORTB             ;read PORTB latch
+                 ;* sbr   r16,(1<<PB6)+(1<<PB5) ;set PB6 and PB5 (use masks, not bit#)
+                 ;* out   PORTB,r16             ;output to PORTB
+                 ;* 
+                 ;* in    r16,TIFR              ;read the Timer Interrupt Flag Register
+                 ;* sbrc  r16,TOV0              ;test the overflow flag (use bit#)
+                 ;* rjmp  TOV0_is_set           ;jump if set
+                 ;* ...                         ;otherwise do something else
+                 ;*************************************************************************
+                 
+                 #ifndef _M8DEF_INC_
+                 #define _M8DEF_INC_
+                 
+                 
+                 #pragma partinc 0
+                 
+                 ; ***** SPECIFY DEVICE ***************************************************
+                 .device ATmega8
+                 #pragma AVRPART ADMIN PART_NAME ATmega8
+                 .equ	SIGNATURE_000	= 0x1e
+                 .equ	SIGNATURE_001	= 0x93
+                 .equ	SIGNATURE_002	= 0x07
+                 
+                 #pragma AVRPART CORE CORE_VERSION V2E
+                 
+                 
+                 ; ***** I/O REGISTER DEFINITIONS *****************************************
+                 ; NOTE:
+                 ; Definitions marked "MEMORY MAPPED"are extended I/O ports
+                 ; and cannot be used with IN/OUT instructions
+                 .equ	SREG	= 0x3f
+                 .equ	SPL	= 0x3d
+                 .equ	SPH	= 0x3e
+                 .equ	GICR	= 0x3b
+                 .equ	GIFR	= 0x3a
+                 .equ	TIMSK	= 0x39
+                 .equ	TIFR	= 0x38
+                 .equ	SPMCR	= 0x37
+                 .equ	TWCR	= 0x36
+                 .equ	MCUCR	= 0x35
+                 .equ	MCUCSR	= 0x34
+                 .equ	TCCR0	= 0x33
+                 .equ	TCNT0	= 0x32
+                 .equ	OSCCAL	= 0x31
+                 .equ	SFIOR	= 0x30
+                 .equ	TCCR1A	= 0x2f
+                 .equ	TCCR1B	= 0x2e
+                 .equ	TCNT1L	= 0x2c
+                 .equ	TCNT1H	= 0x2d
+                 .equ	OCR1AL	= 0x2a
+                 .equ	OCR1AH	= 0x2b
+                 .equ	OCR1BL	= 0x28
+                 .equ	OCR1BH	= 0x29
+                 .equ	ICR1L	= 0x26
+                 .equ	ICR1H	= 0x27
+                 .equ	TCCR2	= 0x25
+                 .equ	TCNT2	= 0x24
+                 .equ	OCR2	= 0x23
+                 .equ	ASSR	= 0x22
+                 .equ	WDTCR	= 0x21
+                 .equ	UBRRH	= 0x20
+                 .equ	UCSRC	= 0x20
+                 .equ	EEARL	= 0x1e
+                 .equ	EEARH	= 0x1f
+                 .equ	EEDR	= 0x1d
+                 .equ	EECR	= 0x1c
+                 .equ	PORTB	= 0x18
+                 .equ	DDRB	= 0x17
+                 .equ	PINB	= 0x16
+                 .equ	PORTC	= 0x15
+                 .equ	DDRC	= 0x14
+                 .equ	PINC	= 0x13
+                 .equ	PORTD	= 0x12
+                 .equ	DDRD	= 0x11
+                 .equ	PIND	= 0x10
+                 .equ	SPDR	= 0x0f
+                 .equ	SPSR	= 0x0e
+                 .equ	SPCR	= 0x0d
+                 .equ	UDR	= 0x0c
+                 .equ	UCSRA	= 0x0b
+                 .equ	UCSRB	= 0x0a
+                 .equ	UBRRL	= 0x09
+                 .equ	ACSR	= 0x08
+                 .equ	ADMUX	= 0x07
+                 .equ	ADCSRA	= 0x06
+                 .equ	ADCL	= 0x04
+                 .equ	ADCH	= 0x05
+                 .equ	TWDR	= 0x03
+                 .equ	TWAR	= 0x02
+                 .equ	TWSR	= 0x01
+                 .equ	TWBR	= 0x00
+                 
+                 
+                 ; ***** BIT DEFINITIONS **************************************************
+                 
+                 ; ***** ANALOG_COMPARATOR ************
+                 ; SFIOR - Special Function IO Register
+                 .equ	ACME	= 3	; Analog Comparator Multiplexer Enable
+                 
+                 ; ACSR - Analog Comparator Control And Status Register
+                 .equ	ACIS0	= 0	; Analog Comparator Interrupt Mode Select bit 0
+                 .equ	ACIS1	= 1	; Analog Comparator Interrupt Mode Select bit 1
+                 .equ	ACIC	= 2	; Analog Comparator Input Capture Enable
+                 .equ	ACIE	= 3	; Analog Comparator Interrupt Enable
+                 .equ	ACI	= 4	; Analog Comparator Interrupt Flag
+                 .equ	ACO	= 5	; Analog Compare Output
+                 .equ	ACBG	= 6	; Analog Comparator Bandgap Select
+                 .equ	ACD	= 7	; Analog Comparator Disable
+                 
+                 
+                 ; ***** SPI **************************
+                 ; SPDR - SPI Data Register
+                 .equ	SPDR0	= 0	; SPI Data Register bit 0
+                 .equ	SPDR1	= 1	; SPI Data Register bit 1
+                 .equ	SPDR2	= 2	; SPI Data Register bit 2
+                 .equ	SPDR3	= 3	; SPI Data Register bit 3
+                 .equ	SPDR4	= 4	; SPI Data Register bit 4
+                 .equ	SPDR5	= 5	; SPI Data Register bit 5
+                 .equ	SPDR6	= 6	; SPI Data Register bit 6
+                 .equ	SPDR7	= 7	; SPI Data Register bit 7
+                 
+                 ; SPSR - SPI Status Register
+                 .equ	SPI2X	= 0	; Double SPI Speed Bit
+                 .equ	WCOL	= 6	; Write Collision Flag
+                 .equ	SPIF	= 7	; SPI Interrupt Flag
+                 
+                 ; SPCR - SPI Control Register
+                 .equ	SPR0	= 0	; SPI Clock Rate Select 0
+                 .equ	SPR1	= 1	; SPI Clock Rate Select 1
+                 .equ	CPHA	= 2	; Clock Phase
+                 .equ	CPOL	= 3	; Clock polarity
+                 .equ	MSTR	= 4	; Master/Slave Select
+                 .equ	DORD	= 5	; Data Order
+                 .equ	SPE	= 6	; SPI Enable
+                 .equ	SPIE	= 7	; SPI Interrupt Enable
+                 
+                 
+                 ; ***** EXTERNAL_INTERRUPT ***********
+                 ; GICR - General Interrupt Control Register
+                 .equ	GIMSK	= GICR	; For compatibility
+                 .equ	IVCE	= 0	; Interrupt Vector Change Enable
+                 .equ	IVSEL	= 1	; Interrupt Vector Select
+                 .equ	INT0	= 6	; External Interrupt Request 0 Enable
+                 .equ	INT1	= 7	; External Interrupt Request 1 Enable
+                 
+                 ; GIFR - General Interrupt Flag Register
+                 .equ	INTF0	= 6	; External Interrupt Flag 0
+                 .equ	INTF1	= 7	; External Interrupt Flag 1
+                 
+                 ; MCUCR - MCU Control Register
+                 .equ	ISC00	= 0	; Interrupt Sense Control 0 Bit 0
+                 .equ	ISC01	= 1	; Interrupt Sense Control 0 Bit 1
+                 .equ	ISC10	= 2	; Interrupt Sense Control 1 Bit 0
+                 .equ	ISC11	= 3	; Interrupt Sense Control 1 Bit 1
+                 
+                 
+                 ; ***** TIMER_COUNTER_0 **************
+                 ; TIMSK - Timer/Counter Interrupt Mask Register
+                 .equ	TOIE0	= 0	; Timer/Counter0 Overflow Interrupt Enable
+                 
+                 ; TIFR - Timer/Counter Interrupt Flag register
+                 .equ	TOV0	= 0	; Timer/Counter0 Overflow Flag
+                 
+                 ; TCCR0 - Timer/Counter0 Control Register
+                 .equ	CS00	= 0	; Clock Select0 bit 0
+                 .equ	CS01	= 1	; Clock Select0 bit 1
+                 .equ	CS02	= 2	; Clock Select0 bit 2
+                 
+                 ; TCNT0 - Timer Counter 0
+                 .equ	TCNT00	= 0	; Timer Counter 0 bit 0
+                 .equ	TCNT01	= 1	; Timer Counter 0 bit 1
+                 .equ	TCNT02	= 2	; Timer Counter 0 bit 2
+                 .equ	TCNT03	= 3	; Timer Counter 0 bit 3
+                 .equ	TCNT04	= 4	; Timer Counter 0 bit 4
+                 .equ	TCNT05	= 5	; Timer Counter 0 bit 5
+                 .equ	TCNT06	= 6	; Timer Counter 0 bit 6
+                 .equ	TCNT07	= 7	; Timer Counter 0 bit 7
+                 
+                 
+                 ; ***** TIMER_COUNTER_1 **************
+                 ; TIMSK - Timer/Counter Interrupt Mask Register
+                 .equ	TOIE1	= 2	; Timer/Counter1 Overflow Interrupt Enable
+                 .equ	OCIE1B	= 3	; Timer/Counter1 Output CompareB Match Interrupt Enable
+                 .equ	OCIE1A	= 4	; Timer/Counter1 Output CompareA Match Interrupt Enable
+                 .equ	TICIE1	= 5	; Timer/Counter1 Input Capture Interrupt Enable
+                 
+                 ; TIFR - Timer/Counter Interrupt Flag register
+                 .equ	TOV1	= 2	; Timer/Counter1 Overflow Flag
+                 .equ	OCF1B	= 3	; Output Compare Flag 1B
+                 .equ	OCF1A	= 4	; Output Compare Flag 1A
+                 .equ	ICF1	= 5	; Input Capture Flag 1
+                 
+                 ; TCCR1A - Timer/Counter1 Control Register A
+                 .equ	WGM10	= 0	; Waveform Generation Mode
+                 .equ	PWM10	= WGM10	; For compatibility
+                 .equ	WGM11	= 1	; Waveform Generation Mode
+                 .equ	PWM11	= WGM11	; For compatibility
+                 .equ	FOC1B	= 2	; Force Output Compare 1B
+                 .equ	FOC1A	= 3	; Force Output Compare 1A
+                 .equ	COM1B0	= 4	; Compare Output Mode 1B, bit 0
+                 .equ	COM1B1	= 5	; Compare Output Mode 1B, bit 1
+                 .equ	COM1A0	= 6	; Compare Ouput Mode 1A, bit 0
+                 .equ	COM1A1	= 7	; Compare Output Mode 1A, bit 1
+                 
+                 ; TCCR1B - Timer/Counter1 Control Register B
+                 .equ	CS10	= 0	; Prescaler source of Timer/Counter 1
+                 .equ	CS11	= 1	; Prescaler source of Timer/Counter 1
+                 .equ	CS12	= 2	; Prescaler source of Timer/Counter 1
+                 .equ	WGM12	= 3	; Waveform Generation Mode
+                 .equ	CTC10	= WGM12	; For compatibility
+                 .equ	CTC1	= WGM12	; For compatibility
+                 .equ	WGM13	= 4	; Waveform Generation Mode
+                 .equ	CTC11	= WGM13	; For compatibility
+                 .equ	ICES1	= 6	; Input Capture 1 Edge Select
+                 .equ	ICNC1	= 7	; Input Capture 1 Noise Canceler
+                 
+                 
+                 ; ***** TIMER_COUNTER_2 **************
+                 ; TIMSK - Timer/Counter Interrupt Mask register
+                 .equ	TOIE2	= 6	; Timer/Counter2 Overflow Interrupt Enable
+                 .equ	OCIE2	= 7	; Timer/Counter2 Output Compare Match Interrupt Enable
+                 
+                 ; TIFR - Timer/Counter Interrupt Flag Register
+                 .equ	TOV2	= 6	; Timer/Counter2 Overflow Flag
+                 .equ	OCF2	= 7	; Output Compare Flag 2
+                 
+                 ; TCCR2 - Timer/Counter2 Control Register
+                 .equ	CS20	= 0	; Clock Select bit 0
+                 .equ	CS21	= 1	; Clock Select bit 1
+                 .equ	CS22	= 2	; Clock Select bit 2
+                 .equ	WGM21	= 3	; Waveform Generation Mode
+                 .equ	CTC2	= WGM21	; For compatibility
+                 .equ	COM20	= 4	; Compare Output Mode bit 0
+                 .equ	COM21	= 5	; Compare Output Mode bit 1
+                 .equ	WGM20	= 6	; Waveform Genration Mode
+                 .equ	PWM2	= WGM20	; For compatibility
+                 .equ	FOC2	= 7	; Force Output Compare
+                 
+                 ; TCNT2 - Timer/Counter2
+                 .equ	TCNT2_0	= 0	; Timer/Counter 2 bit 0
+                 .equ	TCNT2_1	= 1	; Timer/Counter 2 bit 1
+                 .equ	TCNT2_2	= 2	; Timer/Counter 2 bit 2
+                 .equ	TCNT2_3	= 3	; Timer/Counter 2 bit 3
+                 .equ	TCNT2_4	= 4	; Timer/Counter 2 bit 4
+                 .equ	TCNT2_5	= 5	; Timer/Counter 2 bit 5
+                 .equ	TCNT2_6	= 6	; Timer/Counter 2 bit 6
+                 .equ	TCNT2_7	= 7	; Timer/Counter 2 bit 7
+                 
+                 ; OCR2 - Timer/Counter2 Output Compare Register
+                 .equ	OCR2_0	= 0	; Timer/Counter2 Output Compare Register Bit 0
+                 .equ	OCR2_1	= 1	; Timer/Counter2 Output Compare Register Bit 1
+                 .equ	OCR2_2	= 2	; Timer/Counter2 Output Compare Register Bit 2
+                 .equ	OCR2_3	= 3	; Timer/Counter2 Output Compare Register Bit 3
+                 .equ	OCR2_4	= 4	; Timer/Counter2 Output Compare Register Bit 4
+                 .equ	OCR2_5	= 5	; Timer/Counter2 Output Compare Register Bit 5
+                 .equ	OCR2_6	= 6	; Timer/Counter2 Output Compare Register Bit 6
+                 .equ	OCR2_7	= 7	; Timer/Counter2 Output Compare Register Bit 7
+                 
+                 ; ASSR - Asynchronous Status Register
+                 .equ	TCR2UB	= 0	; Timer/counter Control Register2 Update Busy
+                 .equ	OCR2UB	= 1	; Output Compare Register2 Update Busy
+                 .equ	TCN2UB	= 2	; Timer/Counter2 Update Busy
+                 .equ	AS2	= 3	; Asynchronous Timer/counter2
+                 
+                 ; SFIOR - Special Function IO Register
+                 .equ	PSR2	= 1	; Prescaler Reset Timer/Counter2
+                 
+                 
+                 ; ***** USART ************************
+                 ; UDR - USART I/O Data Register
+                 .equ	UDR0	= 0	; USART I/O Data Register bit 0
+                 .equ	UDR1	= 1	; USART I/O Data Register bit 1
+                 .equ	UDR2	= 2	; USART I/O Data Register bit 2
+                 .equ	UDR3	= 3	; USART I/O Data Register bit 3
+                 .equ	UDR4	= 4	; USART I/O Data Register bit 4
+                 .equ	UDR5	= 5	; USART I/O Data Register bit 5
+                 .equ	UDR6	= 6	; USART I/O Data Register bit 6
+                 .equ	UDR7	= 7	; USART I/O Data Register bit 7
+                 
+                 ; UCSRA - USART Control and Status Register A
+                 .equ	USR	= UCSRA	; For compatibility
+                 .equ	MPCM	= 0	; Multi-processor Communication Mode
+                 .equ	U2X	= 1	; Double the USART transmission speed
+                 .equ	UPE	= 2	; Parity Error
+                 .equ	PE	= UPE	; For compatibility
+                 .equ	DOR	= 3	; Data overRun
+                 .equ	FE	= 4	; Framing Error
+                 .equ	UDRE	= 5	; USART Data Register Empty
+                 .equ	TXC	= 6	; USART Transmitt Complete
+                 .equ	RXC	= 7	; USART Receive Complete
+                 
+                 ; UCSRB - USART Control and Status Register B
+                 .equ	UCR	= UCSRB	; For compatibility
+                 .equ	TXB8	= 0	; Transmit Data Bit 8
+                 .equ	RXB8	= 1	; Receive Data Bit 8
+                 .equ	UCSZ2	= 2	; Character Size
+                 .equ	CHR9	= UCSZ2	; For compatibility
+                 .equ	TXEN	= 3	; Transmitter Enable
+                 .equ	RXEN	= 4	; Receiver Enable
+                 .equ	UDRIE	= 5	; USART Data register Empty Interrupt Enable
+                 .equ	TXCIE	= 6	; TX Complete Interrupt Enable
+                 .equ	RXCIE	= 7	; RX Complete Interrupt Enable
+                 
+                 ; UCSRC - USART Control and Status Register C
+                 .equ	UCPOL	= 0	; Clock Polarity
+                 .equ	UCSZ0	= 1	; Character Size
+                 .equ	UCSZ1	= 2	; Character Size
+                 .equ	USBS	= 3	; Stop Bit Select
+                 .equ	UPM0	= 4	; Parity Mode Bit 0
+                 .equ	UPM1	= 5	; Parity Mode Bit 1
+                 .equ	UMSEL	= 6	; USART Mode Select
+                 .equ	URSEL	= 7	; Register Select
+                 
+                 .equ	UBRRHI	= UBRRH	; For compatibility
+                 
+                 ; ***** TWI **************************
+                 ; TWBR - TWI Bit Rate register
+                 .equ	I2BR	= TWBR	; For compatibility
+                 .equ	TWBR0	= 0	; 
+                 .equ	TWBR1	= 1	; 
+                 .equ	TWBR2	= 2	; 
+                 .equ	TWBR3	= 3	; 
+                 .equ	TWBR4	= 4	; 
+                 .equ	TWBR5	= 5	; 
+                 .equ	TWBR6	= 6	; 
+                 .equ	TWBR7	= 7	; 
+                 
+                 ; TWCR - TWI Control Register
+                 .equ	I2CR	= TWCR	; For compatibility
+                 .equ	TWIE	= 0	; TWI Interrupt Enable
+                 .equ	I2IE	= TWIE	; For compatibility
+                 .equ	TWEN	= 2	; TWI Enable Bit
+                 .equ	I2EN	= TWEN	; For compatibility
+                 .equ	ENI2C	= TWEN	; For compatibility
+                 .equ	TWWC	= 3	; TWI Write Collition Flag
+                 .equ	I2WC	= TWWC	; For compatibility
+                 .equ	TWSTO	= 4	; TWI Stop Condition Bit
+                 .equ	I2STO	= TWSTO	; For compatibility
+                 .equ	TWSTA	= 5	; TWI Start Condition Bit
+                 .equ	I2STA	= TWSTA	; For compatibility
+                 .equ	TWEA	= 6	; TWI Enable Acknowledge Bit
+                 .equ	I2EA	= TWEA	; For compatibility
+                 .equ	TWINT	= 7	; TWI Interrupt Flag
+                 .equ	I2INT	= TWINT	; For compatibility
+                 
+                 ; TWSR - TWI Status Register
+                 .equ	I2SR	= TWSR	; For compatibility
+                 .equ	TWPS0	= 0	; TWI Prescaler
+                 .equ	TWS0	= TWPS0	; For compatibility
+                 .equ	I2GCE	= TWPS0	; For compatibility
+                 .equ	TWPS1	= 1	; TWI Prescaler
+                 .equ	TWS1	= TWPS1	; For compatibility
+                 .equ	TWS3	= 3	; TWI Status
+                 .equ	I2S3	= TWS3	; For compatibility
+                 .equ	TWS4	= 4	; TWI Status
+                 .equ	I2S4	= TWS4	; For compatibility
+                 .equ	TWS5	= 5	; TWI Status
+                 .equ	I2S5	= TWS5	; For compatibility
+                 .equ	TWS6	= 6	; TWI Status
+                 .equ	I2S6	= TWS6	; For compatibility
+                 .equ	TWS7	= 7	; TWI Status
+                 .equ	I2S7	= TWS7	; For compatibility
+                 
+                 ; TWDR - TWI Data register
+                 .equ	I2DR	= TWDR	; For compatibility
+                 .equ	TWD0	= 0	; TWI Data Register Bit 0
+                 .equ	TWD1	= 1	; TWI Data Register Bit 1
+                 .equ	TWD2	= 2	; TWI Data Register Bit 2
+                 .equ	TWD3	= 3	; TWI Data Register Bit 3
+                 .equ	TWD4	= 4	; TWI Data Register Bit 4
+                 .equ	TWD5	= 5	; TWI Data Register Bit 5
+                 .equ	TWD6	= 6	; TWI Data Register Bit 6
+                 .equ	TWD7	= 7	; TWI Data Register Bit 7
+                 
+                 ; TWAR - TWI (Slave) Address register
+                 .equ	I2AR	= TWAR	; For compatibility
+                 .equ	TWGCE	= 0	; TWI General Call Recognition Enable Bit
+                 .equ	TWA0	= 1	; TWI (Slave) Address register Bit 0
+                 .equ	TWA1	= 2	; TWI (Slave) Address register Bit 1
+                 .equ	TWA2	= 3	; TWI (Slave) Address register Bit 2
+                 .equ	TWA3	= 4	; TWI (Slave) Address register Bit 3
+                 .equ	TWA4	= 5	; TWI (Slave) Address register Bit 4
+                 .equ	TWA5	= 6	; TWI (Slave) Address register Bit 5
+                 .equ	TWA6	= 7	; TWI (Slave) Address register Bit 6
+                 
+                 
+                 ; ***** WATCHDOG *********************
+                 ; WDTCR - Watchdog Timer Control Register
+                 .equ	WDTCSR	= WDTCR	; For compatibility
+                 .equ	WDP0	= 0	; Watch Dog Timer Prescaler bit 0
+                 .equ	WDP1	= 1	; Watch Dog Timer Prescaler bit 1
+                 .equ	WDP2	= 2	; Watch Dog Timer Prescaler bit 2
+                 .equ	WDE	= 3	; Watch Dog Enable
+                 .equ	WDCE	= 4	; Watchdog Change Enable
+                 .equ	WDTOE	= WDCE	; For compatibility
+                 
+                 
+                 ; ***** PORTB ************************
+                 ; PORTB - Port B Data Register
+                 .equ	PORTB0	= 0	; Port B Data Register bit 0
+                 .equ	PB0	= 0	; For compatibility
+                 .equ	PORTB1	= 1	; Port B Data Register bit 1
+                 .equ	PB1	= 1	; For compatibility
+                 .equ	PORTB2	= 2	; Port B Data Register bit 2
+                 .equ	PB2	= 2	; For compatibility
+                 .equ	PORTB3	= 3	; Port B Data Register bit 3
+                 .equ	PB3	= 3	; For compatibility
+                 .equ	PORTB4	= 4	; Port B Data Register bit 4
+                 .equ	PB4	= 4	; For compatibility
+                 .equ	PORTB5	= 5	; Port B Data Register bit 5
+                 .equ	PB5	= 5	; For compatibility
+                 .equ	PORTB6	= 6	; Port B Data Register bit 6
+                 .equ	PB6	= 6	; For compatibility
+                 .equ	PORTB7	= 7	; Port B Data Register bit 7
+                 .equ	PB7	= 7	; For compatibility
+                 
+                 ; DDRB - Port B Data Direction Register
+                 .equ	DDB0	= 0	; Port B Data Direction Register bit 0
+                 .equ	DDB1	= 1	; Port B Data Direction Register bit 1
+                 .equ	DDB2	= 2	; Port B Data Direction Register bit 2
+                 .equ	DDB3	= 3	; Port B Data Direction Register bit 3
+                 .equ	DDB4	= 4	; Port B Data Direction Register bit 4
+                 .equ	DDB5	= 5	; Port B Data Direction Register bit 5
+                 .equ	DDB6	= 6	; Port B Data Direction Register bit 6
+                 .equ	DDB7	= 7	; Port B Data Direction Register bit 7
+                 
+                 ; PINB - Port B Input Pins
+                 .equ	PINB0	= 0	; Port B Input Pins bit 0
+                 .equ	PINB1	= 1	; Port B Input Pins bit 1
+                 .equ	PINB2	= 2	; Port B Input Pins bit 2
+                 .equ	PINB3	= 3	; Port B Input Pins bit 3
+                 .equ	PINB4	= 4	; Port B Input Pins bit 4
+                 .equ	PINB5	= 5	; Port B Input Pins bit 5
+                 .equ	PINB6	= 6	; Port B Input Pins bit 6
+                 .equ	PINB7	= 7	; Port B Input Pins bit 7
+                 
+                 
+                 ; ***** PORTC ************************
+                 ; PORTC - Port C Data Register
+                 .equ	PORTC0	= 0	; Port C Data Register bit 0
+                 .equ	PC0	= 0	; For compatibility
+                 .equ	PORTC1	= 1	; Port C Data Register bit 1
+                 .equ	PC1	= 1	; For compatibility
+                 .equ	PORTC2	= 2	; Port C Data Register bit 2
+                 .equ	PC2	= 2	; For compatibility
+                 .equ	PORTC3	= 3	; Port C Data Register bit 3
+                 .equ	PC3	= 3	; For compatibility
+                 .equ	PORTC4	= 4	; Port C Data Register bit 4
+                 .equ	PC4	= 4	; For compatibility
+                 .equ	PORTC5	= 5	; Port C Data Register bit 5
+                 .equ	PC5	= 5	; For compatibility
+                 .equ	PORTC6	= 6	; Port C Data Register bit 6
+                 .equ	PC6	= 6	; For compatibility
+                 
+                 ; DDRC - Port C Data Direction Register
+                 .equ	DDC0	= 0	; Port C Data Direction Register bit 0
+                 .equ	DDC1	= 1	; Port C Data Direction Register bit 1
+                 .equ	DDC2	= 2	; Port C Data Direction Register bit 2
+                 .equ	DDC3	= 3	; Port C Data Direction Register bit 3
+                 .equ	DDC4	= 4	; Port C Data Direction Register bit 4
+                 .equ	DDC5	= 5	; Port C Data Direction Register bit 5
+                 .equ	DDC6	= 6	; Port C Data Direction Register bit 6
+                 
+                 ; PINC - Port C Input Pins
+                 .equ	PINC0	= 0	; Port C Input Pins bit 0
+                 .equ	PINC1	= 1	; Port C Input Pins bit 1
+                 .equ	PINC2	= 2	; Port C Input Pins bit 2
+                 .equ	PINC3	= 3	; Port C Input Pins bit 3
+                 .equ	PINC4	= 4	; Port C Input Pins bit 4
+                 .equ	PINC5	= 5	; Port C Input Pins bit 5
+                 .equ	PINC6	= 6	; Port C Input Pins bit 6
+                 
+                 
+                 ; ***** PORTD ************************
+                 ; PORTD - Port D Data Register
+                 .equ	PORTD0	= 0	; Port D Data Register bit 0
+                 .equ	PD0	= 0	; For compatibility
+                 .equ	PORTD1	= 1	; Port D Data Register bit 1
+                 .equ	PD1	= 1	; For compatibility
+                 .equ	PORTD2	= 2	; Port D Data Register bit 2
+                 .equ	PD2	= 2	; For compatibility
+                 .equ	PORTD3	= 3	; Port D Data Register bit 3
+                 .equ	PD3	= 3	; For compatibility
+                 .equ	PORTD4	= 4	; Port D Data Register bit 4
+                 .equ	PD4	= 4	; For compatibility
+                 .equ	PORTD5	= 5	; Port D Data Register bit 5
+                 .equ	PD5	= 5	; For compatibility
+                 .equ	PORTD6	= 6	; Port D Data Register bit 6
+                 .equ	PD6	= 6	; For compatibility
+                 .equ	PORTD7	= 7	; Port D Data Register bit 7
+                 .equ	PD7	= 7	; For compatibility
+                 
+                 ; DDRD - Port D Data Direction Register
+                 .equ	DDD0	= 0	; Port D Data Direction Register bit 0
+                 .equ	DDD1	= 1	; Port D Data Direction Register bit 1
+                 .equ	DDD2	= 2	; Port D Data Direction Register bit 2
+                 .equ	DDD3	= 3	; Port D Data Direction Register bit 3
+                 .equ	DDD4	= 4	; Port D Data Direction Register bit 4
+                 .equ	DDD5	= 5	; Port D Data Direction Register bit 5
+                 .equ	DDD6	= 6	; Port D Data Direction Register bit 6
+                 .equ	DDD7	= 7	; Port D Data Direction Register bit 7
+                 
+                 ; PIND - Port D Input Pins
+                 .equ	PIND0	= 0	; Port D Input Pins bit 0
+                 .equ	PIND1	= 1	; Port D Input Pins bit 1
+                 .equ	PIND2	= 2	; Port D Input Pins bit 2
+                 .equ	PIND3	= 3	; Port D Input Pins bit 3
+                 .equ	PIND4	= 4	; Port D Input Pins bit 4
+                 .equ	PIND5	= 5	; Port D Input Pins bit 5
+                 .equ	PIND6	= 6	; Port D Input Pins bit 6
+                 .equ	PIND7	= 7	; Port D Input Pins bit 7
+                 
+                 
+                 ; ***** EEPROM ***********************
+                 ; EEDR - EEPROM Data Register
+                 .equ	EEDR0	= 0	; EEPROM Data Register bit 0
+                 .equ	EEDR1	= 1	; EEPROM Data Register bit 1
+                 .equ	EEDR2	= 2	; EEPROM Data Register bit 2
+                 .equ	EEDR3	= 3	; EEPROM Data Register bit 3
+                 .equ	EEDR4	= 4	; EEPROM Data Register bit 4
+                 .equ	EEDR5	= 5	; EEPROM Data Register bit 5
+                 .equ	EEDR6	= 6	; EEPROM Data Register bit 6
+                 .equ	EEDR7	= 7	; EEPROM Data Register bit 7
+                 
+                 ; EECR - EEPROM Control Register
+                 .equ	EERE	= 0	; EEPROM Read Enable
+                 .equ	EEWE	= 1	; EEPROM Write Enable
+                 .equ	EEMWE	= 2	; EEPROM Master Write Enable
+                 .equ	EEWEE	= EEMWE	; For compatibility
+                 .equ	EERIE	= 3	; EEPROM Ready Interrupt Enable
+                 
+                 
+                 ; ***** CPU **************************
+                 ; SREG - Status Register
+                 .equ	SREG_C	= 0	; Carry Flag
+                 .equ	SREG_Z	= 1	; Zero Flag
+                 .equ	SREG_N	= 2	; Negative Flag
+                 .equ	SREG_V	= 3	; Two's Complement Overflow Flag
+                 .equ	SREG_S	= 4	; Sign Bit
+                 .equ	SREG_H	= 5	; Half Carry Flag
+                 .equ	SREG_T	= 6	; Bit Copy Storage
+                 .equ	SREG_I	= 7	; Global Interrupt Enable
+                 
+                 ; MCUCR - MCU Control Register
+                 ;.equ	ISC00	= 0	; Interrupt Sense Control 0 Bit 0
+                 ;.equ	ISC01	= 1	; Interrupt Sense Control 0 Bit 1
+                 ;.equ	ISC10	= 2	; Interrupt Sense Control 1 Bit 0
+                 ;.equ	ISC11	= 3	; Interrupt Sense Control 1 Bit 1
+                 .equ	SM0	= 4	; Sleep Mode Select
+                 .equ	SM1	= 5	; Sleep Mode Select
+                 .equ	SM2	= 6	; Sleep Mode Select
+                 .equ	SE	= 7	; Sleep Enable
+                 
+                 ; MCUCSR - MCU Control And Status Register
+                 .equ	MCUSR	= MCUCSR	; For compatibility
+                 .equ	PORF	= 0	; Power-on reset flag
+                 .equ	EXTRF	= 1	; External Reset Flag
+                 .equ	BORF	= 2	; Brown-out Reset Flag
+                 .equ	WDRF	= 3	; Watchdog Reset Flag
+                 
+                 ; OSCCAL - Oscillator Calibration Value
+                 .equ	CAL0	= 0	; Oscillator Calibration Value Bit0
+                 .equ	CAL1	= 1	; Oscillator Calibration Value Bit1
+                 .equ	CAL2	= 2	; Oscillator Calibration Value Bit2
+                 .equ	CAL3	= 3	; Oscillator Calibration Value Bit3
+                 .equ	CAL4	= 4	; Oscillator Calibration Value Bit4
+                 .equ	CAL5	= 5	; Oscillator Calibration Value Bit5
+                 .equ	CAL6	= 6	; Oscillator Calibration Value Bit6
+                 .equ	CAL7	= 7	; Oscillator Calibration Value Bit7
+                 
+                 ; SPMCR - Store Program Memory Control Register
+                 .equ	SPMEN	= 0	; Store Program Memory Enable
+                 .equ	PGERS	= 1	; Page Erase
+                 .equ	PGWRT	= 2	; Page Write
+                 .equ	BLBSET	= 3	; Boot Lock Bit Set
+                 .equ	RWWSRE	= 4	; Read-While-Write Section Read Enable
+                 .equ	RWWSB	= 6	; Read-While-Write Section Busy
+                 .equ	SPMIE	= 7	; SPM Interrupt Enable
+                 
+                 ; SFIOR - Special Function IO Register
+                 .equ	PSR10	= 0	; Prescaler Reset Timer/Counter1 and Timer/Counter0
+                 .equ	PUD	= 2	; Pull-up Disable
+                 .equ	ADHSM	= 4	; ADC High Speed Mode
+                 
+                 
+                 ; ***** AD_CONVERTER *****************
+                 ; ADMUX - The ADC multiplexer Selection Register
+                 .equ	MUX0	= 0	; Analog Channel and Gain Selection Bits
+                 .equ	MUX1	= 1	; Analog Channel and Gain Selection Bits
+                 .equ	MUX2	= 2	; Analog Channel and Gain Selection Bits
+                 .equ	MUX3	= 3	; Analog Channel and Gain Selection Bits
+                 .equ	ADLAR	= 5	; Left Adjust Result
+                 .equ	REFS0	= 6	; Reference Selection Bit 0
+                 .equ	REFS1	= 7	; Reference Selection Bit 1
+                 
+                 ; ADCSRA - The ADC Control and Status register
+                 .equ	ADCSR	= ADCSRA	; For compatibility
+                 .equ	ADPS0	= 0	; ADC  Prescaler Select Bits
+                 .equ	ADPS1	= 1	; ADC  Prescaler Select Bits
+                 .equ	ADPS2	= 2	; ADC  Prescaler Select Bits
+                 .equ	ADIE	= 3	; ADC Interrupt Enable
+                 .equ	ADIF	= 4	; ADC Interrupt Flag
+                 .equ	ADFR	= 5	; ADC  Free Running Select
+                 .equ	ADSC	= 6	; ADC Start Conversion
+                 .equ	ADEN	= 7	; ADC Enable
+                 
+                 
+                 
+                 ; ***** LOCKSBITS ********************************************************
+                 .equ	LB1	= 0	; Lock bit
+                 .equ	LB2	= 1	; Lock bit
+                 .equ	BLB01	= 2	; Boot Lock bit
+                 .equ	BLB02	= 3	; Boot Lock bit
+                 .equ	BLB11	= 4	; Boot lock bit
+                 .equ	BLB12	= 5	; Boot lock bit
+                 
+                 
+                 ; ***** FUSES ************************************************************
+                 ; LOW fuse bits
+                 .equ	CKSEL0	= 0	; Select Clock Source
+                 .equ	CKSEL1	= 1	; Select Clock Source
+                 .equ	CKSEL2	= 2	; Select Clock Source
+                 .equ	CKSEL3	= 3	; Select Clock Source
+                 .equ	SUT0	= 4	; Select start-up time
+                 .equ	SUT1	= 5	; Select start-up time
+                 .equ	BODEN	= 6	; Brown out detector enable
+                 .equ	BODLEVEL	= 7	; Brown out detector trigger level
+                 
+                 ; HIGH fuse bits
+                 .equ	BOOTRST	= 0	; Select Reset Vector
+                 .equ	BOOTSZ0	= 1	; Select Boot Size
+                 .equ	BOOTSZ1	= 2	; Select Boot Size
+                 .equ	EESAVE	= 3	; EEPROM memory is preserved through chip erase
+                 .equ	CKOPT	= 4	; Oscillator Options
+                 .equ	SPIEN	= 5	; Enable Serial programming and Data Downloading
+                 .equ	WTDON	= 6	; Enable watchdog
+                 .equ	RSTDISBL	= 7	; Disable reset
+                 
+                 
+                 
+                 ; ***** CPU REGISTER DEFINITIONS *****************************************
+                 .def	XH	= r27
+                 .def	XL	= r26
+                 .def	YH	= r29
+                 .def	YL	= r28
+                 .def	ZH	= r31
+                 .def	ZL	= r30
+                 
+                 
+                 
+                 ; ***** DATA MEMORY DECLARATIONS *****************************************
+                 .equ	FLASHEND	= 0x0fff	; Note: Word address
+                 .equ	IOEND	= 0x003f
+                 .equ	SRAM_START	= 0x0060
+                 .equ	SRAM_SIZE	= 1024
+                 .equ	RAMEND	= 0x045f
+                 .equ	XRAMEND	= 0x0000
+                 .equ	E2END	= 0x01ff
+                 .equ	EEPROMEND	= 0x01ff
+                 .equ	EEADRBITS	= 9
+                 #pragma AVRPART MEMORY PROG_FLASH 8192
+                 #pragma AVRPART MEMORY EEPROM 512
+                 #pragma AVRPART MEMORY INT_SRAM SIZE 1024
+                 #pragma AVRPART MEMORY INT_SRAM START_ADDR 0x60
+                 
+                 
+                 
+                 ; ***** BOOTLOADER DECLARATIONS ******************************************
+                 .equ	NRWW_START_ADDR	= 0xc00
+                 .equ	NRWW_STOP_ADDR	= 0xfff
+                 .equ	RWW_START_ADDR	= 0x0
+                 .equ	RWW_STOP_ADDR	= 0xbff
+                 .equ	PAGESIZE	= 32
+                 .equ	FIRSTBOOTSTART	= 0xf80
+                 .equ	SECONDBOOTSTART	= 0xf00
+                 .equ	THIRDBOOTSTART	= 0xe00
+                 .equ	FOURTHBOOTSTART	= 0xc00
+                 .equ	SMALLBOOTSTART	= FIRSTBOOTSTART
+                 .equ	LARGEBOOTSTART	= FOURTHBOOTSTART
+                 
+                 
+                 
+                 ; ***** INTERRUPT VECTORS ************************************************
+                 .equ	INT0addr	= 0x0001	; External Interrupt Request 0
+                 .equ	INT1addr	= 0x0002	; External Interrupt Request 1
+                 .equ	OC2addr	= 0x0003	; Timer/Counter2 Compare Match
+                 .equ	OVF2addr	= 0x0004	; Timer/Counter2 Overflow
+                 .equ	ICP1addr	= 0x0005	; Timer/Counter1 Capture Event
+                 .equ	OC1Aaddr	= 0x0006	; Timer/Counter1 Compare Match A
+                 .equ	OC1Baddr	= 0x0007	; Timer/Counter1 Compare Match B
+                 .equ	OVF1addr	= 0x0008	; Timer/Counter1 Overflow
+                 .equ	OVF0addr	= 0x0009	; Timer/Counter0 Overflow
+                 .equ	SPIaddr	= 0x000a	; Serial Transfer Complete
+                 .equ	URXCaddr	= 0x000b	; USART, Rx Complete
+                 .equ	UDREaddr	= 0x000c	; USART Data Register Empty
+                 .equ	UTXCaddr	= 0x000d	; USART, Tx Complete
+                 .equ	ADCCaddr	= 0x000e	; ADC Conversion Complete
+                 .equ	ERDYaddr	= 0x000f	; EEPROM Ready
+                 .equ	ACIaddr	= 0x0010	; Analog Comparator
+                 .equ	TWIaddr	= 0x0011	; 2-wire Serial Interface
+                 .equ	SPMRaddr	= 0x0012	; Store Program Memory Ready
+                 
+                 .equ	INT_VECTORS_SIZE	= 19	; size in words
+                 
+                 #pragma AVRPART CORE INSTRUCTIONS_NOT_SUPPORTED break
+                 
+                 #endif  /* _M8DEF_INC_ */
+                 
+                 ; ***** END OF FILE ******************************************************
+                 
+                 ;
+                 ;Die Benutzung der Software ist mit folgenden Bedingungen verbunden:
+                 ;
+                 ;1. Da ich alles kostenlos zur Verfügung stelle, gebe ich keinerlei Garantie
+                 ;   und übernehme auch keinerlei Haftung für die Folgen der Benutzung.
+                 ;
+                 ;2. Die Software ist ausschließlich zur privaten Nutzung bestimmt. Ich
+                 ;   habe nicht geprüft, ob bei gewerblicher Nutzung irgendwelche Patentrechte
+                 ;   verletzt werden oder sonstige rechtliche Einschränkungen vorliegen.
+                 ;
+                 ;3. Jeder darf Änderungen vornehmen, z.B. um die Funktion seinen Bedürfnissen
+                 ;   anzupassen oder zu erweitern. Ich würde mich freuen, wenn ich weiterhin als
+                 ;   Co-Autor in den Unterlagen erscheine und mir ein Link zur entprechenden Seite
+                 ;   (falls vorhanden) mitgeteilt wird.
+                 ;
+                 ;4. Auch nach den Änderungen sollen die Software weiterhin frei sein, d.h. kostenlos bleiben.
+                 ;
+                 ;!! Wer mit den Nutzungbedingungen nicht einverstanden ist, darf die Software nicht nutzen !!
+                 
+                 .include "Mystery20A.inc"
+                 
+                 
+                   cbi     ADCSRA, ADEN          ; disable ADC
+                   in      temp1, SFIOR
+                   sbr     temp1, (1<<ACME)      ; switch to comparator multiplexed
+                   out     SFIOR, temp1
+                 .endmacro  
+                 
+                 .macro ACNormal
+                    cbr  temp1, (1<<ACME)        ; set to AN1
+                    out  SFIOR, temp1
+                    sbi  ADCSRA, ADEN            ; enable ADC
+                 .endmacro  
+                 
+                 .macro ACChannel 
+                    ldi   temp1, @0              
+                    out   ADMUX, temp1
+                 .endmacro  
+                    
+                 #define RPM_TO_COMM_TIME(x) (1000000 * 10 / x)
+                 #define PWR_PCT_TO_VAL(x)   (x*POWER_RANGE/100)
+                 
+                 #define PWR_CURVE_POINT(pt, rpm, pwr) \
+                 .equ    RPM_RUN_RANGE_ ## pt  = rpm\
+                 .equ    PCT_PWR_MAX_RPM_ ## pt = pwr
+                 
+                 
+                 /*
+                 .macro PwmCSEnter
+                                 ldi     temp1, (1<<OCIE1A)+(1<<TOIE1) ; stop timer0 interrupt
+                                 out     TIMSK, temp1                  ;  .. only ONE should change these values at the time
+                                 nop
+                 .endm
+                 
+                 .macro PwmCSLeave
+                                 ldi     temp1, (1<<TOIE1)+(1<<OCIE1A)+(1<<TOIE0) ; let timer0 do his work again
+                                 out     TIMSK, temp1 
+                 .endm
+                 */
+                 
+                 .macro PwmCSEnter
+                                 cli
+                 .endm
+                 
+                 .macro PwmCSLeave
+                                 sei
+                 .endm
+                 
+                 #define Typ "Mystery 20"
+                 
+                 
+                 ;**** **** **** **** ****
+                 ; PORT  definitions
+                 ;**** **** **** **** ****
+                 
+                 ;*********************
+                 ; PORT D 
+                 ;*********************  
+                 ;#define                7     ;
+                 #define c_comp          6     ;i common comparator input (AIN0)
+                 #define AnFET           5     ;o
+                 #define ApFET           4     ;o
+                 ;#define                3     ;
+                 #define rcp_in          2     ;i r/c pulse input
+                 ;#define                1     ;
+                 ;#define                0     ;
+                 
+                 
+                 #define INIT_PD         0
+                 #define DIR_PD          (1<<ApFET)+(1<<AnFET)
+                 #define BRAKE_PD        (1<<AnFET)
+                 
+                 
+                 ;*********************
+                 ; ADC definitions
+                 ;*********************
+                 
+                 #define mux_c           0     ; ADC0
+                 #define mux_a           6     ; ADC6
+                 #define mux_b           7     ; ADC7
+                 #define ACCU_MUX        2     ; ADC2 voltage control input 
+                 
+                 ;*********************
+                 ; PORT C definitions *
+                 ;*********************
+                 #define AnRef           1
+                 #define CpFET           3
+                 #define BnFET           4
+                 #define BpFET           5  
+                 
+                 
+                 #define INIT_PC         (1<<AnRef)
+                 #define DIR_PC          (1<<AnRef)+(1<<CpFET)+(1<<BnFET)+(1<<BpFET)
+                 #define BRAKE_PC        (1<<BnFET)
+                 
+                 
+                 ;*********************
+                 ; PORT B definitions *
+                 ;*********************
+                 ;#define                7     
+                 ;#define                6     
+                 #define DbgLED          5;    (sck stk200 interface) 
+                 ;#define                4     (miso stk200 interface)
+                 ;#define                3     (mosi stk200 interface) 
+                 ;#define                2     
+                 ;#define                1     
+                 #define CnFET           0
+                 
+                 #define INIT_PB         0
+                 #define DIR_PB          (1<<CnFET)+(1<<DbgLED)
+                 #define BRAKE_PB        (1<<CnFET)
+                 
+                 
+                 #define DbgLEDOn        sbi     PORTB,5
+                 #define DbgLEDOff       cbi     PORTB,5
+                 
+                 
+                 ;*********************
+                 ; FET Control        *
+                 ;*********************
+                 #define ApFET_on        sbi     PORTD,4
+                 #define ApFET_off       cbi     PORTD,4
+                 #define AnFET_on        sbi     PORTD,5
+                 #define AnFET_off       cbi     PORTD,5
+                 
+                 #define BpFET_on        sbi     PORTC,5
+                 #define BpFET_off       cbi     PORTC,5
+                 #define BnFET_on        sbi     PORTC,4
+                 #define BnFET_off       cbi     PORTC,4
+                 
+                 #define CpFET_on        sbi     PORTC,3
+                 #define CpFET_off       cbi     PORTC,3
+                 #define CnFET_on        sbi     PORTB,0
+                 #define CnFET_off       cbi     PORTB,0
+                 
+                 
+                 ;*************************
+                 ; Comparator definitions *
+                 ;*************************
+                 
+                 .macro AcInit
+                   ACMultiplexed
+                 .endmacro
+                 
+                 
+                 .macro AcPhaseA
+                   ACChannel mux_a
+                 .endmacro
+                 
+                 
+                 .macro AcPhaseB
+                   ACChannel mux_b
+                 .endmacro
+                 
+                 
+                 .macro AcPhaseC
+                   ACChannel mux_c
+                 .endmacro
+                 
+                 
+                 ;*************************
+                 ; Parameters             *
+                 ;*************************
+                 #undef     MOT_BRAKE      
+                 #undef     READ_CALIBRATION
+                 #define    F_CPU               16000000          ; 16Mhz oscilator 
+                 #define    ZCF_CONST           7
+                 
+                 ;*************************
+                 ; Power settings         *
+                 ;*************************
+                 #define    PCT_PWR_MIN         3                 ; Min power 3%
+                 
+                 ;*************************
+                 ; Power curve            *
+                 ;*************************
+                 PWR_CURVE_POINT(01, 3500, 25)
+                 PWR_CURVE_POINT(02, 7000, 50)
+                 
+                 ;*************************
+                 ; Startup settings       *
+                 ;*************************
+                 ;#define    timeoutSTART        68530
+                 ;#define    timeoutMIN          60000
+                 #define    RPM_STEP_INITIAL 200
+                 #define    RPM_STEP_MAX     250
+                 #define    PCT_PWR_STARTUP     17
+                 #define    PCT_PWR_MAX_STARTUP 20
+                 #define    RPM_START_MIN_RPM   4200
+                 #define    ENOUGH_GOODIES      20
+                 
+                 ;*************************
+                 ; Run settings           *
+                 ;*************************
+                 #define    RPM_RUN_MIN_RPM     3200
+                 .include "pwm_rc_200.inc"
+                 
+                 
+                 #define POWER_RANGE 200
+                 #define MIN_RC_PULS 1100
+                 
+                 ; falling->rising intervals
+                 #define MAX_INT_FR  25000
+                 #define MIN_INT_FR  15000
+                 
+                 ; rising->falling intervals
+                 #define MAX_INT_RF  2200
+                 #define MIN_INT_RF  800
+                 
+                 .macro EvaluatePWC
+                                 sbrs    flags1, RC_PULS_UPDATED
+                                 rjmp    eval_rc_p90
+                                 lds     temp1, new_rcpuls_l
+                                 lds     temp2, new_rcpuls_h
+                                 cbr     flags1, (1<<RC_PULS_UPDATED) ; rc impuls value is read out
+                                 subi    temp1, low  (MIN_RC_PULS*CLK_SCALE)
+                                 sbci    temp2, high (MIN_RC_PULS*CLK_SCALE)
+                                 brcc    eval_rc_p00
+                                 clr     temp1
+                                 clr     temp2
+                 eval_rc_p00:    lsr     temp2
+                                 ror     temp1
+                                 lsr     temp2
+                                 ror     temp1
+                 .if CLK_SCALE==2
+                                 lsr     temp2   ; actual 0->400
+                                 ror     temp1
+                 .endif
+                                 mov     temp3, temp1            
+                                 subi    temp1, POWER_RANGE - 1
+                                 brcs    eval_rc_p10
+                                 ldi     temp3, POWER_RANGE - 1
+                 eval_rc_p10:    mov     ZH, temp3
+                 eval_rc_p90:    ret
+                 
+                 .endmacro
+                 
+                 #if defined(_include_ppm_inc_)
+                   .include "ppm.inc"
+                 
+                   #define    micp_dis     0x00       ; disable ext0int
+                   #define    micp_en      (1<<INT0)  ; enable ext0int
+                   #define    micp_r_edge  (1<<ISC01)+(1<<ISC00)
+                   #define    micp_f_edge  (1<<ISC01)
+                   #define    micp_m_test  ISC00
+                   #define    __ext_int0   rjmp ext_int0_isr
+                   .macro __ext_int0_isr
+                     __ext_micp_isr
+                   .endmacro
+                 #endif
+                 
+                 #if (rcp_in == 3)
+                 #endif
+                 
+                 
+                 ;-----bko-----------------------------------------------------------------
+                 ; external interrupt = rc pulse input
+                 .macro __ext_micp_isr
+                                 in      i_sreg, SREG
+                 
+                 ; evaluate edge of this interrupt
+                                 in      i_temp1, MCUCR
+                                 sbrs    i_temp1, micp_m_test
+                                 rjmp    falling_edge                              ; bit is clear = falling edge
+                 
+                 ; should be rising edge - test rc impuls level state for possible jitter
+                                 sbis    PIND, rcp_in
+                                 rjmp    micp_exit                                 ; jump, if low state
+                 
+                 ; rc impuls is at high state
+                                 ldi     i_temp1, micp_f_edge
+                                 out     MCUCR, i_temp1                            ; set next int to falling edge
+                 
+                 ; get timer1 values
+                                 in      i_temp1, TCNT1L
+                                 in      i_temp2, TCNT1H
+                                 mov     start_rcpuls_l, i_temp1
+                                 mov     start_rcpuls_h, i_temp2
+                 ; test rcpulse interval
+                                 cbr     flags2, (1<<RC_INTERVAL_OK)               ; preset to not ok
+                                 lds     i_temp3, stop_rcpuls_l
+                                 sub     i_temp1, i_temp3
+                                 lds     i_temp3, stop_rcpuls_h
+                                 sbc     i_temp2, i_temp3
+                                 cpi     i_temp1, low (MAX_INT_FR*CLK_SCALE)
+                                 ldi     i_temp3, high(MAX_INT_FR*CLK_SCALE)       ; test range high
+                                 cpc     i_temp2, i_temp3
+                                 brsh    micp_fail                                 ; through away
+                                 cpi     i_temp1, low (MIN_INT_FR*CLK_SCALE)
+                                 ldi     i_temp3, high(MIN_INT_FR*CLK_SCALE)       ; test range low
+                                 cpc     i_temp2, i_temp3
+                                 brlo    micp_fail                                 ; through away
+                                 sbr     flags2, (1<<RC_INTERVAL_OK)               ; set to rc impuls value is ok !
+                                 rjmp    micp_exit
+                 micp_fail:      tst     control_timeout
+                                 breq    micp_exit
+                                 dec     control_timeout
+                                 rjmp    micp_exit
+                                 ; rc impuls is at low state
+                 falling_edge:   sbic    PIND, rcp_in                              ; test level of rc impuls
+                                 rjmp    micp_exit                                 ; seems to be a spike
+                                 ldi     i_temp1, micp_r_edge
+                                 out     MCUCR, i_temp1                            ; set next int to rising edge
+                                 sbrc    flags1, RC_PULS_UPDATED
+                                 rjmp    micp_exit
+                                 ; get timer1 values
+                                 in      i_temp1, TCNT1L
+                                 in      i_temp2, TCNT1H
+                                 sts     stop_rcpuls_l, i_temp1                    ; prepare next interval evaluation
+                                 sts     stop_rcpuls_h, i_temp2
+                                 sbrs    flags2, RC_INTERVAL_OK
+                                 rjmp    micp_exit
+                                 cbr     flags2, (1<<RC_INTERVAL_OK)               ; flag is evaluated
+                                 sub     i_temp1, start_rcpuls_l
+                                 sbc     i_temp2, start_rcpuls_h
+                                 ; save impuls length
+                                 sts     new_rcpuls_l, i_temp1
+                                 sts     new_rcpuls_h, i_temp2
+                                 cpi     i_temp1, low (MAX_INT_RF*CLK_SCALE)
+                                 ldi     i_temp3, high(MAX_INT_RF*CLK_SCALE)       ; test range high
+                                 cpc     i_temp2, i_temp3
+                                 brsh    micp_fail                                 ; through away
+                                 cpi     i_temp1, low (MIN_INT_RF*CLK_SCALE)
+                                 ldi     i_temp3, high(MIN_INT_RF*CLK_SCALE)       ; test range low
+                                 cpc     i_temp2, i_temp3
+                                 brlo    micp_fail                                 ; through away
+                                 sbr     flags1, (1<<RC_PULS_UPDATED)              ; set to rc impuls value is ok !
+                                 ldi     i_temp1, CONTROL_TOT*CLK_SCALE
+                                 mov     control_timeout, i_temp1
+                 micp_exit:   
+                                 out     SREG, i_sreg
+                                 reti
+                 .endm
+                 
+                 .macro enable_input
+                                 ldi     temp4, micp_en
+                                 out     GIMSK, temp4                              
+                 .endm 
+                 
+                 .macro disable_input
+                                 ldi     temp4, micp_dis
+                                 out     GIMSK, temp4
+                 .endm 
+                 
+                 .macro init_input
+                                 ldi     temp1, micp_r_edge
+                                 out     MCUCR, temp1                              
+                                 enable_input
+                 .endm
+                 #endif 
+                 
+                 
+                 .equ    NO_POWER         = 256 - PWR_PCT_TO_VAL(PCT_PWR_MIN)    ; (POWER_OFF)
+                 .equ    MAX_POWER        = 256 - POWER_RANGE                    ; (FULL_POWER)
+                 .equ    CONTROL_TOT      = 50                                   ; time = NUMBER x 64ms
+                 .equ    CURRENT_ERR_MAX  = 3                                    ; performs a reset after MAX errors
+                 
+                 .equ    T1STOP           = 0x00
+                 .equ    T1CK8            = 0x02
+                 .equ    CLK_SCALE        = F_CPU / 8000000
+                 
+                 ;**** **** **** **** ****
+                 ; Register Definitions
+                 .def    i_sreg           = r1   ; status register save in interrupts
+                 ;.def   ...              = r2   ; 
+                 .def    temp5            = r3   ; 
+                 .def    temp6            = r4   ; 
+                 ;.def   ...              = r5   
+                 .def    tcnt0_power_on   = r6   ; timer0 counts nFETs are switched on  
+                 .def    tcnt0_pwroff     = r7   ; timer0 counts nFETs are switched off
+                 .def    start_rcpuls_l   = r8
+                 .def    start_rcpuls_h   = r9
+                 .def    TCNT1L_shadow    = r10
+                 .def    TCNT1H_shadow    = r11
+                 .def    control_timeout  = r12  ; 
+                 
+                 .def    sys_control      = r13
+                 .def    t1_timeout       = r14
+                 ;.def   ...              = r15
+                 
+                 
+                 .def    temp1            = r16  ; main temporary
+                 .def    temp2            = r17  ; main temporary
+                 .def    temp3            = r18  ; main temporary
+                 .def    temp4            = r19  ; main temporary
+                 
+                 .def    i_temp1          = r20  ; interrupt temporary
+                 .def    i_temp2          = r21  ; interrupt temporary
+                 .def    i_temp3          = r22  ; interrupt temporary
+                 
+                 .def    flags0  = r23   ; state flags
+                         .equ    OCT1_PENDING    = 0     ; if set, output compare interrunpt is pending
+                         .equ    OCT1_MSB        = 1     ; 
+                         .equ    I_pFET_HIGH     = 2     ; set if over-current detect
+                         .equ    B_FET           = 3     ; if set, A-FET state is to be changed
+                         .equ    C_FET           = 4     ; if set, C-FET state is to be changed
+                         .equ    A_FET           = 5     ; if set, A-FET state is to be changed
+                 ;        .equ    ...            = 6     ; 
+                         .equ    T1OVFL_FLAG     = 7     ; each timer1 overflow sets this flag - used for voltage + current watch
+                 
+                 .def    flags1  = r24   ; state flags
+                         .equ    POWER_OFF       = 0     ; switch fets on disabled
+                         .equ    FULL_POWER      = 1     ; 100% on - don't switch off, but do OFF_CYCLE working
+                         .equ    NO_COMM         = 2     ; !(FULL_POWER or !PWM_OFF_CYCLE)
+                         .equ    RC_PULS_UPDATED = 3     ; new rc-puls value available
+                         .equ    PWM_OFF_CYCLE   = 4     ; if set, current off cycle is active
+                 ;        .equ                   = 5     ; 
+                 ;        .equ                   = 6     ; 
+                 ;        .equ                   = 7     ; 
+                 
+                 .def    flags2  = r25
+                         .equ    RPM_RANGE1      = 0     ; 
+                         .equ    RPM_RANGE2      = 1     ; 
+                         .equ    SCAN_TIMEOUT    = 2     ; if set a startup timeout occurred
+                 ;       .equ    ...             = 3     ; 
+                         .equ    RUN_MIN_RPM     = 4     ; 
+                         .equ    STARTUP         = 5     ; if set startup-phase is active
+                         .equ    RC_INTERVAL_OK  = 6     ; 
+                         .equ    NO_SYNC         = 7     ; 
+                 
+                 ; here the XYZ registers are placed ( r26-r31)
+                 
+                 ; ZH = new_duty         ; PWM destination
+                 
+                 
+                 ;**** **** **** **** ****
+                 ; RAM Definitions
+                 .dseg                                   ;EEPROM segment
+                 .org SRAM_START
+                 
+000060           last_tcnt1_l:   .byte   1       ; last timer1 value
+000061           last_tcnt1_h:   .byte   1
+000062           timing_l:       .byte   1       ; holds time of 4 commutations 
+000063           timing_h:       .byte   1
+000064           timing_x:       .byte   1
+                 
+000065           zc_blanking_time_l: .byte   1   ; time from switch to comparator scan
+000066           zc_blanking_time_h: .byte   1       
+000067           com_timing_l:   .byte   1       ; time from zero-crossing to switch of the appropriate FET
+000068           com_timing_h:   .byte   1
+000069           strt_zc_wait_time_x:  .byte   1 
+00006a           strt_zc_wait_time_h:  .byte   1
+00006b           zc_wait_time_l: .byte   1
+00006c           zc_wait_time_h: .byte   1
+                 
+00006d           stop_rcpuls_l:  .byte   1
+00006e           stop_rcpuls_h:  .byte   1
+00006f           new_rcpuls_l:   .byte   1
+000070           new_rcpuls_h:   .byte   1
+                 
+000071           goodies:        .byte   1
+                 
+000072           uart_data:      .byte   100             ; only for debug requirements
+                 
+                 
+                 ;**** **** **** **** ****
+                 ; ATmega8 interrupts
+                 
+                 ;.equ   INT0addr=$001   ; External Interrupt0 Vector Address
+                 ;.equ   INT1addr=$002   ; External Interrupt1 Vector Address
+                 ;.equ   OC2addr =$003   ; Output Compare2 Interrupt Vector Address
+                 ;.equ   OVF2addr=$004   ; Overflow2 Interrupt Vector Address
+                 ;.equ   ICP1addr=$005   ; Input Capture1 Interrupt Vector Address
+                 ;.equ   OC1Aaddr=$006   ; Output Compare1A Interrupt Vector Address
+                 ;.equ   OC1Baddr=$007   ; Output Compare1B Interrupt Vector Address
+                 ;.equ   OVF1addr=$008   ; Overflow1 Interrupt Vector Address
+                 ;.equ   OVF0addr=$009   ; Overflow0 Interrupt Vector Address
+                 ;.equ   SPIaddr =$00a   ; SPI Interrupt Vector Address
+                 ;.equ   URXCaddr=$00b   ; USART Receive Complete Interrupt Vector Address
+                 ;.equ   UDREaddr=$00c   ; USART Data Register Empty Interrupt Vector Address
+                 ;.equ   UTXCaddr=$00d   ; USART Transmit Complete Interrupt Vector Address
+                 ;.equ   ADCCaddr=$00e   ; ADC Interrupt Vector Address
+                 ;.equ   ERDYaddr=$00f   ; EEPROM Interrupt Vector Address
+                 ;.equ   ACIaddr =$010   ; Analog Comparator Interrupt Vector Address
+                 ;.equ   TWIaddr =$011   ; Irq. vector address for Two-Wire Interface
+                 ;.equ   SPMaddr =$012   ; SPM complete Interrupt Vector Address
+                 ;.equ   SPMRaddr =$012  ; SPM complete Interrupt Vector Address
+                 ;-----bko-----------------------------------------------------------------
+                 ; helper macroses
+                 #if !defined(__ext_int0)
+                 #endif
+                 
+                 #if !defined(__ext_int1)
+                  #define __ext_int1 reti 
+                  .macro __ext_int1_isr
+                  .endmacro
+                 #endif
+                 ;**** **** **** **** ****
+                 .cseg
+                 .org 0
+                 ;-----bko-----------------------------------------------------------------
+                 ; reset and interrupt jump table
+                 
+000000 c01d                      rjmp    reset
+000001 c04e                      __ext_int0          ; ext_int0
+000002 9518                      __ext_int1          ; ext_int1
+000003 9518                      reti                ; t2oc_int
+000004 9518                      reti                ; t2ovfl_int
+000005 9518                      reti                ; icp1
+000006 c08c                      rjmp    t1oca_int
+000007 9518                      reti                ; t1ocb_int
+000008 c095                      rjmp    t1ovfl_int
+000009 c0a0                      rjmp    t0ovfl_int
+00000a 9518                      reti                ; spi_int
+00000b 9518                      reti                ; urxc
+00000c 9518                      reti                ; udre
+00000d 9518                      reti                ; utxc
+00000e 9518                      reti                ; adc_int
+00000f 9518                      reti                ; eep_int
+000010 9518                      reti                ; aci_int
+000011 9518                      reti                ; wire2_int
+000012 9518                      reti                ; spmc_int
+                 
+                 
+000013 0a0d      version:        .db     0x0d, 0x0a
+000014 6b62
+000015 794d
+000016 7473
+000017 7265
+000018 2079
+000019 3032
+00001a 3134
+00001b 7230
+00001c 3630                      .db     "bk",Typ,"410r06"
+00001d 0a0d                      .db     0x0d, 0x0a
+                 
+                 ;******************************************************************************
+                 ;* MACRO
+                 ;*      SetPWMi
+                 ;* DECRIPTION
+                 ;*      Set PWM immidiate
+                 ;* USAGE
+                 ;*      SetPWMi(val)
+                 ;* STATISTICS
+                 ;*      Register usage: none
+                 ;******************************************************************************
+                 .macro SetPWMi
+                                 push    temp1
+                                 push    temp2
+                                 ldi     temp1, @0
+                                 com     temp1
+                                 rcall   set_pwm
+                                 pop     temp2
+                                 pop     temp1
+                 .endmacro
+                 
+                 
+                 ;-----bko-----------------------------------------------------------------
+                 ; init after reset
+                 
+00001e e004      reset:          ldi     temp1, high(RAMEND)     ; stack = RAMEND
+00001f bf0e                      out     SPH, temp1
+000020 e50f                      ldi     temp1, low(RAMEND)
+000021 bf0d                      out     SPL, temp1
+                 
+                 #ifdef READ_CALIBRATION
+                 #endif
+                 #ifdef OVERCLOCK
+                 #endif
+                 
+                         ; portB
+000022 e000                      ldi     temp1, INIT_PB
+000023 bb08                      out     PORTB, temp1
+000024 e201                      ldi     temp1, DIR_PB
+000025 bb07                      out     DDRB, temp1
+                 
+                         ; portC
+000026 e002                      ldi     temp1, INIT_PC
+000027 bb05                      out     PORTC, temp1
+000028 e30a                      ldi     temp1, DIR_PC
+000029 bb04                      out     DDRC, temp1
+                 
+                         ; portD
+00002a e000                      ldi     temp1, INIT_PD
+00002b bb02                      out     PORTD, temp1
+00002c e300                      ldi     temp1, DIR_PD
+00002d bb01                      out     DDRD, temp1
+                 
+                         ; timer0: PWM + beep control = 0x02     ; start timer0 with CK/8 (0.5³s/count)
+00002e e002                      ldi     temp1, 0x02
+00002f bf03                      out     TCCR0, temp1
+                 
+                         ; timer1: commutation control = 0x02    ; start timer1 with CK/8 (0.5³s/count)
+000030 e002                      ldi     temp1, T1CK8
+000031 bd0e                      out     TCCR1B, temp1
+                 
+                         ; reset state flags
+000032 2777                      clr     flags0
+000033 2788                      clr     flags1
+000034 2799                      clr     flags2
+                 
+                         ; clear RAM
+000035 27bb                      clr     XH
+000036 e6a0                      ldi     XL, low (SRAM_START)
+000037 2700                      clr     temp1
+000038 930d      clear_ram:      st      X+, temp1
+000039 37a3                      cpi     XL, uart_data+1
+00003a f3e8                      brlo    clear_ram
+                 
+                         ; power off
+00003b d20f                      rcall   switch_power_off
+                 
+                         ; reset rc puls timeout
+00003c e604                      ldi     temp1, CONTROL_TOT*CLK_SCALE
+00003d 2ec0                      mov     control_timeout, temp1
+                                 
+                 control_start:  ; init variables
+00003e 930f
+00003f 931f
+000040 e005
+000041 9500
+000042 d0e3
+000043 911f
+000044 910f                      SetPWMi(PWR_PCT_TO_VAL(PCT_PWR_MIN)-1)
+000045 24dd                      clr     sys_control
+                 
+                         ; init registers and interrupts
+000046 e105                      ldi     temp1, (1<<TOIE1)+(1<<OCIE1A)+(1<<TOIE0)
+000047 bf08                      out     TIFR, temp1             ; clear TOIE1,OCIE1A & TOIE0
+000048 bf09                      out     TIMSK, temp1            ; enable TOIE1,OCIE1A & TOIE0 interrupts
+                 
+000049 9478                      sei                             ; enable all interrupts
+                 
+00004a e003
+00004b bf05
+00004c e430
+00004d bf3b                      init_input
+00004e d12e                      rcall   set_all_timings
+                 
+00004f c24f                      rjmp    init_startup
+                 ;-----bko-----------------------------------------------------------------
+000050 b61f
+000051 b745
+000052 ff40
+000053 c01d
+000054 9b82
+000055 c03b
+000056 e042
+000057 bf45
+000058 b54c
+000059 b55d
+00005a 2e84
+00005b 2e95
+00005c 7b9f
+00005d 9160 006d
+00005f 1b46
+000060 9160 006e
+000062 0b56
+000063 3540
+000064 ec63
+000065 0756
+000066 f430
+000067 3340
+000068 e765
+000069 0756
+00006a f010
+00006b 6490
+00006c c024
+00006d 20cc
+00006e f111
+00006f 94ca
+000070 c020
+000071 9982
+000072 c01e
+000073 e043
+000074 bf45
+000075 fd83
+000076 c01a
+000077 b54c
+000078 b55d
+000079 9340 006d
+00007b 9350 006e
+00007d ff96
+00007e c012
+00007f 7b9f
+000080 1948
+000081 0959
+000082 9340 006f
+000084 9350 0070
+000086 3340
+000087 e161
+000088 0756
+000089 f718
+00008a 3440
+00008b e066
+00008c 0756
+00008d f2f8
+00008e 6088
+00008f e644
+000090 2ec4
+000091 be1f
+000092 9518      ext_int0_isr:   __ext_int0_isr
+                 ext_int1_isr:   __ext_int1_isr
+                 ;-----bko-----------------------------------------------------------------
+                 ; output compare timer1 interrupt
+000093 b61f      t1oca_int:      in      i_sreg, SREG
+000094 fd71                      sbrc    flags0, OCT1_MSB 
+000095 c005                      rjmp    t1oca_intmsb
+000096 7f7e                      cbr     flags0, (1<<OCT1_PENDING) ; signal OCT1 passed
+000097 b4ac                      in      TCNT1L_shadow, TCNT1L
+000098 b4bd                      in      TCNT1H_shadow, TCNT1H
+000099 be1f                      out     SREG, i_sreg
+00009a 9518                      reti
+                 t1oca_intmsb:                
+00009b 7f7d                      cbr     flags0, (1<<OCT1_MSB) 
+00009c be1f                      out     SREG, i_sreg
+00009d 9518                      reti                
+                 ;-----bko-----------------------------------------------------------------
+                 ; overflow timer1 / happens all 32768³s / 65536³s
+00009e b61f      t1ovfl_int:     in      i_sreg, SREG
+00009f 6870                      sbr     flags0, (1<<T1OVFL_FLAG)
+                 
+0000a0 20ee                      tst     t1_timeout
+0000a1 f009                      breq    t1ovfl_10
+0000a2 94ea                      dec     t1_timeout
+                 
+0000a3 20cc      t1ovfl_10:      tst     control_timeout
+0000a4 f411                      brne    t1ovfl_20
+0000a5 27ff                      clr     ZH
+0000a6 c001                      rjmp    t1ovfl_99
+0000a7 94ca      t1ovfl_20:      dec     control_timeout
+                 
+0000a8 be1f      t1ovfl_99:      out     SREG, i_sreg
+0000a9 9518                      reti
+                 ;-----bko-----------------------------------------------------------------
+                 ; timer0 overflow interrupt
+                 t0ovfl_int:     
+0000aa b61f                      in      i_sreg, SREG
+0000ab fd84                      sbrc    flags1, PWM_OFF_CYCLE
+0000ac c015                      rjmp    t0_on_cycle
+                 t0_off_cycle:   
+0000ad 2d47                      mov     i_temp1, tcnt0_pwroff
+0000ae 3f4f                      cpi     i_temp1, 0xFF
+0000af f039                      breq    t0_on_cycle_t1
+                                 ;
+0000b0 be72                      out     TCNT0, tcnt0_pwroff     ; reload t0
+                                 ; We can just turn them all off as we only have one nFET on at a
+                                 ; time, and interrupts are disabled during beeps.
+0000b1 98c0                      CnFET_off
+0000b2 9895                      AnFET_off
+0000b3 98ac                      BnFET_off
+                                 ; PWM state = off cycle
+0000b4 6184                      sbr     flags1, (1<<PWM_OFF_CYCLE) + (1<<NO_COMM)
+0000b5 be1f                      out     SREG, i_sreg
+0000b6 9518                      reti
+                 t0_on_cycle_t1:
+                                 ; Off-load last cycle 
+0000b7 98c0                      CnFET_off
+0000b8 9895                      AnFET_off
+0000b9 98ac                      BnFET_off
+0000ba 0000                      nop
+0000bb 0000                      nop
+0000bc 0000                      nop
+0000bd 0000                      nop
+0000be 0000                      nop
+0000bf 0000                      nop
+0000c0 0000                      nop
+0000c1 0000                      nop
+                 t0_on_cycle:
+0000c2 be62                      out     TCNT0, tcnt0_power_on   ; reload t0
+0000c3 fd80                      sbrc    flags1, POWER_OFF
+0000c4 c006                      rjmp    t0_on_cycle_tcnt
+                                 ; switch appropriate nFET on as soon as possible
+0000c5 fd74                      sbrc    flags0, C_FET           ; is Cn choppered ?
+0000c6 9ac0                      CnFET_on                        ; Cn on
+0000c7 fd75                      sbrc    flags0, A_FET           ; is An choppered ?
+0000c8 9a95                      AnFET_on                        ; An on
+0000c9 fd73                      sbrc    flags0, B_FET           ; is Bn choppered ?
+0000ca 9aac                      BnFET_on                        ; Bn on
+                 t0_on_cycle_tcnt:
+0000cb 7e89                      cbr     flags1, (1<<FULL_POWER) + (1<<NO_COMM) + (1<<PWM_OFF_CYCLE); PWM state = on cycle
+0000cc 2077                      tst     tcnt0_pwroff
+0000cd f409                      brne    t0_on_cycle_not_full_power
+0000ce 6182                      sbr     flags1, (1<<FULL_POWER) + (1<<PWM_OFF_CYCLE)
+                 t0_on_cycle_not_full_power:
+0000cf be1f                      out     SREG, i_sreg
+0000d0 9518                      reti                   
+                 ;-----bko-----------------------------------------------------------------
+                 ; beeper: timer0 is set to 1³s/count
+0000d1 ec38      beep_f1:        ldi     temp4, 200
+0000d2 e510                      ldi     temp2, 80
+0000d3 c009                      rjmp    beep
+                 
+0000d4 eb34      beep_f2:        ldi     temp4, 180
+0000d5 e614                      ldi     temp2, 100
+0000d6 c006                      rjmp    beep
+                 
+0000d7 ea30      beep_f3:        ldi     temp4, 160
+0000d8 e718                      ldi     temp2, 120
+0000d9 c003                      rjmp    beep
+                 
+0000da e634      beep_f4:        ldi     temp4, 100
+0000db ec18                      ldi     temp2, 200
+0000dc c000                      rjmp    beep
+                 
+0000dd 2700      beep:           clr     temp1
+0000de bf02                      out     TCNT0, temp1
+0000df 9aad                      BpFET_on                ; BpFET on
+0000e0 9a95                      AnFET_on                ; CnFET on
+0000e1 b702      beep_BpCn10:    in      temp1, TCNT0
+0000e2 3200                      cpi     temp1, 16*CLK_SCALE             ; 16us on
+0000e3 f7e9                      brne    beep_BpCn10
+0000e4 98ad                      BpFET_off               ; BpFET off
+0000e5 9895                      AnFET_off               ; CnFET off
+0000e6 e120                      ldi     temp3, 8*CLK_SCALE              ; 2040us off
+0000e7 2700      beep_BpCn12:    clr     temp1
+0000e8 bf02                      out     TCNT0, temp1
+0000e9 b702      beep_BpCn13:    in      temp1, TCNT0
+0000ea 1703                      cp      temp1, temp4
+0000eb f7e9                      brne    beep_BpCn13
+0000ec 952a                      dec     temp3
+0000ed f7c9                      brne    beep_BpCn12
+0000ee 951a                      dec     temp2
+0000ef f769                      brne    beep
+0000f0 9508                      ret
+                 
+0000f1 e11e      wait30ms:       ldi     temp2, 15*CLK_SCALE
+0000f2 e120      beep_BpCn20:    ldi     temp3, 8*CLK_SCALE
+0000f3 2700      beep_BpCn21:    clr     temp1
+0000f4 bf02                      out     TCNT0, temp1
+0000f5 b702      beep_BpCn22:    in      temp1, TCNT0
+0000f6 3f0f                      cpi     temp1, 255
+0000f7 f7e9                      brne    beep_BpCn22
+0000f8 952a                      dec     temp3
+0000f9 f7c9                      brne    beep_BpCn21
+0000fa 951a                      dec     temp2
+0000fb f7b1                      brne    beep_BpCn20
+0000fc 9508                      ret
+                 
+                         ; 256 periods = 261ms silence
+0000fd ef1e      wait260ms:      ldi     temp2, 127*CLK_SCALE    ; = 256
+0000fe e120      beep2_BpCn20:   ldi     temp3, 8*CLK_SCALE
+0000ff 2700      beep2_BpCn21:   clr     temp1
+000100 bf02                      out     TCNT0, temp1
+000101 b702      beep2_BpCn22:   in      temp1, TCNT0
+000102 3f0f                      cpi     temp1, 255
+000103 f7e9                      brne    beep2_BpCn22
+000104 952a                      dec     temp3
+000105 f7c9                      brne    beep2_BpCn21
+000106 951a                      dec     temp2
+000107 f7b1                      brne    beep2_BpCn20
+000108 9508                      ret                
+                 ;-----bko-----------------------------------------------------------------
+                 evaluate_rc_puls:
+000109 ff83
+00010a c015
+00010b 9100 006f
+00010d 9110 0070
+00010f 7f87
+000110 5908
+000111 4018
+000112 f410
+000113 2700
+000114 2711
+000115 9516
+000116 9507
+000117 9516
+000118 9507
+000119 9516
+00011a 9507
+00011b 2f20
+00011c 5c07
+00011d f008
+00011e ec27
+00011f 2ff2
+000120 9508                      EvaluatePWC
+                 ;-----bko-----------------------------------------------------------------
+                 evaluate_sys_state:
+000121 2d0d                      mov     temp1, sys_control      ; Build up sys_control to POWER_RANGE
+000122 3c07                      cpi     temp1, POWER_RANGE - 1
+000123 f009                      breq    evaluate_sys_state_exit
+000124 94d3                      inc     sys_control             ; 
+                 evaluate_sys_state_exit:                
+000125 9508                      ret
+                 ;-----bko-----------------------------------------------------------------
+                 ;******************************************************************************
+                 ;* FUNCTION
+                 ;*      set_pwm
+                 ;* DECRIPTION
+                 ;*      Calculates tcnt0 values for ON and off cycles.
+                 ;*      Performs PWM correction.
+                 ;* USAGE
+                 ;*      temp1
+                 ;* STATISTICS
+                 ;*      Register usage: temp1, temp2
+                 ;******************************************************************************
+                 set_pwm:
+000126 2f10                      mov     temp2, temp1
+000127 5317                      subi    temp2, -(POWER_RANGE + 1)
+000128 9510                      com     temp2  
+000129 5f1e                      subi    temp2, -2               ; Make it shorter by 2 cycles
+00012a 3f0e                      cpi     temp1, 0xFE
+00012b f008                      brcs    set_pwm_01
+00012c ef0d                      ldi     temp1, 0xFF  - 2        ; Limit to 0xFF
+                 set_pwm_01:
+00012d 5f0e                      subi    temp1, -2               ; Make it shorter by 2 cycles 
+00012e 0138                      movw    tcnt0_power_on:tcnt0_pwroff, temp1:temp2
+00012f 9508                      ret
+                 ;******************************************************************************
+                 ;* FUNCTION
+                 ;*      eval_power_state
+                 ;* DECRIPTION
+                 ;*      Evaluates current state
+                 ;* USAGE
+                 ;*      temp1
+                 ;* STATISTICS
+                 ;*      Register usage: none
+                 ;******************************************************************************
+                 eval_power_state:
+000130 3309                      cpi     temp1, MAX_POWER+1
+000131 f410                      brsh    not_full_power
+000132 7f8e                      cbr     flags1, (1<<POWER_OFF)
+000133 c005                      rjmp    eval_power_state_exit
+000134 3f0a      not_full_power: cpi     temp1, NO_POWER
+000135 f010                      brlo    neither_full_nor_off
+000136 6081                      sbr     flags1, (1<<POWER_OFF)
+000137 c001                      rjmp    eval_power_state_exit
+                 neither_full_nor_off:
+000138 7f8e                      cbr     flags1, (1<<POWER_OFF)
+                 eval_power_state_exit:    
+000139 9508                      ret
+                 ;******************************************************************************
+                 ;* FUNCTION
+                 ;*      set_new_duty
+                 ;* DECRIPTION
+                 ;*     1) Evaluates duty cycle
+                 ;*     2) Limits power to sys_control
+                 ;*     3) Limits RPM ranges power
+                 ;* USAGE
+                 ;*      ZH (0 - POWER_RANGE - 1)
+                 ;* STATISTICS
+                 ;*      Register usage: temp1, temp2, temp3 
+                 ;******************************************************************************
+                 .macro CheckRPMi
+                                 cpi     temp3, LOW(RPM_TO_COMM_TIME(@0)*4*CLK_SCALE)             
+                                 ldi     temp1, HIGH(RPM_TO_COMM_TIME(@0)*4*CLK_SCALE)
+                                 cpc     temp4, temp1
+                                 ldi     temp1, BYTE3(RPM_TO_COMM_TIME(@0)*4*CLK_SCALE)
+                                 cpc     temp5, temp1
+                 .endmacro
+                 
+                 set_new_duty:   
+00013a 2e4f                      mov     temp6, ZH
+00013b 144d                      cp      temp6, sys_control      ; Limit PWM to sys_control
+00013c f008                      brcs    set_new_duty_no_limit
+00013d 2c4d                      mov     temp6, sys_control
+                 set_new_duty_no_limit:
+00013e 6193                      sbr     flags2, (1<<RPM_RANGE1) + (1<<RPM_RANGE2) + (1<<RUN_MIN_RPM)
+00013f 9130 0063                 lds     temp4, timing_h
+000141 9030 0064                 lds     temp5, timing_x
+000143 303d                      cpi     temp4, 0x0d*CLK_SCALE/2 ;  ~ 20.000 RPM
+000144 e000                      ldi     temp1, 0x0
+000145 0630                      cpc     temp5, temp1
+000146 f428                      brcc    set_new_duty_low_ranges
+                                 ; High RPM finish ASAP
+                 set_new_duty_set_pwm:                
+000147 2d04                      mov     temp1, temp6
+000148 9500                      com     temp1
+000149 dfe6                      rcall   eval_power_state        ; evaluate power state
+00014a dfdb                      rcall   set_pwm                 ; set new PWM
+00014b 9508                      ret                
+                 set_new_duty_low_ranges:
+                                 ; With low RPM we have more time for calculations. 
+                                 ; We assume that  RUN_MIN_RPM < RPM_RUN_RANGE_02 < RPM_RUN_RANGE_02
+00014c 9120 0062                 lds     temp3, timing_l
+                                 ;  Check for range 02
+00014e 3a20
+00014f e20c
+000150 0730
+000151 e000
+000152 0630                      CheckRPMi(RPM_RUN_RANGE_02)
+000153 f398                      brcs    set_new_duty_set_pwm
+000154 7f9d                      cbr     flags2, (1<<RPM_RANGE2)
+000155 e614                      ldi     temp2, PWR_PCT_TO_VAL(PCT_PWR_MAX_RPM_02)
+000156 1514                      cp      temp2, temp6
+000157 f408                      brcc    set_new_duty_range_01
+000158 2e41                      mov     temp6, temp2   
+                 set_new_duty_range_01:
+                                 ;  Check for range 01               
+000159 3428
+00015a e509
+00015b 0730
+00015c e000
+00015d 0630                      CheckRPMi(RPM_RUN_RANGE_01)
+00015e f340                      brcs    set_new_duty_set_pwm
+00015f 7f9e                      cbr     flags2, (1<<RPM_RANGE1)
+000160 e312                      ldi     temp2, PWR_PCT_TO_VAL(PCT_PWR_MAX_RPM_01)
+000161 1514                      cp      temp2, temp6
+000162 f408                      brcc    set_new_duty_min_rpm
+000163 2e41                      mov     temp6, temp2   
+                 set_new_duty_min_rpm:                
+                                 ;  Check for minimum RPM
+000164 3a28
+000165 e601
+000166 0730
+000167 e000
+000168 0630                      CheckRPMi(RPM_RUN_MIN_RPM)
+000169 f2e8                      brcs    set_new_duty_set_pwm
+00016a 7e9f                      cbr     flags2, (1<<RUN_MIN_RPM)
+00016b cfdb                      rjmp    set_new_duty_set_pwm
+                                 
+                 ;******************************************************************************
+                 ;* FUNCTION
+                 ;*      set_new_duty_strt
+                 ;* DECRIPTION
+                 ;*     1) Evaluates duty cycle
+                 ;*     2) Limits power to sys_control
+                 ;*     3) Constraints power in range: PWR_PCT_TO_VAL(PCT_PWR_STARTUP)..PWR_PCT_TO_VAL(PCT_PWR_MAX_STARTUP)
+                 ;* USAGE
+                 ;*      ZH (0 - POWER_RANGE-1)
+                 ;* STATISTICS
+                 ;*      Register usage: temp1, temp2, temp3 
+                 ;******************************************************************************
+                 set_new_duty_strt:   
+00016c 2e4f                      mov     temp6, ZH
+00016d 144d                      cp      temp6, sys_control      ; Limit PWM to sys_control
+00016e f008                      brcs    set_new_duty_strt_01
+00016f 2c4d                      mov     temp6, sys_control
+                 set_new_duty_strt_01:
+000170 e218                      ldi     temp2, PWR_PCT_TO_VAL(PCT_PWR_MAX_STARTUP)
+000171 1514                      cp      temp2, temp6
+000172 f408                      brcc    set_new_duty_strt_02
+000173 2e41                      mov     temp6, temp2   
+                 set_new_duty_strt_02:
+000174 e212                      ldi     temp2, PWR_PCT_TO_VAL(PCT_PWR_STARTUP)
+000175 1641                      cp      temp6, temp2
+000176 f408                      brcc    set_new_duty_strt_03
+000177 2e41                      mov     temp6, temp2
+                 set_new_duty_strt_03:                
+000178 2d04                      mov     temp1, temp6
+000179 9500                      com     temp1
+00017a dfb5                      rcall   eval_power_state        ; evaluate power state
+00017b dfaa                      rcall   set_pwm                 ; set new PWM
+00017c 9508                      ret                
+                 ;-----bko-----------------------------------------------------------------
+                 set_all_timings:
+00017d e8c6                      ldi     YL, high(RPM_TO_COMM_TIME(RPM_STEP_INITIAL)*CLK_SCALE)
+00017e e0d1                      ldi     YH, byte3(RPM_TO_COMM_TIME(RPM_STEP_INITIAL)*CLK_SCALE)
+00017f 93c0 006a                 sts     strt_zc_wait_time_h, YL
+000181 93d0 0069                 sts     strt_zc_wait_time_x, YH
+000183 ef2f                      ldi     temp3, 0xff
+000184 e13f                      ldi     temp4, 0x1f
+000185 9320 0065                 sts     zc_blanking_time_l, temp3
+000187 9330 0066                 sts     zc_blanking_time_h, temp4
+000189 9320 0067                 sts     com_timing_l, temp3
+00018b 9330 0068                 sts     com_timing_h, temp4
+                 set_timing_v:   
+00018d e0e2                      ldi     ZL, 0x02
+00018e 2e3e                      mov     temp5, ZL
+00018f 93e0 0064                 sts     timing_x, ZL
+000191 ef3f                      ldi     temp4, 0xff
+000192 9330 0063                 sts     timing_h, temp4
+000194 ef2f                      ldi     temp3, 0xff
+000195 9320 0062                 sts     timing_l, temp3
+000197 9508                      ret
+                 ;-----bko-----------------------------------------------------------------
+                 update_timing:  
+000198 94f8                      cli
+000199 b50c                      in      temp1, TCNT1L
+00019a b51d                      in      temp2, TCNT1H
+00019b 0fc0                      add     YL, temp1
+00019c 1fd1                      adc     YH, temp2
+00019d bddb                      out     OCR1AH, YH
+00019e bdca                      out     OCR1AL, YL
+00019f 9478                      sei
+0001a0 6071                      sbr     flags0, (1<<OCT1_PENDING)
+0001a1 9478                      sei  
+0001a2 2444                      clr     temp6
+                         ; calculate this commutation time
+0001a3 9120 0060                 lds     temp3, last_tcnt1_l
+0001a5 9130 0061                 lds     temp4, last_tcnt1_h
+0001a7 9300 0060                 sts     last_tcnt1_l, temp1
+0001a9 9310 0061                 sts     last_tcnt1_h, temp2
+0001ab 1b02                      sub     temp1, temp3
+0001ac 0b13                      sbc     temp2, temp4
+                         ; calculate next waiting times - timing(-l-h-x) holds the time of 4 commutations
+0001ad 9120 0062                 lds     temp3, timing_l
+0001af 9130 0063                 lds     temp4, timing_h
+0001b1 9030 0064                 lds     temp5, timing_x
+                 
+0001b3 01e9                      movw    YL, temp3               ; copy timing to Y
+0001b4 9436                      lsr     temp5                   ; build a quarter
+0001b5 95d7                      ror     YH
+0001b6 95c7                      ror     YL
+0001b7 9436                      lsr     temp5
+0001b8 95d7                      ror     YH                      ; temp5 no longer needed (should be 0)
+0001b9 95c7                      ror     YL
+                 
+0001ba 9030 0064                 lds     temp5, timing_x         ; reload original timing_x
+                 
+0001bc 1b2c                      sub     temp3, YL               ; subtract quarter from timing
+0001bd 0b3d                      sbc     temp4, YH
+0001be 0834                      sbc     temp5, temp6
+                 
+0001bf 0f20                      add     temp3, temp1            ; .. and add the new time
+0001c0 1f31                      adc     temp4, temp2
+0001c1 1c34                      adc     temp5, temp6
+                 
+0001c2 ff97                      sbrs    flags2, NO_SYNC
+0001c3 c003                      rjmp    update_t_insync
+                 
+0001c4 0f20                      add     temp3, temp1            ; .. and add the new time again
+0001c5 1f31                      adc     temp4, temp2
+0001c6 1c34                      adc     temp5, temp6
+                                 
+                 update_t_insync:
+                         ; limit RPM to 120.000
+0001c7 342c                      cpi     temp3, 0x4c             ; 0x14c = 120.000 RPM
+0001c8 e001                      ldi     temp1, 0x1
+0001c9 0730                      cpc     temp4, temp1
+0001ca 0434                      cpc     temp5, temp6
+0001cb f418                      brcc    update_t90
+                 
+0001cc 20dd                      tst     sys_control
+0001cd f009                      breq    update_t90
+0001ce 94da                      dec     sys_control             ; limit by reducing power
+                 
+0001cf 9320 0062 update_t90:     sts     timing_l, temp3
+0001d1 9330 0063                 sts     timing_h, temp4
+0001d3 9230 0064                 sts     timing_x, temp5
+0001d5 e013                      ldi     temp2, 3
+0001d6 1631                      cp      temp5, temp2            ; limit range to 0x2ffff
+0001d7 f008                      brcs    update_t99
+0001d8 dfb4                      rcall   set_timing_v
+                 update_t99:
+0001d9 9436                      lsr     temp5                   
+0001da 9537                      ror     temp4
+0001db 9527                      ror     temp3
+0001dc 9436                      lsr     temp5
+0001dd 9537                      ror     temp4
+0001de 9527                      ror     temp3
+0001df 9536                      lsr     temp4                     ; x always 0 at this stage (0x2ffff / 4 = 0xBFFF)
+0001e0 9527                      ror     temp3
+0001e1 2f02                      mov     temp1, temp3
+0001e2 2f13                      mov     temp2, temp4
+0001e3 9536                      lsr     temp4
+0001e4 9527                      ror     temp3
+0001e5 9320 0065                 sts     zc_blanking_time_l, temp3 ; save for zero crossing blanking time (15 deg) 
+0001e7 9330 0066                 sts     zc_blanking_time_h, temp4
+0001e9 9320 0067                 sts     com_timing_l, temp3       ; save for timing advance delay (15 deg)
+0001eb 9330 0068                 sts     com_timing_h, temp4
+0001ed 0f02                      add     temp1, temp3
+0001ee 1f13                      adc     temp2, temp4
+0001ef 9300 006b                 sts     zc_wait_time_l, temp1     ; save for zero crossing timeout (30 + 15 = 45 deg)
+0001f1 9310 006c                 sts     zc_wait_time_h, temp2    
+0001f3 9508                      ret               
+                 ;-----bko-----------------------------------------------------------------
+                 calc_next_timing:
+0001f4 91c0 0067                 lds     YL, com_timing_l
+0001f6 91d0 0068                 lds     YH, com_timing_h
+0001f8 cf9f                      rjmp    update_timing
+                                 
+                 wait_for_commutation:
+0001f9 fd97                      sbrc    flags2, NO_SYNC
+0001fa c00e                      rjmp    wait_for_commutation_no_sync
+                 wait_for_commutation_loop:
+0001fb fd70                      sbrc    flags0, OCT1_PENDING
+0001fc cffe                      rjmp    wait_for_commutation_loop
+                 set_zc_blanking_time:
+0001fd 91d0 0066                 lds     YH, zc_blanking_time_h
+0001ff 91c0 0065                 lds     YL, zc_blanking_time_l
+000201 94f8                      cli
+000202 0dca                      add     YL, TCNT1L_shadow
+000203 1ddb                      adc     YH, TCNT1H_shadow
+000204 bddb                      out     OCR1AH, YH
+000205 bdca                      out     OCR1AL, YL
+000206 9478                      sei
+000207 6071                      sbr     flags0, (1<<OCT1_PENDING)
+000208 9508                      ret
+                 wait_for_commutation_no_sync:
+000209 94f8                      cli
+00020a b4ac                      in      TCNT1L_shadow, TCNT1L
+00020b b4bd                      in      TCNT1H_shadow, TCNT1H
+00020c 9478                      sei
+00020d cfef                      rjmp    set_zc_blanking_time
+                 ;-----bko-----------------------------------------------------------------
+                 wait_for_zc_blank:
+00020e fd97                      sbrc    flags2, NO_SYNC
+00020f c015                      rjmp    wait_for_zc_blank_no_sync
+                         ; don't waste time while waiting - do some controls
+000210 fd83                      sbrc    flags1, RC_PULS_UPDATED
+000211 def7                      rcall   evaluate_rc_puls
+000212 df27                      rcall   set_new_duty
+                 wait_for_zc_blank_loop:      
+000213 ff83                      sbrs    flags1, RC_PULS_UPDATED
+000214 c002                      rjmp    wait_for_zc_blank_loop2
+000215 def3                      rcall   evaluate_rc_puls
+000216 df23                      rcall   set_new_duty
+                 wait_for_zc_blank_loop2:                
+000217 fd70                      sbrc    flags0, OCT1_PENDING
+000218 cffa                      rjmp    wait_for_zc_blank_loop
+                 set_zc_wait_time:
+                         ; set ZC timeout
+000219 91d0 006c                 lds     YH, zc_wait_time_h
+00021b 91c0 006b                 lds     YL, zc_wait_time_l
+00021d 94f8                      cli
+00021e 0dca                      add     YL, TCNT1L_shadow
+00021f 1ddb                      adc     YH, TCNT1H_shadow
+000220 bddb                      out     OCR1AH, YH
+000221 bdca                      out     OCR1AL, YL
+000222 9478                      sei
+000223 6071                      sbr     flags0, (1<<OCT1_PENDING)
+000224 9508                      ret
+                 wait_for_zc_blank_no_sync:                
+000225 fd70                      sbrc    flags0, OCT1_PENDING
+000226 cffe                      rjmp    wait_for_zc_blank_no_sync
+000227 cff1                      rjmp    set_zc_wait_time                
+                 ;-----bko-----------------------------------------------------------------
+                 start_timeout:  
+000228 e6c4                      ldi     YL, 50*CLK_SCALE
+000229 e0d0                      ldi     YH, 0
+00022a df6d                      rcall   update_timing
+                 start_timeout_loop:                
+00022b fd70                      sbrc    flags0, OCT1_PENDING
+00022c cffe                      rjmp    start_timeout_loop      ; ZC blanking interval
+00022d 91c0 006a                 lds     YL, strt_zc_wait_time_h
+00022f 91d0 0069                 lds     YH, strt_zc_wait_time_x
+000231 2444                      clr     temp6
+000232 94f8                      cli
+000233 2d0a                      mov     temp1, TCNT1L_shadow
+000234 2d1b                      mov     temp2, TCNT1H_shadow
+000235 0d04                      add     temp1, temp6
+000236 1f1c                      adc     temp2, YL
+000237 bd1b                      out     OCR1AH, temp2
+000238 bd0a                      out     OCR1AL, temp1
+000239 6071                      sbr     flags0, (1<<OCT1_PENDING)
+00023a 23dd                      tst     YH
+00023b f009                      breq    start_timeout_no_msb
+00023c 6072                      sbr     flags0, (1<<OCT1_MSB)                
+                 start_timeout_no_msb:                
+00023d 9478                      sei
+00023e 50c3                      subi    YL, 3
+00023f 40d0                      sbci    YH, 0
+000240 33c8                      cpi     YL, high(RPM_TO_COMM_TIME(RPM_STEP_MAX)*CLK_SCALE)
+000241 e001                      ldi     temp1, byte3(RPM_TO_COMM_TIME(RPM_STEP_MAX)*CLK_SCALE)
+000242 07d0                      cpc     YH, temp1
+000243 f410                      brcc    start_timeout_no_lim
+000244 e8c6                      ldi     YL, high(RPM_TO_COMM_TIME(RPM_STEP_INITIAL)*CLK_SCALE)         
+000245 e0d1                      ldi     YH, byte3(RPM_TO_COMM_TIME(RPM_STEP_INITIAL)*CLK_SCALE)         
+                 start_timeout_no_lim:
+000246 93c0 006a                 sts     strt_zc_wait_time_h, YL
+000248 93d0 0069                 sts     strt_zc_wait_time_x, YH
+00024a 9508                      ret
+                 ;-----bko-----------------------------------------------------------------
+                 switch_power_off:
+00024b e0f5                      ldi     ZH, PWR_PCT_TO_VAL(PCT_PWR_MIN)-1          ; ZH is new_duty
+00024c 930f
+00024d 931f
+00024e e005
+00024f 9500
+000250 ded5
+000251 911f
+000252 910f                      SetPWMi(PWR_PCT_TO_VAL(PCT_PWR_MIN)-1)
+                 
+000253 e000                      ldi     temp1, 0                ; reset limiter
+000254 2ed0                      mov     sys_control, temp1
+                 
+000255 e000                      ldi     temp1, INIT_PB          ; all off
+000256 bb08                      out     PORTB, temp1
+000257 e002                      ldi     temp1, INIT_PC          ; all off
+000258 bb05                      out     PORTC, temp1
+000259 e000                      ldi     temp1, INIT_PD          ; all off
+00025a bb02                      out     PORTD, temp1
+                 
+00025b 6081                      sbr     flags1, (1<<POWER_OFF)  ; disable power on
+00025c 6290                      sbr     flags2, (1<<STARTUP)
+00025d 9508                      ret                             ; motor is off
+                 ;-----bko-----------------------------------------------------------------
+                 motor_brake:
+                 #ifdef MOT_BRAKE
+                 #endif
+00025e 9508                      ret
+                 
+                 no_sync_poff:
+00025f 6081                      sbr     flags1, (1<<POWER_OFF)
+000260 e000                      ldi     temp1, INIT_PB          ; all off
+000261 bb08                      out     PORTB, temp1
+000262 e002                      ldi     temp1, INIT_PC          ; all off
+000263 bb05                      out     PORTC, temp1
+000264 e000                      ldi     temp1, INIT_PD          ; all off
+000265 bb02                      out     PORTD, temp1
+000266 9ac5                      DbgLEDOn
+000267 9508                      ret
+                 
+                 
+                 wait64ms:
+000268 e002                      ldi     temp1, 1*CLK_SCALE
+000269 2ee0                      mov     t1_timeout, temp1
+                 wait120ms_wait_for_t1:    
+00026a 20ee                      tst     t1_timeout
+00026b f7f1                      brne    wait120ms_wait_for_t1
+00026c 9508                      ret
+                 
+00026d e000      pre_align:      ldi     temp1, INIT_PB  ; all off
+00026e bb08                      out     PORTB, temp1
+00026f e000                      ldi     temp1, INIT_PD  ; all off
+000270 bb02                      out     PORTD, temp1
+000271 e002                      ldi     temp1, INIT_PC  ; all off
+000272 bb05                      out     PORTC, temp1
+000273 e208                      ldi     temp1, 20*CLK_SCALE
+000274 950a      pp_FETs_off_wt: dec     temp1
+000275 f7f1                      brne    pp_FETs_off_wt
+000276 7f8e                      cbr     flags1, (1<<POWER_OFF)  ; enable power
+000277 e202                      ldi     temp1, PWR_PCT_TO_VAL(PCT_PWR_STARTUP)      ; set limiter
+000278 2ed0                      mov     sys_control, temp1
+000279 930f
+00027a 931f
+00027b e008
+00027c 9500
+00027d dea8
+00027e 911f
+00027f 910f                      SetPWMi(PWR_PCT_TO_VAL(PCT_PWR_STARTUP)*1/4);
+000280 d147                      rcall   com6com1
+000281 d117                      rcall   com1com2
+000282 9aad                      BpFET_on
+000283 dfe4                      rcall   wait64ms
+000284 dfe3                      rcall   wait64ms
+000285 930f
+000286 931f
+000287 e101
+000288 9500
+000289 de9c
+00028a 911f
+00028b 910f                      SetPWMi(PWR_PCT_TO_VAL(PCT_PWR_STARTUP)*2/4);
+00028c dfdb                      rcall   wait64ms
+00028d 930f
+00028e 931f
+00028f e109
+000290 9500
+000291 de94
+000292 911f
+000293 910f                      SetPWMi(PWR_PCT_TO_VAL(PCT_PWR_STARTUP)*3/4);
+000294 dfd3                      rcall   wait64ms
+000295 930f
+000296 931f
+000297 e202
+000298 9500
+000299 de8c
+00029a 911f
+00029b 910f                      SetPWMi(PWR_PCT_TO_VAL(PCT_PWR_STARTUP));
+00029c 98ad                      BpFET_off               
+00029d d102                      rcall   com2com3
+00029e 9508                      ret                
+                 ;-----bko-----------------------------------------------------------------
+                 ; **** startup loop ****
+00029f dfab      init_startup:   rcall   switch_power_off
+0002a0 dfbd                      rcall   motor_brake
+                 wait_for_power_on:
+                                 ;DbgLEDOn
+                 
+0002a1 de67                      rcall   evaluate_rc_puls
+                                 ;cpi     ZH, PWR_PCT_TO_VAL(PCT_PWR_MIN) + 1
+                                 ;brcs    wait_for_power_on
+0002a2 9837
+0002a3 b700
+0002a4 6008
+0002a5 bf00                      AcInit
+                                 ;rcall   pre_align
+                                 ;DbgLEDOn
+                 
+0002a6 779f                      cbr     flags2, (1<<NO_SYNC) 
+0002a7 7f9b                      cbr     flags2, (1<<SCAN_TIMEOUT)
+0002a8 e000                      ldi     temp1, 0
+0002a9 9300 0071                 sts     goodies, temp1
+0002ab e500                      ldi     temp1, 40*CLK_SCALE; x 32msec
+0002ac 2ee0                      mov     t1_timeout, temp1
+0002ad decf                      rcall   set_all_timings
+0002ae df79                      rcall   start_timeout
+0002af c00c                      rjmp    start3
+                 ;-----bko-----------------------------------------------------------------
+                 ; **** start control loop ****
+                 
+                 ; state 1 = B(p-on) + C(n-choppered) - comparator A evaluated
+                 ; out_cA changes from low to high
+                 start1:         
+0002b0 d0d3                      rcall   wait_for_low_strt
+0002b1 d0c1                      rcall   wait_for_high_strt
+                 ;                rcall   wait_for_test
+0002b2 ff70                      sbrs    flags0, OCT1_PENDING
+0002b3 6094                      sbr     flags2, (1<<SCAN_TIMEOUT)
+0002b4 d0e4                      rcall   com1com2
+0002b5 df72                      rcall   start_timeout
+                 
+                 ; state 2 = A(p-on) + C(n-choppered) - comparator B evaluated
+                 ; out_cB changes from high to low
+0002b6 d0bc                      rcall   wait_for_high_strt
+0002b7 d0cc                      rcall   wait_for_low_strt
+                 ;                rcall   wait_for_test
+0002b8 ff70                      sbrs    flags0, OCT1_PENDING
+0002b9 6094                      sbr     flags2, (1<<SCAN_TIMEOUT)
+0002ba d0e5                      rcall   com2com3
+0002bb df6c                      rcall   start_timeout
+                 
+                 ; state 3 = A(p-on) + B(n-choppered) - comparator C evaluated
+                 ; out_cC changes from low to high
+                 start3:
+0002bc d0c7                      rcall   wait_for_low_strt
+0002bd d0b5                      rcall   wait_for_high_strt
+                 ;                rcall   wait_for_test
+0002be ff70                      sbrs    flags0, OCT1_PENDING
+0002bf 6094                      sbr     flags2, (1<<SCAN_TIMEOUT)
+0002c0 d0ec                      rcall   com3com4
+0002c1 df66                      rcall   start_timeout
+                 
+                 ; state 4 = C(p-on) + B(n-choppered) - comparator A evaluated
+                 ; out_cA changes from high to low
+0002c2 d0b0                      rcall   wait_for_high_strt
+0002c3 d0c0                      rcall   wait_for_low_strt
+                 ;                rcall   wait_for_test
+0002c4 ff70                      sbrs    flags0, OCT1_PENDING
+0002c5 6094                      sbr     flags2, (1<<SCAN_TIMEOUT)
+0002c6 d0ed                      rcall   com4com5
+0002c7 df60                      rcall   start_timeout
+                 
+                 ; state 5 = C(p-on) + A(n-choppered) - comparator B evaluated
+                 ; out_cB changes from low to high
+0002c8 d0bb                      rcall   wait_for_low_strt
+0002c9 d0a9                      rcall   wait_for_high_strt
+                 ;                rcall   wait_for_test
+0002ca ff70                      sbrs    flags0, OCT1_PENDING
+0002cb 6094                      sbr     flags2, (1<<SCAN_TIMEOUT)
+0002cc d0f4                      rcall   com5com6
+0002cd de53                      rcall   evaluate_sys_state
+0002ce de3a                      rcall   evaluate_rc_puls
+0002cf de9c                      rcall   set_new_duty_strt
+0002d0 df57                      rcall   start_timeout
+                 
+                 ; state 6 = B(p-on) + A(n-choppered) - comparator C evaluated
+                 ; out_cC changes from high to low
+0002d1 d0a1                      rcall   wait_for_high_strt
+0002d2 d0b1                      rcall   wait_for_low_strt
+                 ;                rcall   wait_for_test
+0002d3 ff70                      sbrs    flags0, OCT1_PENDING
+0002d4 6094                      sbr     flags2, (1<<SCAN_TIMEOUT)
+0002d5 d0f2                      rcall   com6com1
+                                 ; no throttle 
+                                 ;cpi     ZH, PWR_PCT_TO_VAL(PCT_PWR_MIN)
+                                 ;brcs    init_startup
+                                 ; timeout 
+0002d6 20ee                      tst     t1_timeout
+0002d7 f239                      breq    init_startup
+                                 
+0002d8 9100 0071                 lds     temp1, goodies
+0002da fd92                      sbrc    flags2, SCAN_TIMEOUT
+0002db 2700                      clr     temp1
+0002dc 9503                      inc     temp1
+0002dd 9300 0071                 sts     goodies,  temp1
+0002df 7f9b                      cbr     flags2, (1<<SCAN_TIMEOUT)
+0002e0 3104                      cpi     temp1, ENOUGH_GOODIES
+0002e1 f040                      brcs    s6_start1
+                                 ; We need some rotations without lost sync, to be able to trust timing..
+0002e2 9100 0063                 lds     temp1, timing_h 
+0002e4 340a                      cpi     temp1, HIGH(RPM_TO_COMM_TIME(RPM_START_MIN_RPM)*4*CLK_SCALE) 
+0002e5 9100 0064                 lds     temp1, timing_x
+0002e7 e010                      ldi     temp2, BYTE3(RPM_TO_COMM_TIME(RPM_START_MIN_RPM)*4*CLK_SCALE) 
+0002e8 0701                      cpc     temp1, temp2
+0002e9 f010                      brcs    start_to_run
+                 s6_start1:      
+0002ea df3d                      rcall   start_timeout            
+0002eb cfc4                      rjmp    start1                  ; go back to state 1
+                 
+                 start_to_run:
+0002ec e208                      ldi     temp1, PWR_PCT_TO_VAL(PCT_PWR_MAX_STARTUP)
+0002ed 2ed0                      mov     sys_control, temp1
+                 
+0002ee df05                      rcall   calc_next_timing
+0002ef df09                      rcall   wait_for_commutation    ; needed to align phases 
+0002f0 df1d                      rcall   wait_for_zc_blank       ; the ZC timeout should start at: ZC + comm_time + zc_blank_time
+                 
+                                 ;DbgLEDOff
+                 
+0002f1 779f                      cbr     flags2, (1<<NO_SYNC) 
+0002f2 7d9f                      cbr     flags2, (1<<STARTUP)
+0002f3 c000                      rjmp    run1                    ; running state begins
+                                 
+                 ;-----bko-----------------------------------------------------------------
+                 ; **** running control loop ****
+                 ; run 1 = B(p-on) + C(n-choppered) - comparator A evaluated
+                 ; out_cA changes from low to high
+                 run1:           
+0002f4 d05e                      rcall   wait_for_low
+0002f5 ff70                      sbrs    flags0, OCT1_PENDING
+0002f6 c003                      rjmp    run1_fail
+0002f7 d06b                      rcall   wait_for_high
+0002f8 fd70                      sbrc    flags0, OCT1_PENDING
+0002f9 c002                      rjmp    run1_1
+                 run1_fail:             
+0002fa 6890                      sbr     flags2, (1<<NO_SYNC) 
+0002fb df63                      rcall   no_sync_poff
+                 run1_1:                
+0002fc def7                      rcall   calc_next_timing
+0002fd defb                      rcall   wait_for_commutation
+0002fe d09a                      rcall   com1com2
+0002ff df0e                      rcall   wait_for_zc_blank
+000300 779f                      cbr     flags2, (1<<NO_SYNC) 
+                 ; run 2 = A(p-on) + C(n-choppered) - comparator B evaluated
+                 ; out_cB changes from high to low
+                 run2:
+000301 d061                      rcall   wait_for_high
+000302 ff70                      sbrs    flags0, OCT1_PENDING
+000303 c003                      rjmp    run2_fail
+000304 d04e                      rcall   wait_for_low
+000305 fd70                      sbrc    flags0, OCT1_PENDING
+000306 c002                      rjmp    run2_1
+                 run2_fail:
+000307 6890                      sbr     flags2, (1<<NO_SYNC) 
+000308 df56                      rcall   no_sync_poff
+                 run2_1:                
+000309 deea                      rcall   calc_next_timing
+00030a deee                      rcall   wait_for_commutation
+00030b d094                      rcall   com2com3
+00030c df01                      rcall   wait_for_zc_blank
+00030d 779f                      cbr     flags2, (1<<NO_SYNC) 
+                 ; run 3 = A(p-on) + B(n-choppered) - comparator C evaluated
+                 ; out_cC changes from low to high
+00030e d044      run3:           rcall   wait_for_low
+00030f ff70                      sbrs    flags0, OCT1_PENDING
+000310 c003                      rjmp    run3_fail
+000311 d051                      rcall   wait_for_high
+000312 fd70                      sbrc    flags0, OCT1_PENDING
+000313 c002                      rjmp    run3_1                
+                 run3_fail:                
+000314 6890                      sbr     flags2, (1<<NO_SYNC) 
+000315 df49                      rcall   no_sync_poff
+                 run3_1:                
+000316 dedd                      rcall   calc_next_timing
+000317 dee1                      rcall   wait_for_commutation
+000318 d094                      rcall   com3com4
+000319 def4                      rcall   wait_for_zc_blank
+00031a 779f                      cbr     flags2, (1<<NO_SYNC) 
+                 ; run 4 = C(p-on) + B(n-choppered) - comparator A evaluated
+                 ; out_cA changes from high to low
+00031b d047      run4:           rcall   wait_for_high
+00031c ff70                      sbrs    flags0, OCT1_PENDING
+00031d c003                      rjmp    run4_fail
+00031e d034                      rcall   wait_for_low
+00031f fd70                      sbrc    flags0, OCT1_PENDING
+000320 c002                      rjmp    run4_1
+                 run4_fail:                
+000321 6890                      sbr     flags2, (1<<NO_SYNC) 
+000322 df3c                      rcall   no_sync_poff
+                 run4_1:        
+000323 ded0                      rcall   calc_next_timing
+000324 ded4                      rcall   wait_for_commutation
+000325 d08e                      rcall   com4com5
+000326 dee7                      rcall   wait_for_zc_blank
+000327 779f                      cbr     flags2, (1<<NO_SYNC) 
+                 ; run 5 = C(p-on) + A(n-choppered) - comparator B evaluated
+                 ; out_cB changes from low to high
+000328 d02a      run5:           rcall   wait_for_low
+000329 ff70                      sbrs    flags0, OCT1_PENDING
+00032a c003                      rjmp    run5_fail
+00032b d037                      rcall   wait_for_high
+00032c fd70                      sbrc    flags0, OCT1_PENDING
+00032d c002                      rjmp    run5_1                
+                 run5_fail:                
+00032e 6890                      sbr     flags2, (1<<NO_SYNC) 
+00032f df2f                      rcall   no_sync_poff
+                 run5_1:                
+000330 dec3                      rcall   calc_next_timing
+000331 dec7                      rcall   wait_for_commutation
+000332 d08e                      rcall   com5com6
+000333 deda                      rcall   wait_for_zc_blank
+000334 779f                      cbr     flags2, (1<<NO_SYNC) 
+                 ; run 6 = B(p-on) + A(n-choppered) - comparator C evaluated
+                 ; out_cC changes from high to low
+000335 d02d      run6:           rcall   wait_for_high
+000336 ff70                      sbrs    flags0, OCT1_PENDING
+000337 c003                      rjmp    run6_fail
+000338 d01a                      rcall   wait_for_low
+000339 fd70                      sbrc    flags0, OCT1_PENDING
+00033a c002                      rjmp    run6_1                
+                 run6_fail:                
+00033b 6890                      sbr     flags2, (1<<NO_SYNC) 
+00033c df22                      rcall   no_sync_poff
+                 run6_1:                
+00033d deb6                      rcall   calc_next_timing
+00033e deba                      rcall   wait_for_commutation
+00033f d088                      rcall   com6com1
+000340 dde0                      rcall   evaluate_sys_state 
+000341 decc                      rcall   wait_for_zc_blank
+000342 779f                      cbr     flags2, (1<<NO_SYNC) 
+                 run6_1_1:                
+000343 fd94                      sbrc    flags2, RUN_MIN_RPM
+000344 cfaf                      rjmp    run1
+                 
+000345 6290      run_to_start:   sbr     flags2, (1<<STARTUP)
+000346 32f8                      cpi     ZH, PWR_PCT_TO_VAL(PCT_PWR_MAX_STARTUP) 
+000347 f008                      brcs    run_to_start_2
+000348 c001                      rjmp    restart_control
+                 run_to_start_2:                
+000349 cf57                      rjmp    wait_for_power_on
+                 
+                 restart_control:
+00034a 94f8                      cli                             ; disable all interrupts
+00034b deff                      rcall   switch_power_off
+00034c ccd1                      rjmp    reset
+                 ;-----bko-----------------------------------------------------------------
+                 ; *** scan comparator utilities ***
+                 filter_delay:  
+00034d 930f                      push    temp1
+00034e e200                      ldi     temp1, 16*CLK_SCALE
+                 filter_delay_loop: 
+00034f 950a                      dec     temp1
+000350 f7f1                      brne    filter_delay_loop
+000351 910f                      pop     temp1
+000352 9508                      ret
+                 
+                 .macro __wait_for_filter
+                                 clc
+                                 sbis    ACSR, ACO
+                                 sec
+                                 brcc    wait_for_filter_1
+                                 inc     temp2
+                 wait_for_filter_1:
+                                 rol     temp1
+                                 brcc    wait_for_filter_2
+                                 dec     temp2
+                 wait_for_filter_2:
+                 .endmacro
+                                                 
+                 wait_for_low:   
+000353 ef0f                      ldi     temp1, 0xFF
+000354 e018                      ldi     temp2, 8
+000355 e022                      ldi     temp3, (8-ZCF_CONST) + 1
+                 wait_for_low_loop:
+000356 ff70                      sbrs    flags0, OCT1_PENDING
+000357 9508                      ret
+000358 9488
+000359 9b45
+00035a 9408
+00035b f408
+00035c 9513
+00035d 1f00
+00035e f408
+00035f 951a                      __wait_for_filter
+000360 1712                      cp      temp2, temp3
+000361 f7a0                      brcc    wait_for_low_loop
+000362 9508                      ret
+                                                
+                 wait_for_high:   
+000363 e000                      ldi     temp1, 0x0
+000364 e010                      ldi     temp2, 0
+000365 e027                      ldi     temp3, ZCF_CONST
+                 wait_for_high_loop:
+000366 ff70                      sbrs    flags0, OCT1_PENDING
+000367 9508                      ret
+000368 9488
+000369 9b45
+00036a 9408
+00036b f408
+00036c 9513
+00036d 1f00
+00036e f408
+00036f 951a                      __wait_for_filter
+000370 1712                      cp      temp2, temp3
+000371 f3a0                      brcs    wait_for_high_loop
+000372 9508                      ret
+                 
+                 wait_for_high_strt:
+000373 e000                      ldi     temp1, 0x0
+000374 e010                      ldi     temp2, 0
+000375 e025                      ldi     temp3, 5
+                 wait_for_high_strt_loop:
+000376 ff70                      sbrs    flags0, OCT1_PENDING
+000377 9508                      ret
+000378 9488
+000379 9b45
+00037a 9408
+00037b f408
+00037c 9513
+00037d 1f00
+00037e f408
+00037f 951a                      __wait_for_filter
+000380 dfcc                      rcall   filter_delay
+000381 1712                      cp      temp2, temp3
+000382 f398                      brcs    wait_for_high_strt_loop
+000383 9508                      ret
+                 
+                 wait_for_low_strt:
+000384 ef0f                      ldi     temp1, 0xFF
+000385 e018                      ldi     temp2, 8
+000386 e024                      ldi     temp3, (8-5) + 1
+                 wait_for_low_strt_loop:
+000387 ff70                      sbrs    flags0, OCT1_PENDING
+000388 9508                      ret
+000389 9488
+00038a 9b45
+00038b 9408
+00038c f408
+00038d 9513
+00038e 1f00
+00038f f408
+000390 951a                      __wait_for_filter
+000391 dfbb                      rcall   filter_delay
+000392 1712                      cp      temp2, temp3
+000393 f798                      brcc    wait_for_low_strt_loop
+000394 9508                      ret
+                                 
+                 wait_for_test:
+000395 ff70                      sbrs    flags0, OCT1_PENDING
+000396 9508                      ret
+000397 cffd                      rjmp    wait_for_test
+000398 9508                      ret
+                                 
+                 ;-----bko-----------------------------------------------------------------
+                 ; *** commutation utilities ***
+000399 98ad      com1com2:       BpFET_off                             ; Bp off
+00039a 98ab                      CpFET_off                             ; Cp off
+00039b ff80                      sbrs    flags1, POWER_OFF
+00039c 9a94                      ApFET_on                              ; Ap on
+00039d e007
+00039e b907                      AcPhaseB
+00039f 9508                      ret
+                 
+                 com2com3:       
+0003a0 94f8                      PwmCSEnter
+0003a1 7c77                      cbr     flags0, (1<<A_FET) + (1<<B_FET) + (1<<C_FET)   
+0003a2 6078                      sbr     flags0, (1<<B_FET)            ; next nFET = BnFET
+0003a3 fd82                      sbrc    flags1, NO_COMM               ; 
+0003a4 c004                      rjmp    c2_done                       ; .. yes - futhermore work is done in timer0 interrupt
+0003a5 98c0                      CnFET_off                             ; Cn off
+0003a6 9895                      AnFET_off                             ; An off
+0003a7 ff80                      sbrs    flags1, POWER_OFF
+0003a8 9aac                      BnFET_on                              ; Bn on
+                 c2_done:        
+0003a9 9478                      PwmCSLeave
+0003aa e000
+0003ab b907                      AcPhaseC
+0003ac 9508                      ret
+                 
+0003ad 9894      com3com4:       ApFET_off                             ; Ap off
+0003ae 98ad                      BpFET_off                             ; Bp off
+0003af ff80                      sbrs    flags1, POWER_OFF
+0003b0 9aab                      CpFET_on                              ; Cp on
+0003b1 e006
+0003b2 b907                      AcPhaseA
+0003b3 9508                      ret
+                 
+                 com4com5:       
+0003b4 94f8                      PwmCSEnter 
+0003b5 7c77                      cbr     flags0, (1<<A_FET) + (1<<B_FET) + (1<<C_FET)   
+0003b6 6270                      sbr     flags0, (1<<A_FET)            ; next nFET = AnFET
+0003b7 fd82                      sbrc    flags1, NO_COMM               ; 
+0003b8 c004                      rjmp    c4_done                       ; .. yes - futhermore work is done in timer0 interrupt
+0003b9 98ac                      BnFET_off                             ; Bn off
+0003ba 98c0                      CnFET_off                             ; Cn off
+0003bb ff80                      sbrs    flags1, POWER_OFF
+0003bc 9a95                      AnFET_on                              ; An on
+                 c4_done:        
+0003bd 9478                      PwmCSLeave
+0003be e007
+0003bf b907                      AcPhaseB
+0003c0 9508                      ret
+                 
+0003c1 98ab      com5com6:       CpFET_off                             ; Cp off
+0003c2 9894                      ApFET_off                             ; Ap off
+0003c3 ff80                      sbrs    flags1, POWER_OFF
+0003c4 9aad                      BpFET_on                              ; Bp on
+0003c5 e000
+0003c6 b907                      AcPhaseC
+0003c7 9508                      ret
+                 
+                 com6com1:       
+0003c8 94f8                      PwmCSEnter
+0003c9 7c77                      cbr     flags0, (1<<A_FET) + (1<<B_FET) + (1<<C_FET)   
+0003ca 6170                      sbr     flags0, (1<<C_FET)            ; next nFET = CnFET
+0003cb fd82                      sbrc    flags1, NO_COMM               ; 
+0003cc c004                      rjmp    c6_done                       ; .. yes - futhermore work is done in timer0 interrupt
+0003cd 9895                      AnFET_off                             ; An off
+0003ce 98ac                      BnFET_off                             ; Bn off
+0003cf ff80                      sbrs    flags1, POWER_OFF
+0003d0 9ac0                      CnFET_on                              ; Cn on
+                 c6_done:        
+0003d1 9478                      PwmCSLeave
+0003d2 e006
+0003d3 b907                      AcPhaseA
+0003d4 9508                      ret
+                 
+
+
+RESOURCE USE INFORMATION
+------------------------
+
+Notice:
+The register and instruction counts are symbol table hit counts,
+and hence implicitly used resources are not counted, eg, the
+'lpm' instruction without operands implicitly uses r0 and z,
+none of which are counted.
+
+x,y,z are separate entities in the symbol table and are
+counted separately from r26..r31 here.
+
+.dseg memory usage only counts static data declared with .byte
+
+ATmega8 register use summary:
+r0 :   0 r1 :  10 r2 :   0 r3 :  18 r4 :  23 r5 :   0 r6 :   2 r7 :   4 
+r8 :   2 r9 :   2 r10:   5 r11:   5 r12:   6 r13:  12 r14:   6 r15:   0 
+r16: 188 r17:  76 r18:  43 r19:  33 r20:  21 r21:  11 r22:  12 r23:  46 
+r24:  27 r25:  39 r26:   2 r27:   1 r28:  22 r29:  21 r30:   3 r31:   6 
+x  :   1 y  :   0 z  :   0 
+Registers used: 29 out of 35 (82.9%)
+
+ATmega8 instruction use summary:
+.lds  :   0 .sts  :   0 adc   :   9 add   :   7 adiw  :   0 and   :   0 
+andi  :   0 asr   :   0 bclr  :   0 bld   :   0 brbc  :   0 brbs  :   0 
+brcc  :  18 brcs  :  13 breq  :   7 brge  :   0 brhc  :   0 brhs  :   0 
+brid  :   0 brie  :   0 brlo  :   4 brlt  :   0 brmi  :   0 brne  :  15 
+brpl  :   0 brsh  :   3 brtc  :   0 brts  :   0 brvc  :   0 brvs  :   0 
+bset  :   0 bst   :   0 cbi   :  22 cbr   :  26 clc   :   4 clh   :   0 
+cli   :   9 cln   :   0 clr   :  16 cls   :   0 clt   :   0 clv   :   0 
+clz   :   0 com   :   9 cp    :  12 cpc   :  15 cpi   :  22 cpse  :   0 
+dec   :  16 eor   :   0 fmul  :   0 fmuls :   0 fmulsu:   0 icall :   0 
+ijmp  :   0 in    :  20 inc   :   6 ld    :   0 ldd   :   0 ldi   : 105 
+lds   :  24 lpm   :   0 lsl   :   0 lsr   :   9 mov   :  29 movw  :   2 
+mul   :   0 muls  :   0 mulsu :   0 neg   :   0 nop   :   8 or    :   0 
+ori   :   0 out   :  52 pop   :  13 push  :  13 rcall : 106 ret   :  36 
+reti  :  20 rjmp  :  59 rol   :   4 ror   :  13 sbc   :   5 sbci  :   2 
+sbi   :  13 sbic  :   1 sbis  :   5 sbiw  :   0 sbr   :  32 sbrc  :  25 
+sbrs  :  28 sec   :   4 seh   :   0 sei   :  10 sen   :   0 ser   :   0 
+ses   :   0 set   :   0 sev   :   0 sez   :   0 sleep :   0 spm   :   0 
+st    :   1 std   :   0 sts   :  28 sub   :   4 subi  :   6 swap  :   0 
+tst   :   8 wdr   :   0 
+Instructions used: 50 out of 110 (45.5%)
+
+ATmega8 memory use summary [bytes]:
+Segment   Begin    End      Code   Data   Used    Size   Use%
+---------------------------------------------------------------
+[.cseg] 0x000000 0x0007aa   1940     22   1962    8192  24.0%
+[.dseg] 0x000060 0x0000d6      0    118    118    1024  11.5%
+[.eseg] 0x000000 0x000000      0      0      0     512   0.0%
+
+Assembly complete, 0 errors, 0 warnings
