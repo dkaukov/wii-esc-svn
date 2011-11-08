@@ -51,6 +51,10 @@
 
 .macro ResetPWM
                 cbr     flags1, (1<<FULL_POWER) + (1<<NO_COMM) + (1<<PWM_OFF_CYCLE); PWM state = on cycle
+                tst     tcnt0_pwroff
+                brne    not_full_power
+                sbr     flags1, (1<<FULL_POWER) + (1<<PWM_OFF_CYCLE)
+not_full_power:
                 out     TCNT0, tcnt0_power_on   ; reload t0
                 ldi     temp1, (1<<TOV0)
                 out     TIFR, temp1
