@@ -1371,7 +1371,20 @@ filter_delay_loop:
                 rol     temp1
                 sbc     temp2, temp6
 .endmacro
-                                
+
+.macro  _blank_pwm_transition
+loop:
+                in      temp1, TCNT0
+                cpi     temp1, 0xFF - 15
+                brcc    loop 
+                sbrs    flags1, NO_COMM
+                sub     temp1, tcnt0_power_on
+                sbrc    flags1, NO_COMM
+                sub     temp1, tcnt0_pwroff
+                cpi     temp1, 25
+                brcs    loop
+.endm
+
 wait_for_low_fast:   
                 ldi     temp1, 0xFF
                 ldi     temp2, 8
@@ -1396,34 +1409,6 @@ wait_for_high_fast_loop:
                 __wait_for_filter
                 cp      temp2, temp3
                 brcs    wait_for_high_fast_loop
-                ret
-
-wait_for_low_slow:   
-                ldi     temp1, 0xFF
-                ldi     temp2, 8
-                ldi     temp3, (8-ZCF_CONST) + 1
-                clr     temp6 
-wait_for_low_slow_loop:
-                sbrs    flags0, OCT1_PENDING
-                ret
-                rcall   filter_delay
-                __wait_for_filter
-                cp      temp2, temp3
-                brcc    wait_for_low_slow_loop
-                ret
-                               
-wait_for_high_slow:   
-                ldi     temp1, 0x0
-                ldi     temp2, 0
-                ldi     temp3, ZCF_CONST
-                clr     temp6 
-wait_for_high_loop:
-                sbrs    flags0, OCT1_PENDING
-                ret
-                rcall   filter_delay
-                __wait_for_filter
-                cp      temp2, temp3
-                brcs    wait_for_high_loop
                 ret
 
 wait_for_high_strt:
@@ -1468,12 +1453,14 @@ wait_for_low_strt_loop:
 wait_for_low:
                 sbrc    flags2, ZC_FAST_MODE
                 rjmp    wait_for_low_fast
-                rjmp    wait_for_low_slow
+                _blank_pwm_transition
+                rjmp    wait_for_low_fast
 
 wait_for_high:   
                 sbrc    flags2, ZC_FAST_MODE
                 rjmp    wait_for_high_fast
-                rjmp    wait_for_high_slow
+                _blank_pwm_transition
+                rjmp    wait_for_high_fast
 
 wait_for_test:
                 sbrs    flags0, OCT1_PENDING
