@@ -1010,6 +1010,16 @@ no_sync_poff:
                 DbgLEDOn
                 ret
 
+free_speen:
+                sbr     flags1, (1<<POWER_OFF)
+                ldi     temp1, INIT_PB          ; all off
+                out     PORTB, temp1
+                ldi     temp1, INIT_PC          ; all off
+                out     PORTC, temp1
+                ldi     temp1, INIT_PD          ; all off
+                out     PORTD, temp1
+                ret
+
 
 wait64ms:
                 ldi     temp1, 1*CLK_SCALE
@@ -1374,12 +1384,14 @@ filter_delay_loop:
 
 .macro  _blank_pwm_transition
 loop:
+                sbrs    flags0, OCT1_PENDING
+                ret
                 in      temp1, TCNT0
-                cpi     temp1, 0xFF - 15
+                cpi     temp1, 0xFF - @0
                 brcc    loop 
-                sbrs    flags1, NO_COMM
-                sub     temp1, tcnt0_power_on
                 sbrc    flags1, NO_COMM
+                sub     temp1, tcnt0_power_on
+                sbrs    flags1, NO_COMM
                 sub     temp1, tcnt0_pwroff
                 cpi     temp1, 25
                 brcs    loop
@@ -1412,15 +1424,11 @@ wait_for_high_fast_loop:
                 ret
 
 wait_for_high_strt:
+                _blank_pwm_transition 10
                 ldi     temp1, 0x0
                 ldi     temp2, 0
                 ldi     temp3, STRT_ZC_FILTER_FACTOR
                 clr     temp6 
-                
-wait_for_high_strt_loop2:                
-                sbrs    flags1, PWM_OFF_CYCLE
-                rjmp    wait_for_high_strt_loop2
-                
 wait_for_high_strt_loop:
                 sbrs    flags0, OCT1_PENDING
                 ret
@@ -1431,15 +1439,11 @@ wait_for_high_strt_loop:
                 ret
 
 wait_for_low_strt:
+                _blank_pwm_transition 10
                 ldi     temp1, 0xFF
                 ldi     temp2, 8
                 ldi     temp3, (8-STRT_ZC_FILTER_FACTOR) + 1
                 clr     temp6 
-                
-wait_for_low_strt_loop2:
-                sbrs    flags1, PWM_OFF_CYCLE
-                rjmp    wait_for_low_strt_loop2
-                
 wait_for_low_strt_loop:
                 sbrs    flags0, OCT1_PENDING
                 ret
@@ -1449,18 +1453,15 @@ wait_for_low_strt_loop:
                 brcc    wait_for_low_strt_loop
                 ret
 
-                
 wait_for_low:
                 sbrc    flags2, ZC_FAST_MODE
                 rjmp    wait_for_low_fast
-                _blank_pwm_transition
-                rjmp    wait_for_low_fast
+                rjmp    wait_for_low_slow
 
 wait_for_high:   
                 sbrc    flags2, ZC_FAST_MODE
                 rjmp    wait_for_high_fast
-                _blank_pwm_transition
-                rjmp    wait_for_high_fast
+                rjmp    wait_for_high_slow
 
 wait_for_test:
                 sbrs    flags0, OCT1_PENDING
@@ -1468,6 +1469,51 @@ wait_for_test:
                 rjmp    wait_for_test
                 ret
                 
+
+wait_if_spike:	
+                ldi     temp1, 16
+wait_if_spike_loop:	
+                dec	temp1
+		brne	wait_if_spike_loop
+		ret
+
+wait_for_low_slow:	
+                _blank_pwm_transition 1
+		sbis	ACSR, ACO		; low ?
+		rjmp	wait_for_low		; .. no - loop, while high
+		rcall	wait_if_spike		; .. yes - look for a spike
+                _blank_pwm_transition 1
+		sbis	ACSR, ACO		; test again
+		rjmp	wait_for_low		; .. is high again, was a spike
+		rcall	wait_if_spike		; .. yes - look for a spike
+                _blank_pwm_transition 1
+		sbis	ACSR, ACO		; test again
+		rjmp	wait_for_low		; .. is high again, was a spike
+		rcall	wait_if_spike		; .. yes - look for a spike
+                _blank_pwm_transition 1
+		sbis	ACSR, ACO		; test again
+		rjmp	wait_for_low		; .. is high again, was a spike
+		ret
+
+wait_for_high_slow:	
+                _blank_pwm_transition 1
+		sbic	ACSR, ACO		; high ?
+		rjmp	wait_for_high		; .. no - loop, while low
+		rcall	wait_if_spike		; .. yes - look for a spike
+                _blank_pwm_transition 1
+		sbic	ACSR, ACO		; test again
+		rjmp	wait_for_high		; .. is low again, was a spike
+		rcall	wait_if_spike		; .. yes - look for a spike
+                _blank_pwm_transition 1
+		sbic	ACSR, ACO		; test again
+		rjmp	wait_for_high		; .. is low again, was a spike
+		rcall	wait_if_spike		; .. yes - look for a spike
+                _blank_pwm_transition 1
+		sbic	ACSR, ACO		; test again
+		rjmp	wait_for_high		; .. is low again, was a spike
+		ret
+
+
 ;-----bko-----------------------------------------------------------------
 ; *** commutation utilities ***
 #ifdef HIGH_SIDE_PWM
