@@ -1477,43 +1477,36 @@ wait_if_spike_loop:
 		brne	wait_if_spike_loop
 		ret
 
-wait_for_low_slow:	
-                _blank_pwm_transition 1
-		sbis	ACSR, ACO		; low ?
-		rjmp	wait_for_low		; .. no - loop, while high
-		rcall	wait_if_spike		; .. yes - look for a spike
-                _blank_pwm_transition 1
-		sbis	ACSR, ACO		; test again
-		rjmp	wait_for_low		; .. is high again, was a spike
-		rcall	wait_if_spike		; .. yes - look for a spike
-                _blank_pwm_transition 1
-		sbis	ACSR, ACO		; test again
-		rjmp	wait_for_low		; .. is high again, was a spike
-		rcall	wait_if_spike		; .. yes - look for a spike
-                _blank_pwm_transition 1
-		sbis	ACSR, ACO		; test again
-		rjmp	wait_for_low		; .. is high again, was a spike
-		ret
-
-wait_for_high_slow:	
-                _blank_pwm_transition 1
-		sbic	ACSR, ACO		; high ?
-		rjmp	wait_for_high		; .. no - loop, while low
-		rcall	wait_if_spike		; .. yes - look for a spike
-                _blank_pwm_transition 1
-		sbic	ACSR, ACO		; test again
-		rjmp	wait_for_high		; .. is low again, was a spike
-		rcall	wait_if_spike		; .. yes - look for a spike
-                _blank_pwm_transition 1
-		sbic	ACSR, ACO		; test again
-		rjmp	wait_for_high		; .. is low again, was a spike
-		rcall	wait_if_spike		; .. yes - look for a spike
-                _blank_pwm_transition 1
-		sbic	ACSR, ACO		; test again
-		rjmp	wait_for_high		; .. is low again, was a spike
-		ret
-
-
+wait_for_low_slow:        
+                _blank_pwm_transition 5
+                sbis    ACSR, ACO                     ; low ?
+                rjmp    wait_for_low_slow             ; .. no - loop, while high
+                sbi     ACSR, ACI
+                rcall   wait_if_spike                 ; .. yes - look for a spike
+                sbic    ACSR, ACI
+                rjmp    wait_for_low_slow
+                rcall   wait_if_spike
+                sbic    ACSR, ACI
+                rjmp    wait_for_low_slow
+                rcall   wait_if_spike
+                sbis    ACSR, ACI
+                rjmp    wait_for_low_slow
+                ret
+wait_for_high_slow:        
+                _blank_pwm_transition 5
+                sbic    ACSR, ACO                     ; high ?
+                rjmp    wait_for_high_slow            ; .. no - loop, while low
+                sbi     ACSR, ACI
+                rcall   wait_if_spike                 ; .. yes - look for a spike
+                sbic    ACSR, ACI
+                rjmp    wait_for_high_slow
+                rcall   wait_if_spike
+                sbic    ACSR, ACI
+                rjmp    wait_for_high_slow
+                rcall   wait_if_spike
+                sbic    ACSR, ACI
+                rjmp    wait_for_high_slow
+                ret
 ;-----bko-----------------------------------------------------------------
 ; *** commutation utilities ***
 #ifdef HIGH_SIDE_PWM
