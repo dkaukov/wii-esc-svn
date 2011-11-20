@@ -917,9 +917,16 @@ wait_for_zc_blank_loop2:
 ;-----bko-----------------------------------------------------------------
 start_timeout:  
                 cbr     flags0, (1<<OCT1_MSB)
+                rcall   update_timing
                 ldi     YL, 50*CLK_SCALE
                 ldi     YH, 0
-                rcall   update_timing
+                cli
+                add     YL, TCNT1L_shadow
+                adc     YH, TCNT1H_shadow
+                out     OCR1AH, YH
+                out     OCR1AL, YL
+                sei
+                sbr     flags0, (1<<OCT1_PENDING)                
 start_timeout_loop:                
                 sbrc    flags0, OCT1_PENDING
                 rjmp    start_timeout_loop      ; ZC blanking interval
