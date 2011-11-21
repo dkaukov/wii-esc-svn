@@ -1287,22 +1287,41 @@ fail:
 exit:
 .endm
 
+.macro  __wait_for_pwm_end
+loop:
+                sbrs    flags0, OCT1_PENDING
+                ret
+                sbrs    flags1, PWM_OFF_CYCLE
+                rjmp    loop
+                in      temp1, TCNT0
+                cpi     temp1, 0xFF - 1
+                brcc    loop 
+                cpi     temp1, 0xFF - 3
+                brcs    loop 
+  .if @0==__low
+                sbis    ACSR, ACO 
+  .else                
+                sbic    ACSR, ACO 
+  .endif                
+                rjmp    loop
+.endm
+
 
 wait_for_transition_lh:
                 ;DbgLEDOn 
                 lds	temp1, zc_filter_time
-                 __wait_for __low
+                 __wait_for_pwm_end __low
                 lds	temp1, zc_filter_time
-                __wait_for __high
+                __wait_for_pwm_end __high
                 ;DbgLEDOff
                 ret  
 
 wait_for_transition_hl:
                 ;DbgLEDOn 
                 lds	temp1, zc_filter_time
-                __wait_for __high
+                __wait_for_pwm_end __high
                 lds	temp1, zc_filter_time
-                __wait_for __low
+                __wait_for_pwm_end __low
                 ;DbgLEDOff
                 ret  
 
