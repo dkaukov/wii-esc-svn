@@ -32,15 +32,17 @@ void start_init() {
   good_com = 0; sdm_ref = PWR_PCT_TO_VAL(PCT_PWR_STARTUP);
   timer_start.interval = RPM_TO_COMM_TIME(RPM_STEP_INITIAL) * CLK_SCALE;
   start_result = START_RES_UNKNOWN;
+  DebugStrOff(); DebugLEDOff();
 }
 
 static PT_THREAD(thread_start(struct pt *pt, uint16_t tick)) {
   uint8_t timeout;
   PT_BEGIN(pt);
   while (1) {
-    timer_start.elapsed = timer_start.interval; timer_start.last_systick = tick;
+    timer_start.elapsed = timer_start.interval; //timer_start.last_systick = tick;
+    PT_YIELD(pt);
     PT_WAIT_UNTIL(pt, (timeout = timer_expired(&timer_start, tick)) || zc_kickback_end(pwr_stage.com_state));
-    //DebugLEDToggle(); DebugLEDToggle();
+    DebugLEDToggle(); DebugLEDToggle();
     zc_filter_start_reset();
     PT_WAIT_UNTIL(pt, (timeout = timer_expired(&timer_start, tick)) || zc_start_detected(pwr_stage.com_state));
     next_comm_state();
@@ -48,7 +50,7 @@ static PT_THREAD(thread_start(struct pt *pt, uint16_t tick)) {
     start_power_control();
     start_timing_control();
     if (!timeout) {
-      if ((pwr_stage.com_state & 1)) {
+      if (!(pwr_stage.com_state & 1)) {
         update_timing(tick);
         if (++good_com >= ENOUGH_GOODIES) {
           good_com = ENOUGH_GOODIES;
@@ -61,7 +63,7 @@ static PT_THREAD(thread_start(struct pt *pt, uint16_t tick)) {
     } else good_com = 0;
     if (sdm_ref == 0) {start_result = START_RES_OFF; break;}
     if (!pwr_stage.com_state) DebugStrToggle();
-    //DebugLEDToggle();
+    DebugLEDToggle();
   }
   PT_END(pt);
 }
@@ -75,7 +77,7 @@ uint8_t start() {
     current_tick = __systick();
     aco_sample();
     sdm();
-    if (pwr_stage.aco) DebugLEDOn(); else DebugLEDOff();
+    //if (pwr_stage.aco) DebugLEDOn(); else DebugLEDOff();
   } while (PT_SCHEDULE(thread_start(&thread_start_pt, current_tick)));
   return start_result;
 }
