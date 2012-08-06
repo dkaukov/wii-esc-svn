@@ -41,10 +41,10 @@ inline uint8_t zc_kickback_end(uint8_t state) {
 }
 
 inline uint8_t zc_start_detected(uint8_t state) {
-  if (!(state & 1)) {
-    if (!pwr_stage.aco) zc_filter_start--; else zc_filter_start++;
-  } else {
+  if (state & 1) {
     if (pwr_stage.aco) zc_filter_start--; else zc_filter_start++;
+  } else {
+    if (!pwr_stage.aco) zc_filter_start--; else zc_filter_start++;
   }
   if (zc_filter_start > (ZC_FILTER_START_CONST * CLK_SCALE)) zc_filter_start = ZC_FILTER_START_CONST * CLK_SCALE;
   return (zc_filter_start == 0);
