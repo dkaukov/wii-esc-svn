@@ -1,3 +1,5 @@
+bin/*.*
+bin/avr/*.*
 obj/*.*
 obj/avr/*.*
 obj/avr/lib-avr/*.*
