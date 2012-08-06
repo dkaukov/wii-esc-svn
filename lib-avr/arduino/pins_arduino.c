@@ -65,17 +65,17 @@
 // A0-A7 PF0-PF7
 // A8-A15 PK0-PK7
 
-#define __PA 1
-#define __PB 2
-#define __PC 3
-#define __PD 4
-#define __PE 5
-#define __PF 6
-#define __PG 7
-#define __PH 8
-#define __PJ 10
-#define __PK 11
-#define __PL 12
+#define _PA_ 1
+#define _PB_ 2
+#define _PC_ 3
+#define _PD_ 4
+#define _PE_ 5
+#define _PF_ 6
+#define _PG_ 7
+#define _PH_ 8
+#define _PJ_ 10
+#define _PK_ 11
+#define _PL_ 12
 
 
 #if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
@@ -130,76 +130,76 @@ const uint16_t PROGMEM port_to_input_PGM[] = {
 const uint8_t PROGMEM digital_pin_to_port_PGM[] = {
 	// PORTLIST
 	// -------------------------------------------
-	__PE	, // PE 0 ** 0 ** USART0_RX
-	__PE	, // PE 1 ** 1 ** USART0_TX
-	__PE	, // PE 4 ** 2 ** PWM2
-	__PE	, // PE 5 ** 3 ** PWM3
-	__PG	, // PG 5 ** 4 ** PWM4
-	__PE	, // PE 3 ** 5 ** PWM5
-	__PH	, // PH 3 ** 6 ** PWM6
-	__PH	, // PH 4 ** 7 ** PWM7
-	__PH	, // PH 5 ** 8 ** PWM8
-	__PH	, // PH 6 ** 9 ** PWM9
-	__PB	, // PB 4 ** 10 ** PWM10
-	__PB	, // PB 5 ** 11 ** PWM11
-	__PB	, // PB 6 ** 12 ** PWM12
-	__PB	, // PB 7 ** 13 ** PWM13
-	__PJ	, // PJ 1 ** 14 ** USART3_TX
-	__PJ	, // PJ 0 ** 15 ** USART3_RX
-	__PH	, // PH 1 ** 16 ** USART2_TX
-	__PH	, // PH 0 ** 17 ** USART2_RX
-	__PD	, // PD 3 ** 18 ** USART1_TX
-	__PD	, // PD 2 ** 19 ** USART1_RX
-	__PD	, // PD 1 ** 20 ** I2C_SDA
-	__PD	, // PD 0 ** 21 ** I2C_SCL
-	__PA	, // PA 0 ** 22 ** D22
-	__PA	, // PA 1 ** 23 ** D23
-	__PA	, // PA 2 ** 24 ** D24
-	__PA	, // PA 3 ** 25 ** D25
-	__PA	, // PA 4 ** 26 ** D26
-	__PA	, // PA 5 ** 27 ** D27
-	__PA	, // PA 6 ** 28 ** D28
-	__PA	, // PA 7 ** 29 ** D29
-	__PC	, // PC 7 ** 30 ** D30
-	__PC	, // PC 6 ** 31 ** D31
-	__PC	, // PC 5 ** 32 ** D32
-	__PC	, // PC 4 ** 33 ** D33
-	__PC	, // PC 3 ** 34 ** D34
-	__PC	, // PC 2 ** 35 ** D35
-	__PC	, // PC 1 ** 36 ** D36
-	__PC	, // PC 0 ** 37 ** D37
-	__PD	, // PD 7 ** 38 ** D38
-	__PG	, // PG 2 ** 39 ** D39
-	__PG	, // PG 1 ** 40 ** D40
-	__PG	, // PG 0 ** 41 ** D41
-	__PL	, // PL 7 ** 42 ** D42
-	__PL	, // PL 6 ** 43 ** D43
-	__PL	, // PL 5 ** 44 ** D44
-	__PL	, // PL 4 ** 45 ** D45
-	__PL	, // PL 3 ** 46 ** D46
-	__PL	, // PL 2 ** 47 ** D47
-	__PL	, // PL 1 ** 48 ** D48
-	__PL	, // PL 0 ** 49 ** D49
-	__PB	, // PB 3 ** 50 ** SPI_MISO
-	__PB	, // PB 2 ** 51 ** SPI_MOSI
-	__PB	, // PB 1 ** 52 ** SPI_SCK
-	__PB	, // PB 0 ** 53 ** SPI_SS
-	__PF	, // PF 0 ** 54 ** A0
-	__PF	, // PF 1 ** 55 ** A1
-	__PF	, // PF 2 ** 56 ** A2
-	__PF	, // PF 3 ** 57 ** A3
-	__PF	, // PF 4 ** 58 ** A4
-	__PF	, // PF 5 ** 59 ** A5
-	__PF	, // PF 6 ** 60 ** A6
-	__PF	, // PF 7 ** 61 ** A7
-	__PK	, // PK 0 ** 62 ** A8
-	__PK	, // PK 1 ** 63 ** A9
-	__PK	, // PK 2 ** 64 ** A10
-	__PK	, // PK 3 ** 65 ** A11
-	__PK	, // PK 4 ** 66 ** A12
-	__PK	, // PK 5 ** 67 ** A13
-	__PK	, // PK 6 ** 68 ** A14
-	__PK	, // PK 7 ** 69 ** A15
+	_PE_	, // PE 0 ** 0 ** USART0_RX
+	_PE_	, // PE 1 ** 1 ** USART0_TX
+	_PE_	, // PE 4 ** 2 ** PWM2
+	_PE_	, // PE 5 ** 3 ** PWM3
+	_PG_	, // PG 5 ** 4 ** PWM4
+	_PE_	, // PE 3 ** 5 ** PWM5
+	_PH_	, // PH 3 ** 6 ** PWM6
+	_PH_	, // PH 4 ** 7 ** PWM7
+	_PH_	, // PH 5 ** 8 ** PWM8
+	_PH_	, // PH 6 ** 9 ** PWM9
+	_PB_	, // PB 4 ** 10 ** PWM10
+	_PB_	, // PB 5 ** 11 ** PWM11
+	_PB_	, // PB 6 ** 12 ** PWM12
+	_PB_	, // PB 7 ** 13 ** PWM13
+	_PJ_	, // PJ 1 ** 14 ** USART3_TX
+	_PJ_	, // PJ 0 ** 15 ** USART3_RX
+	_PH_	, // PH 1 ** 16 ** USART2_TX
+	_PH_	, // PH 0 ** 17 ** USART2_RX
+	_PD_	, // PD 3 ** 18 ** USART1_TX
+	_PD_	, // PD 2 ** 19 ** USART1_RX
+	_PD_	, // PD 1 ** 20 ** I2C_SDA
+	_PD_	, // PD 0 ** 21 ** I2C_SCL
+	_PA_	, // PA 0 ** 22 ** D22
+	_PA_	, // PA 1 ** 23 ** D23
+	_PA_	, // PA 2 ** 24 ** D24
+	_PA_	, // PA 3 ** 25 ** D25
+	_PA_	, // PA 4 ** 26 ** D26
+	_PA_	, // PA 5 ** 27 ** D27
+	_PA_	, // PA 6 ** 28 ** D28
+	_PA_	, // PA 7 ** 29 ** D29
+	_PC_	, // PC 7 ** 30 ** D30
+	_PC_	, // PC 6 ** 31 ** D31
+	_PC_	, // PC 5 ** 32 ** D32
+	_PC_	, // PC 4 ** 33 ** D33
+	_PC_	, // PC 3 ** 34 ** D34
+	_PC_	, // PC 2 ** 35 ** D35
+	_PC_	, // PC 1 ** 36 ** D36
+	_PC_	, // PC 0 ** 37 ** D37
+	_PD_	, // PD 7 ** 38 ** D38
+	_PG_	, // PG 2 ** 39 ** D39
+	_PG_	, // PG 1 ** 40 ** D40
+	_PG_	, // PG 0 ** 41 ** D41
+	_PL_	, // PL 7 ** 42 ** D42
+	_PL_	, // PL 6 ** 43 ** D43
+	_PL_	, // PL 5 ** 44 ** D44
+	_PL_	, // PL 4 ** 45 ** D45
+	_PL_	, // PL 3 ** 46 ** D46
+	_PL_	, // PL 2 ** 47 ** D47
+	_PL_	, // PL 1 ** 48 ** D48
+	_PL_	, // PL 0 ** 49 ** D49
+	_PB_	, // PB 3 ** 50 ** SPI_MISO
+	_PB_	, // PB 2 ** 51 ** SPI_MOSI
+	_PB_	, // PB 1 ** 52 ** SPI_SCK
+	_PB_	, // PB 0 ** 53 ** SPI_SS
+	_PF_	, // PF 0 ** 54 ** A0
+	_PF_	, // PF 1 ** 55 ** A1
+	_PF_	, // PF 2 ** 56 ** A2
+	_PF_	, // PF 3 ** 57 ** A3
+	_PF_	, // PF 4 ** 58 ** A4
+	_PF_	, // PF 5 ** 59 ** A5
+	_PF_	, // PF 6 ** 60 ** A6
+	_PF_	, // PF 7 ** 61 ** A7
+	_PK_	, // PK 0 ** 62 ** A8
+	_PK_	, // PK 1 ** 63 ** A9
+	_PK_	, // PK 2 ** 64 ** A10
+	_PK_	, // PK 3 ** 65 ** A11
+	_PK_	, // PK 4 ** 66 ** A12
+	_PK_	, // PK 5 ** 67 ** A13
+	_PK_	, // PK 6 ** 68 ** A14
+	_PK_	, // PK 7 ** 69 ** A15
 };
 
 const uint8_t PROGMEM digital_pin_to_bit_mask_PGM[] = {
@@ -380,26 +380,26 @@ const uint16_t PROGMEM port_to_input_PGM[] = {
 };
 
 const uint8_t PROGMEM digital_pin_to_port_PGM[] = {
-	__PD, /* 0 */
-	__PD,
-	__PD,
-	__PD,
-	__PD,
-	__PD,
-	__PD,
-	__PD,
-	__PB, /* 8 */
-	__PB,
-	__PB,
-	__PB,
-	__PB,
-	__PB,
-	__PC, /* 14 */
-	__PC,
-	__PC,
-	__PC,
-	__PC,
-	__PC,
+	_PD_, /* 0 */
+	_PD_,
+	_PD_,
+	_PD_,
+	_PD_,
+	_PD_,
+	_PD_,
+	_PD_,
+	_PB_, /* 8 */
+	_PB_,
+	_PB_,
+	_PB_,
+	_PB_,
+	_PB_,
+	_PC_, /* 14 */
+	_PC_,
+	_PC_,
+	_PC_,
+	_PC_,
+	_PC_,
 };
 
 const uint8_t PROGMEM digital_pin_to_bit_mask_PGM[] = {
