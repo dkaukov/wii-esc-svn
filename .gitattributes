@@ -3,5 +3,4 @@ bin/avr/wii_esc_ng.elf -text
 lib-avr/avr_twi.h -text
 lib-avr/nvram/nvram.c -text
 lib-avr/nvram/nvram.h -text
-obj/avr/core.a -text
 src/core.h -text
