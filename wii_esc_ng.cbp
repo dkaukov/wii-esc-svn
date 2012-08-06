@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="mwc_ng" />
+		<Option makefile_is_custom="1" />
+		<Option pch_mode="2" />
+		<Option compiler="avrgcc" />
+		<Option virtualFolders="Misc\;Core\;Subsystems\;Config\;HAL\;lib-avr\;Makefiles\;" />
+		<MakeCommands>
+			<Build command="$make -f $makefile $target" />
+			<CompileFile command="$make -f $makefile $file" />
+			<Clean command="$make -f $makefile clean$target" />
+			<DistClean command="$make -f $makefile distclean$target" />
+			<AskRebuildNeeded command="$make -q -f $makefile $target" />
+			<SilentBuild command="$make -f $makefile $target" />
+		</MakeCommands>
+		<Build>
+			<Target title="bs_nfet">
+				<Option output="bin\avr\wii_esc_ng.elf" imp_lib="lib$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_BASENAME).def" prefix_auto="0" extension_auto="0" />
+				<Option working_dir="bin\avr" />
+				<Option object_output="C:\Ziss\mwc-ng\trunk\crosscomp\.objs" />
+				<Option type="3" />
+				<Option compiler="avrgcc" />
+				<Option parameters="-p m8 -P com3  -c arduino -b 57600 -U flash:w:wii_esc_ng.hex " />
+				<Option host_application="avrdude.exe" />
+				<Option run_host_application_in_terminal="1" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+				<Environment>
+					<Variable name="BOARD" value="_BS_NFET_" />
+					<Variable name="F_CPU" value="16000000" />
+					<Variable name="MCU" value="atmega8" />
+				</Environment>
+				<MakeCommands>
+					<Build command="$make -f $makefile.avr MCU=$(mcu) BOARD=$(board) F_CPU=$(f_cpu)" />
+					<CompileFile command="$make -f $makefile.avr $file MCU=$(mcu) BOARD=$(board) F_CPU=$(f_cpu)" />
+					<Clean command="$make -f $makefile.avr clean MCU=$(mcu) BOARD=$(board) F_CPU=$(f_cpu)" />
+					<DistClean command="$make -f $makefile distclean$target" />
+					<AskRebuildNeeded command="$make -q -f $makefile.avr $target MCU=$(mcu) BOARD=$(board) F_CPU=$(f_cpu)" />
+					<SilentBuild command="$make -f $makefile.avr MCU=$(mcu) BOARD=$(board) F_CPU=$(f_cpu)" />
+				</MakeCommands>
+			</Target>
+			<Target title="tp">
+				<Option output="bin\avr\wii_esc_ng.elf" imp_lib="lib$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_BASENAME).def" prefix_auto="0" extension_auto="0" />
+				<Option working_dir="bin\avr" />
+				<Option object_output="C:\Ziss\mwc-ng\trunk\crosscomp\.objs" />
+				<Option type="3" />
+				<Option compiler="avrgcc" />
+				<Option parameters="-p m8 -P com3  -c arduino -b 57600 -U flash:w:wii_esc_ng.hex " />
+				<Option host_application="avrdude.exe" />
+				<Option run_host_application_in_terminal="1" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+				<Environment>
+					<Variable name="BOARD" value="_TP_" />
+					<Variable name="F_CPU" value="16000000" />
+					<Variable name="MCU" value="atmega8" />
+				</Environment>
+				<MakeCommands>
+					<Build command="$make -f $makefile.avr MCU=$(mcu) BOARD=$(board)  F_CPU=$(f_cpu)" />
+					<CompileFile command="$make -f $makefile.avr $file MCU=$(mcu) BOARD=$(board)  F_CPU=$(f_cpu)" />
+					<Clean command="$make -f $makefile.avr clean MCU=$(mcu) BOARD=$(board)  F_CPU=$(f_cpu)" />
+					<DistClean command="$make -f $makefile distclean$target" />
+					<AskRebuildNeeded command="$make -q -f $makefile.avr $target MCU=$(mcu) BOARD=$(board)  F_CPU=$(f_cpu)" />
+					<SilentBuild command="$make -f $makefile.avr MCU=$(mcu) BOARD=$(board)  F_CPU=$(f_cpu)" />
+				</MakeCommands>
+			</Target>
+			<Target title="tgy">
+				<Option output="bin\avr\wii_esc_ng.elf" imp_lib="lib$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_BASENAME).def" prefix_auto="0" extension_auto="0" />
+				<Option working_dir="bin\avr" />
+				<Option object_output="C:\Ziss\mwc-ng\trunk\crosscomp\.objs" />
+				<Option type="3" />
+				<Option compiler="avrgcc" />
+				<Option parameters="-p m8 -P com3  -c arduino -b 57600 -U flash:w:wii_esc_ng.hex " />
+				<Option host_application="avrdude.exe" />
+				<Option run_host_application_in_terminal="1" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+				<Environment>
+					<Variable name="BOARD" value="_TGY_" />
+					<Variable name="F_CPU" value="8000000" />
+					<Variable name="MCU" value="atmega8" />
+				</Environment>
+				<MakeCommands>
+					<Build command="$make -f $makefile.avr MCU=$(mcu) BOARD=$(board)  F_CPU=$(f_cpu)" />
+					<CompileFile command="$make -f $makefile.avr $file MCU=$(mcu) BOARD=$(board)  F_CPU=$(f_cpu)" />
+					<Clean command="$make -f $makefile.avr clean MCU=$(mcu) BOARD=$(board)  F_CPU=$(f_cpu)" />
+					<DistClean command="$make -f $makefile distclean$target" />
+					<AskRebuildNeeded command="$make -q -f $makefile.avr $target MCU=$(mcu) BOARD=$(board) F_CPU=$(f_cpu)" />
+					<SilentBuild command="$make -f $makefile.avr MCU=$(mcu) BOARD=$(board)  F_CPU=$(f_cpu)" />
+				</MakeCommands>
+			</Target>
+			<Target title="tgy_16">
+				<Option output="bin\avr\wii_esc_ng.elf" imp_lib="lib$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_BASENAME).def" prefix_auto="0" extension_auto="0" />
+				<Option working_dir="bin\avr" />
+				<Option object_output="C:\Ziss\mwc-ng\trunk\crosscomp\.objs" />
+				<Option type="3" />
+				<Option compiler="avrgcc" />
+				<Option parameters="-p m8 -P com3  -c arduino -b 57600 -U flash:w:wii_esc_ng.hex " />
+				<Option host_application="avrdude.exe" />
+				<Option run_host_application_in_terminal="1" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+				<Environment>
+					<Variable name="BOARD" value="_TGY_16_" />
+					<Variable name="F_CPU" value="16000000" />
+					<Variable name="MCU" value="atmega8" />
+				</Environment>
+				<MakeCommands>
+					<Build command="$make -f $makefile.avr MCU=$(mcu) BOARD=$(board)  F_CPU=$(f_cpu)" />
+					<CompileFile command="$make -f $makefile.avr $file MCU=$(mcu) BOARD=$(board)  F_CPU=$(f_cpu)" />
+					<Clean command="$make -f $makefile.avr clean MCU=$(mcu) BOARD=$(board)  F_CPU=$(f_cpu)" />
+					<DistClean command="$make -f $makefile distclean$target" />
+					<AskRebuildNeeded command="$make -q -f $makefile.avr $target MCU=$(mcu) BOARD=$(board) F_CPU=$(f_cpu)" />
+					<SilentBuild command="$make -f $makefile.avr MCU=$(mcu) BOARD=$(board)  F_CPU=$(f_cpu)" />
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+		</Compiler>
+		<Unit filename="Makefile.avr">
+			<Option virtualFolder="Makefiles\" />
+		</Unit>
+		<Unit filename="lib-avr\arduino\HardwareSerial.h">
+			<Option virtualFolder="lib-avr\" />
+		</Unit>
+		<Unit filename="lib-avr\arduino\Print.h">
+			<Option virtualFolder="lib-avr\" />
+		</Unit>
+		<Unit filename="lib-avr\arduino\Stream.h">
+			<Option virtualFolder="lib-avr\" />
+		</Unit>
+		<Unit filename="lib-avr\arduino\WCharacter.h">
+			<Option virtualFolder="lib-avr\" />
+		</Unit>
+		<Unit filename="lib-avr\arduino\WConstants.h">
+			<Option virtualFolder="lib-avr\" />
+		</Unit>
+		<Unit filename="lib-avr\arduino\WProgram.h">
+			<Option virtualFolder="lib-avr\" />
+		</Unit>
+		<Unit filename="lib-avr\arduino\WString.h">
+			<Option virtualFolder="lib-avr\" />
+		</Unit>
+		<Unit filename="lib-avr\arduino\binary.h">
+			<Option virtualFolder="lib-avr\" />
+		</Unit>
+		<Unit filename="lib-avr\arduino\pins_arduino.h">
+			<Option virtualFolder="lib-avr\" />
+		</Unit>
+		<Unit filename="lib-avr\arduino\wiring.h">
+			<Option virtualFolder="lib-avr\" />
+		</Unit>
+		<Unit filename="lib-avr\arduino\wiring_private.h">
+			<Option virtualFolder="lib-avr\" />
+		</Unit>
+		<Unit filename="lib-avr\avr_twi.h">
+			<Option virtualFolder="lib-avr\" />
+		</Unit>
+		<Unit filename="lib-avr\avr_usart.h">
+			<Option virtualFolder="lib-avr\" />
+		</Unit>
+		<Unit filename="src\RX.h">
+			<Option virtualFolder="Subsystems\" />
+		</Unit>
+		<Unit filename="src\config.h">
+			<Option virtualFolder="Config\" />
+		</Unit>
+		<Unit filename="src\core.h">
+			<Option virtualFolder="Core\" />
+		</Unit>
+		<Unit filename="src\global.h">
+			<Option virtualFolder="Core\" />
+		</Unit>
+		<Unit filename="src\hal\bs_nfet.h">
+			<Option virtualFolder="HAL\" />
+			<Option target="bs_nfet" />
+		</Unit>
+		<Unit filename="src\hal\tgy.h">
+			<Option virtualFolder="HAL\" />
+			<Option target="tgy" />
+			<Option target="tgy_16" />
+		</Unit>
+		<Unit filename="src\hal\tp.h">
+			<Option virtualFolder="HAL\" />
+			<Option target="tp" />
+		</Unit>
+		<Unit filename="src\power_stage.h">
+			<Option virtualFolder="Core\" />
+		</Unit>
+		<Unit filename="src\run.h">
+			<Option virtualFolder="Core\" />
+		</Unit>
+		<Unit filename="src\sdm.h">
+			<Option virtualFolder="Subsystems\" />
+		</Unit>
+		<Unit filename="src\start.h">
+			<Option virtualFolder="Core\" />
+		</Unit>
+		<Unit filename="src\wii_esc_ng.cpp">
+			<Option virtualFolder="Core\" />
+		</Unit>
+		<Unit filename="src\zc.h">
+			<Option virtualFolder="Subsystems\" />
+		</Unit>
+		<Extensions>
+			<code_completion>
+				<search_path add="lib\MWC_PT" />
+			</code_completion>
+			<debugger />
+			<envvars />
+			<DoxyBlocks>
+				<comment_style block="0" line="0" />
+				<doxyfile_project />
+				<doxyfile_build />
+				<doxyfile_warnings />
+				<doxyfile_output />
+				<doxyfile_dot />
+				<general />
+			</DoxyBlocks>
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

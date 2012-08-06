@@ -1,0 +1,543 @@
+Archive member included because of file (symbol)
+
+obj/avr/core.a(main.o)        h:/program files/arduino-1.0/hardware/tools/avr/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr4/crtm8.o (main)
+obj/avr/core.a(wiring.o)      obj/avr/core.a(main.o) (init)
+h:/program files/arduino-1.0/hardware/tools/avr/bin/../lib/gcc/avr/4.3.2/avr4\libgcc.a(_divmodhi4.o)
+                              obj/avr/src/wii_esc_ng.o (__divmodhi4)
+h:/program files/arduino-1.0/hardware/tools/avr/bin/../lib/gcc/avr/4.3.2/avr4\libgcc.a(_prologue.o)
+                              obj/avr/src/wii_esc_ng.o (__prologue_saves__)
+h:/program files/arduino-1.0/hardware/tools/avr/bin/../lib/gcc/avr/4.3.2/avr4\libgcc.a(_epilogue.o)
+                              obj/avr/src/wii_esc_ng.o (__epilogue_restores__)
+h:/program files/arduino-1.0/hardware/tools/avr/bin/../lib/gcc/avr/4.3.2/avr4\libgcc.a(_exit.o)
+                              h:/program files/arduino-1.0/hardware/tools/avr/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr4/crtm8.o (exit)
+h:/program files/arduino-1.0/hardware/tools/avr/bin/../lib/gcc/avr/4.3.2/avr4\libgcc.a(_copy_data.o)
+                              obj/avr/src/wii_esc_ng.o (__do_copy_data)
+h:/program files/arduino-1.0/hardware/tools/avr/bin/../lib/gcc/avr/4.3.2/avr4\libgcc.a(_clear_bss.o)
+                              obj/avr/src/wii_esc_ng.o (__do_clear_bss)
+h:/program files/arduino-1.0/hardware/tools/avr/bin/../lib/gcc/avr/4.3.2/avr4\libgcc.a(_udivmodhi4.o)
+                              h:/program files/arduino-1.0/hardware/tools/avr/bin/../lib/gcc/avr/4.3.2/avr4\libgcc.a(_divmodhi4.o) (__udivmodhi4)
+
+Discarded input sections
+
+ .data          0x00000000        0x0 h:/program files/arduino-1.0/hardware/tools/avr/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr4/crtm8.o
+ .bss           0x00000000        0x0 h:/program files/arduino-1.0/hardware/tools/avr/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr4/crtm8.o
+ .text          0x00000000        0x0 obj/avr/src/wii_esc_ng.o
+ .data          0x00000000        0x0 obj/avr/src/wii_esc_ng.o
+ .bss           0x00000000        0x0 obj/avr/src/wii_esc_ng.o
+ .text._Z13timer_expiredP11timer_smallj
+                0x00000000        0x0 obj/avr/src/wii_esc_ng.o
+ .text._Z13timer_expiredP9timer_bigj
+                0x00000000        0x0 obj/avr/src/wii_esc_ng.o
+ .text._Z10Board_Idlev
+                0x00000000        0x0 obj/avr/src/wii_esc_ng.o
+ .text._Z9sdm_resetv
+                0x00000000        0x0 obj/avr/src/wii_esc_ng.o
+ .text._Z13update_timingj
+                0x00000000        0x0 obj/avr/src/wii_esc_ng.o
+ .text._Z20start_timing_controlv
+                0x00000000        0x0 obj/avr/src/wii_esc_ng.o
+ .text._Z10start_initv
+                0x00000000        0x0 obj/avr/src/wii_esc_ng.o
+ .text          0x00000000        0x0 obj/avr/core.a(main.o)
+ .data          0x00000000        0x0 obj/avr/core.a(main.o)
+ .bss           0x00000000        0x0 obj/avr/core.a(main.o)
+ .text          0x00000000        0x0 obj/avr/core.a(wiring.o)
+ .data          0x00000000        0x0 obj/avr/core.a(wiring.o)
+ .bss           0x00000000        0x0 obj/avr/core.a(wiring.o)
+ .text.millis   0x00000000        0x0 obj/avr/core.a(wiring.o)
+ .text.micros   0x00000000        0x0 obj/avr/core.a(wiring.o)
+ .text.delay    0x00000000        0x0 obj/avr/core.a(wiring.o)
+ .text.delayMicroseconds
+                0x00000000        0x0 obj/avr/core.a(wiring.o)
+ .text          0x00000000        0x0 h:/program files/arduino-1.0/hardware/tools/avr/bin/../lib/gcc/avr/4.3.2/avr4\libgcc.a(_divmodhi4.o)
+ .data          0x00000000        0x0 h:/program files/arduino-1.0/hardware/tools/avr/bin/../lib/gcc/avr/4.3.2/avr4\libgcc.a(_divmodhi4.o)
+ .bss           0x00000000        0x0 h:/program files/arduino-1.0/hardware/tools/avr/bin/../lib/gcc/avr/4.3.2/avr4\libgcc.a(_divmodhi4.o)
+ .text          0x00000000        0x0 h:/program files/arduino-1.0/hardware/tools/avr/bin/../lib/gcc/avr/4.3.2/avr4\libgcc.a(_prologue.o)
+ .data          0x00000000        0x0 h:/program files/arduino-1.0/hardware/tools/avr/bin/../lib/gcc/avr/4.3.2/avr4\libgcc.a(_prologue.o)
+ .bss           0x00000000        0x0 h:/program files/arduino-1.0/hardware/tools/avr/bin/../lib/gcc/avr/4.3.2/avr4\libgcc.a(_prologue.o)
+ .text          0x00000000        0x0 h:/program files/arduino-1.0/hardware/tools/avr/bin/../lib/gcc/avr/4.3.2/avr4\libgcc.a(_epilogue.o)
+ .data          0x00000000        0x0 h:/program files/arduino-1.0/hardware/tools/avr/bin/../lib/gcc/avr/4.3.2/avr4\libgcc.a(_epilogue.o)
+ .bss           0x00000000        0x0 h:/program files/arduino-1.0/hardware/tools/avr/bin/../lib/gcc/avr/4.3.2/avr4\libgcc.a(_epilogue.o)
+ .text          0x00000000        0x0 h:/program files/arduino-1.0/hardware/tools/avr/bin/../lib/gcc/avr/4.3.2/avr4\libgcc.a(_exit.o)
+ .data          0x00000000        0x0 h:/program files/arduino-1.0/hardware/tools/avr/bin/../lib/gcc/avr/4.3.2/avr4\libgcc.a(_exit.o)
+ .bss           0x00000000        0x0 h:/program files/arduino-1.0/hardware/tools/avr/bin/../lib/gcc/avr/4.3.2/avr4\libgcc.a(_exit.o)
+ .text.libgcc   0x00000000        0x0 h:/program files/arduino-1.0/hardware/tools/avr/bin/../lib/gcc/avr/4.3.2/avr4\libgcc.a(_exit.o)
+ .text          0x00000000        0x0 h:/program files/arduino-1.0/hardware/tools/avr/bin/../lib/gcc/avr/4.3.2/avr4\libgcc.a(_copy_data.o)
+ .data          0x00000000        0x0 h:/program files/arduino-1.0/hardware/tools/avr/bin/../lib/gcc/avr/4.3.2/avr4\libgcc.a(_copy_data.o)
+ .bss           0x00000000        0x0 h:/program files/arduino-1.0/hardware/tools/avr/bin/../lib/gcc/avr/4.3.2/avr4\libgcc.a(_copy_data.o)
+ .text.libgcc   0x00000000        0x0 h:/program files/arduino-1.0/hardware/tools/avr/bin/../lib/gcc/avr/4.3.2/avr4\libgcc.a(_copy_data.o)
+ .text          0x00000000        0x0 h:/program files/arduino-1.0/hardware/tools/avr/bin/../lib/gcc/avr/4.3.2/avr4\libgcc.a(_clear_bss.o)
+ .data          0x00000000        0x0 h:/program files/arduino-1.0/hardware/tools/avr/bin/../lib/gcc/avr/4.3.2/avr4\libgcc.a(_clear_bss.o)
+ .bss           0x00000000        0x0 h:/program files/arduino-1.0/hardware/tools/avr/bin/../lib/gcc/avr/4.3.2/avr4\libgcc.a(_clear_bss.o)
+ .text.libgcc   0x00000000        0x0 h:/program files/arduino-1.0/hardware/tools/avr/bin/../lib/gcc/avr/4.3.2/avr4\libgcc.a(_clear_bss.o)
+ .text          0x00000000        0x0 h:/program files/arduino-1.0/hardware/tools/avr/bin/../lib/gcc/avr/4.3.2/avr4\libgcc.a(_udivmodhi4.o)
+ .data          0x00000000        0x0 h:/program files/arduino-1.0/hardware/tools/avr/bin/../lib/gcc/avr/4.3.2/avr4\libgcc.a(_udivmodhi4.o)
+ .bss           0x00000000        0x0 h:/program files/arduino-1.0/hardware/tools/avr/bin/../lib/gcc/avr/4.3.2/avr4\libgcc.a(_udivmodhi4.o)
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+text             0x00000000         0x00002000         xr
+data             0x00800060         0x0000ffa0         rw !x
+eeprom           0x00810000         0x00010000         rw !x
+fuse             0x00820000         0x00000400         rw !x
+lock             0x00830000         0x00000400         rw !x
+signature        0x00840000         0x00000400         rw !x
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+LOAD h:/program files/arduino-1.0/hardware/tools/avr/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr4/crtm8.o
+LOAD obj/avr/src/wii_esc_ng.o
+LOAD obj/avr/core.a
+LOAD h:/program files/arduino-1.0/hardware/tools/avr/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr4\libm.a
+LOAD h:/program files/arduino-1.0/hardware/tools/avr/bin/../lib/gcc/avr/4.3.2/avr4\libgcc.a
+LOAD h:/program files/arduino-1.0/hardware/tools/avr/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr4\libc.a
+LOAD h:/program files/arduino-1.0/hardware/tools/avr/bin/../lib/gcc/avr/4.3.2/avr4\libgcc.a
+
+.hash
+ *(.hash)
+
+.dynsym
+ *(.dynsym)
+
+.dynstr
+ *(.dynstr)
+
+.gnu.version
+ *(.gnu.version)
+
+.gnu.version_d
+ *(.gnu.version_d)
+
+.gnu.version_r
+ *(.gnu.version_r)
+
+.rel.init
+ *(.rel.init)
+
+.rela.init
+ *(.rela.init)
+
+.rel.text
+ *(.rel.text)
+ *(.rel.text.*)
+ *(.rel.gnu.linkonce.t*)
+
+.rela.text
+ *(.rela.text)
+ *(.rela.text.*)
+ *(.rela.gnu.linkonce.t*)
+
+.rel.fini
+ *(.rel.fini)
+
+.rela.fini
+ *(.rela.fini)
+
+.rel.rodata
+ *(.rel.rodata)
+ *(.rel.rodata.*)
+ *(.rel.gnu.linkonce.r*)
+
+.rela.rodata
+ *(.rela.rodata)
+ *(.rela.rodata.*)
+ *(.rela.gnu.linkonce.r*)
+
+.rel.data
+ *(.rel.data)
+ *(.rel.data.*)
+ *(.rel.gnu.linkonce.d*)
+
+.rela.data
+ *(.rela.data)
+ *(.rela.data.*)
+ *(.rela.gnu.linkonce.d*)
+
+.rel.ctors
+ *(.rel.ctors)
+
+.rela.ctors
+ *(.rela.ctors)
+
+.rel.dtors
+ *(.rel.dtors)
+
+.rela.dtors
+ *(.rela.dtors)
+
+.rel.got
+ *(.rel.got)
+
+.rela.got
+ *(.rela.got)
+
+.rel.bss
+ *(.rel.bss)
+
+.rela.bss
+ *(.rela.bss)
+
+.rel.plt
+ *(.rel.plt)
+
+.rela.plt
+ *(.rela.plt)
+
+.text           0x00000000      0xc4c
+ *(.vectors)
+ .vectors       0x00000000       0x26 h:/program files/arduino-1.0/hardware/tools/avr/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr4/crtm8.o
+                0x00000000                __vectors
+                0x00000000                __vector_default
+ *(.vectors)
+ *(.progmem.gcc*)
+ *(.progmem*)
+                0x00000026                . = ALIGN (0x2)
+                0x00000026                __trampolines_start = .
+ *(.trampolines)
+ .trampolines   0x00000026        0x0 linker stubs
+ *(.trampolines*)
+                0x00000026                __trampolines_end = .
+ *(.jumptables)
+ *(.jumptables*)
+ *(.lowtext)
+ *(.lowtext*)
+                0x00000026                __ctors_start = .
+ *(.ctors)
+                0x00000026                __ctors_end = .
+                0x00000026                __dtors_start = .
+ *(.dtors)
+                0x00000026                __dtors_end = .
+ SORT(*)(.ctors)
+ SORT(*)(.dtors)
+ *(.init0)
+ .init0         0x00000026        0x0 h:/program files/arduino-1.0/hardware/tools/avr/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr4/crtm8.o
+                0x00000026                __init
+ *(.init0)
+ *(.init1)
+ *(.init1)
+ *(.init2)
+ .init2         0x00000026        0xc h:/program files/arduino-1.0/hardware/tools/avr/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr4/crtm8.o
+ *(.init2)
+ *(.init3)
+ *(.init3)
+ *(.init4)
+ .init4         0x00000032       0x16 h:/program files/arduino-1.0/hardware/tools/avr/bin/../lib/gcc/avr/4.3.2/avr4\libgcc.a(_copy_data.o)
+                0x00000032                __do_copy_data
+ .init4         0x00000048       0x10 h:/program files/arduino-1.0/hardware/tools/avr/bin/../lib/gcc/avr/4.3.2/avr4\libgcc.a(_clear_bss.o)
+                0x00000048                __do_clear_bss
+ *(.init4)
+ *(.init5)
+ *(.init5)
+ *(.init6)
+ *(.init6)
+ *(.init7)
+ *(.init7)
+ *(.init8)
+ *(.init8)
+ *(.init9)
+ .init9         0x00000058        0x4 h:/program files/arduino-1.0/hardware/tools/avr/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr4/crtm8.o
+ *(.init9)
+ *(.text)
+ .text          0x0000005c        0x2 h:/program files/arduino-1.0/hardware/tools/avr/bin/../lib/gcc/avr/4.3.2/../../../../avr/lib/avr4/crtm8.o
+                0x0000005c                __vector_12
+                0x0000005c                __bad_interrupt
+                0x0000005c                __vector_6
+                0x0000005c                __vector_3
+                0x0000005c                __vector_11
+                0x0000005c                __vector_13
+                0x0000005c                __vector_17
+                0x0000005c                __vector_7
+                0x0000005c                __vector_5
+                0x0000005c                __vector_4
+                0x0000005c                __vector_2
+                0x0000005c                __vector_15
+                0x0000005c                __vector_8
+                0x0000005c                __vector_14
+                0x0000005c                __vector_10
+                0x0000005c                __vector_16
+                0x0000005c                __vector_18
+                0x0000005e                . = ALIGN (0x2)
+ *(.text.*)
+ .text._Z10__delay_usj
+                0x0000005e       0x2a obj/avr/src/wii_esc_ng.o
+                0x0000005e                __delay_us(unsigned int)
+ .text._Z10__delay_msm
+                0x00000088       0x3a obj/avr/src/wii_esc_ng.o
+                0x00000088                __delay_ms(unsigned long)
+ .text.__vector_1
+                0x000000c2       0x4a obj/avr/src/wii_esc_ng.o
+                0x000000c2                __vector_1
+ .text._Z15filter_ppm_datav
+                0x0000010c       0x4c obj/avr/src/wii_esc_ng.o
+                0x0000010c                filter_ppm_data()
+ .text._Z10set_pwm_onh
+                0x00000158       0x1c obj/avr/src/wii_esc_ng.o
+                0x00000158                set_pwm_on(unsigned char)
+ .text._Z17change_comm_stateh
+                0x00000174       0x96 obj/avr/src/wii_esc_ng.o
+                0x00000174                change_comm_state(unsigned char)
+ .text._Z14set_comm_statev
+                0x0000020a        0xe obj/avr/src/wii_esc_ng.o
+                0x0000020a                set_comm_state()
+ .text._Z3sdmv  0x00000218       0x48 obj/avr/src/wii_esc_ng.o
+                0x00000218                sdm()
+ .text._Z19start_power_controlv
+                0x00000260       0x52 obj/avr/src/wii_esc_ng.o
+                0x00000260                start_power_control()
+ .text._Z5startv
+                0x000002b2      0x35a obj/avr/src/wii_esc_ng.o
+                0x000002b2                start()
+ .text._Z8run_initv
+                0x0000060c       0x50 obj/avr/src/wii_esc_ng.o
+                0x0000060c                run_init()
+ .text._Z17run_power_controlv
+                0x0000065c       0x2c obj/avr/src/wii_esc_ng.o
+                0x0000065c                run_power_control()
+ .text._Z3runv  0x00000688      0x2d4 obj/avr/src/wii_esc_ng.o
+                0x00000688                run()
+ .text.setup    0x0000095c       0x64 obj/avr/src/wii_esc_ng.o
+                0x0000095c                setup
+ .text._Z4beephh
+                0x000009c0       0x5c obj/avr/src/wii_esc_ng.o
+                0x000009c0                beep(unsigned char, unsigned char)
+ .text._Z13startup_soundv
+                0x00000a1c       0x40 obj/avr/src/wii_esc_ng.o
+                0x00000a1c                startup_sound()
+ .text._Z12wait_for_armv
+                0x00000a5c       0x12 obj/avr/src/wii_esc_ng.o
+                0x00000a5c                wait_for_arm()
+ .text._Z17wait_for_power_onv
+                0x00000a6e       0x14 obj/avr/src/wii_esc_ng.o
+                0x00000a6e                wait_for_power_on()
+ .text.loop     0x00000a82       0x30 obj/avr/src/wii_esc_ng.o
+                0x00000a82                loop
+ .text.main     0x00000ab2        0xa obj/avr/core.a(main.o)
+                0x00000ab2                main
+ .text.__vector_9
+                0x00000abc       0x90 obj/avr/core.a(wiring.o)
+                0x00000abc                __vector_9
+ .text.init     0x00000b4c       0x40 obj/avr/core.a(wiring.o)
+                0x00000b4c                init
+ .text.libgcc   0x00000b8c       0x26 h:/program files/arduino-1.0/hardware/tools/avr/bin/../lib/gcc/avr/4.3.2/avr4\libgcc.a(_divmodhi4.o)
+                0x00000b8c                __divmodhi4
+                0x00000b8c                _div
+ .text.libgcc   0x00000bb2       0x38 h:/program files/arduino-1.0/hardware/tools/avr/bin/../lib/gcc/avr/4.3.2/avr4\libgcc.a(_prologue.o)
+                0x00000bb2                __prologue_saves__
+ .text.libgcc   0x00000bea       0x36 h:/program files/arduino-1.0/hardware/tools/avr/bin/../lib/gcc/avr/4.3.2/avr4\libgcc.a(_epilogue.o)
+                0x00000bea                __epilogue_restores__
+ .text.libgcc   0x00000c20       0x28 h:/program files/arduino-1.0/hardware/tools/avr/bin/../lib/gcc/avr/4.3.2/avr4\libgcc.a(_udivmodhi4.o)
+                0x00000c20                __udivmodhi4
+                0x00000c48                . = ALIGN (0x2)
+ *(.fini9)
+ .fini9         0x00000c48        0x0 h:/program files/arduino-1.0/hardware/tools/avr/bin/../lib/gcc/avr/4.3.2/avr4\libgcc.a(_exit.o)
+                0x00000c48                exit
+                0x00000c48                _exit
+ *(.fini9)
+ *(.fini8)
+ *(.fini8)
+ *(.fini7)
+ *(.fini7)
+ *(.fini6)
+ *(.fini6)
+ *(.fini5)
+ *(.fini5)
+ *(.fini4)
+ *(.fini4)
+ *(.fini3)
+ *(.fini3)
+ *(.fini2)
+ *(.fini2)
+ *(.fini1)
+ *(.fini1)
+ *(.fini0)
+ .fini0         0x00000c48        0x4 h:/program files/arduino-1.0/hardware/tools/avr/bin/../lib/gcc/avr/4.3.2/avr4\libgcc.a(_exit.o)
+ *(.fini0)
+                0x00000c4c                _etext = .
+
+.data           0x00800060       0x40 load address 0x00000c4c
+                0x00800060                PROVIDE (__data_start, .)
+ *(.data)
+ *(.data*)
+ *(.rodata)
+ *(.rodata*)
+ .rodata._ZL15zc_filter_table
+                0x00800060       0x40 obj/avr/src/wii_esc_ng.o
+ *(.gnu.linkonce.d*)
+                0x008000a0                . = ALIGN (0x2)
+                0x008000a0                _edata = .
+                0x008000a0                PROVIDE (__data_end, .)
+
+.bss            0x008000a0       0x32
+                0x008000a0                PROVIDE (__bss_start, .)
+ *(.bss)
+ *(.bss*)
+ .bss.rx        0x008000a0        0x2 obj/avr/src/wii_esc_ng.o
+                0x008000a0                rx
+ .bss.raw_ppm_data
+                0x008000a2        0x2 obj/avr/src/wii_esc_ng.o
+                0x008000a2                raw_ppm_data
+ .bss.ppm_edge_time
+                0x008000a4        0x2 obj/avr/src/wii_esc_ng.o
+                0x008000a4                ppm_edge_time
+ .bss._ZL10run_result
+                0x008000a6        0x1 obj/avr/src/wii_esc_ng.o
+ .bss._ZL10timer_comm
+                0x008000a7        0x6 obj/avr/src/wii_esc_ng.o
+ .bss._ZL16timer_comm_delay
+                0x008000ad        0x6 obj/avr/src/wii_esc_ng.o
+ .bss._ZL13est_comm_time
+                0x008000b3        0x2 obj/avr/src/wii_esc_ng.o
+ .bss._ZL13zc_filter_run
+                0x008000b5        0x1 obj/avr/src/wii_esc_ng.o
+ .bss._ZL9last_tick
+                0x008000b6        0x2 obj/avr/src/wii_esc_ng.o
+ .bss._ZL12start_result
+                0x008000b8        0x1 obj/avr/src/wii_esc_ng.o
+ .bss._ZL11timer_start
+                0x008000b9        0xa obj/avr/src/wii_esc_ng.o
+ .bss._ZL8good_com
+                0x008000c3        0x1 obj/avr/src/wii_esc_ng.o
+ .bss._ZL15zc_filter_start
+                0x008000c4        0x1 obj/avr/src/wii_esc_ng.o
+ .bss._ZL14last_comm_time
+                0x008000c5        0x2 obj/avr/src/wii_esc_ng.o
+ .bss._ZL7sdm_err
+                0x008000c7        0x2 obj/avr/src/wii_esc_ng.o
+ .bss.timer0_overflow_count
+                0x008000c9        0x4 obj/avr/core.a(wiring.o)
+                0x008000c9                timer0_overflow_count
+ .bss.timer0_millis
+                0x008000cd        0x4 obj/avr/core.a(wiring.o)
+                0x008000cd                timer0_millis
+ .bss.timer0_fract
+                0x008000d1        0x1 obj/avr/core.a(wiring.o)
+ *(COMMON)
+                0x008000d2                PROVIDE (__bss_end, .)
+                0x00000c4c                __data_load_start = LOADADDR (.data)
+                0x00000c8c                __data_load_end = (__data_load_start + SIZEOF (.data))
+
+.noinit         0x008000d2        0x0
+                0x008000d2                PROVIDE (__noinit_start, .)
+ *(.noinit*)
+                0x008000d2                PROVIDE (__noinit_end, .)
+                0x008000d2                _end = .
+                0x008000d2                PROVIDE (__heap_start, .)
+
+.eeprom         0x00810000        0x0
+ *(.eeprom*)
+                0x00810000                __eeprom_end = .
+
+.fuse
+ *(.fuse)
+ *(.lfuse)
+ *(.hfuse)
+ *(.efuse)
+
+.lock
+ *(.lock*)
+
+.signature
+ *(.signature*)
+
+.stab
+ *(.stab)
+
+.stabstr
+ *(.stabstr)
+
+.stab.excl
+ *(.stab.excl)
+
+.stab.exclstr
+ *(.stab.exclstr)
+
+.stab.index
+ *(.stab.index)
+
+.stab.indexstr
+ *(.stab.indexstr)
+
+.comment
+ *(.comment)
+
+.debug
+ *(.debug)
+
+.line
+ *(.line)
+
+.debug_srcinfo
+ *(.debug_srcinfo)
+
+.debug_sfnames
+ *(.debug_sfnames)
+
+.debug_aranges  0x00000000      0x150
+ *(.debug_aranges)
+ .debug_aranges
+                0x00000000       0xe8 obj/avr/src/wii_esc_ng.o
+ .debug_aranges
+                0x000000e8       0x20 obj/avr/core.a(main.o)
+ .debug_aranges
+                0x00000108       0x48 obj/avr/core.a(wiring.o)
+
+.debug_pubnames
+                0x00000000      0x29b
+ *(.debug_pubnames)
+ .debug_pubnames
+                0x00000000      0x1f4 obj/avr/src/wii_esc_ng.o
+ .debug_pubnames
+                0x000001f4       0x1b obj/avr/core.a(main.o)
+ .debug_pubnames
+                0x0000020f       0x8c obj/avr/core.a(wiring.o)
+
+.debug_info     0x00000000     0x18b4
+ *(.debug_info)
+ .debug_info    0x00000000     0x1566 obj/avr/src/wii_esc_ng.o
+ .debug_info    0x00001566       0xe8 obj/avr/core.a(main.o)
+ .debug_info    0x0000164e      0x266 obj/avr/core.a(wiring.o)
+ *(.gnu.linkonce.wi.*)
+
+.debug_abbrev   0x00000000      0x530
+ *(.debug_abbrev)
+ .debug_abbrev  0x00000000      0x381 obj/avr/src/wii_esc_ng.o
+ .debug_abbrev  0x00000381       0x64 obj/avr/core.a(main.o)
+ .debug_abbrev  0x000003e5      0x14b obj/avr/core.a(wiring.o)
+
+.debug_line     0x00000000     0x131c
+ *(.debug_line)
+ .debug_line    0x00000000      0xf06 obj/avr/src/wii_esc_ng.o
+ .debug_line    0x00000f06       0xeb obj/avr/core.a(main.o)
+ .debug_line    0x00000ff1      0x32b obj/avr/core.a(wiring.o)
+
+.debug_frame    0x00000000      0x240
+ *(.debug_frame)
+ .debug_frame   0x00000000      0x1b0 obj/avr/src/wii_esc_ng.o
+ .debug_frame   0x000001b0       0x20 obj/avr/core.a(main.o)
+ .debug_frame   0x000001d0       0x70 obj/avr/core.a(wiring.o)
+
+.debug_str      0x00000000      0x7a1
+ *(.debug_str)
+ .debug_str     0x00000000      0x701 obj/avr/src/wii_esc_ng.o
+                                0x773 (size before relaxing)
+ .debug_str     0x00000701       0x1e obj/avr/core.a(main.o)
+                                 0xc0 (size before relaxing)
+ .debug_str     0x0000071f       0x82 obj/avr/core.a(wiring.o)
+                                0x137 (size before relaxing)
+
+.debug_loc      0x00000000      0x751
+ *(.debug_loc)
+ .debug_loc     0x00000000      0x5c8 obj/avr/src/wii_esc_ng.o
+ .debug_loc     0x000005c8      0x189 obj/avr/core.a(wiring.o)
+
+.debug_macinfo
+ *(.debug_macinfo)
+OUTPUT(bin/avr/wii_esc_ng.elf elf32-avr)
+LOAD linker stubs
+
+.debug_ranges   0x00000000      0x380
+ .debug_ranges  0x00000000      0x328 obj/avr/src/wii_esc_ng.o
+ .debug_ranges  0x00000328       0x18 obj/avr/core.a(main.o)
+ .debug_ranges  0x00000340       0x40 obj/avr/core.a(wiring.o)

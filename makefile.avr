@@ -1,0 +1,114 @@
+# System configuration - UNCOMMENT AS DESIRED
+
+TCHAIN=
+CC  = $(TCHAIN)avr-gcc
+CCP = $(TCHAIN)avr-g++
+OPT = -O2
+OBJCOPY = $(TCHAIN)avr-objcopy
+AR = $(TCHAIN)avr-ar
+RM = rm -rf
+SIZE = $(TCHAIN)avr-size
+AVRDUDE ?= c:/bin/avrdude
+COMPORT ?= com5
+BOARD ?= _BS_NFET_
+
+# Add .d to Make's recognized suffixes.
+SUFFIXES += .d
+#We don't need to clean up when we're making these targets
+NODEPS:=clean tags svn
+
+# Define output directory
+OBJECT_DIR = obj/avr
+BIN_DIR = bin/avr
+OUT_FILE = wii_esc_ng
+MCU?=atmega8
+F_CPU?=16000000L
+
+# Assembler, Compiler and Linker flags and linker script settings
+LINKER_FLAGS=-mmcu=$(MCU) $(OPT) -Wl,--relax,--gc-sections "-Wl,-Map=$(BIN_DIR)/$(OUT_FILE).map"
+ASSEMBLER_FLAGS=-c $(OPT) -mmcu=$(MCU) -x assembler-with-cpp -Isrc -Ilib-avr/arduino
+COMPILER_FLAGS=-c -g -mmcu=$(MCU) $(OPT) -ffunction-sections -fdata-sections -fno-exceptions \
+  -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums \
+  -fno-split-wide-types \
+  -mcall-prologues \
+  -DF_CPU=$(F_CPU) -DARDUINO=22 -DBOARD=$(BOARD) -Isrc -Ilib-avr/arduino -Ilib/MWC_PT -Ilib-avr -Ilib-avr/nvram
+
+# Define sources and objects
+LSRC := $(wildcard  lib-avr/*/*/*/*/*/*/*.c) \
+        $(wildcard lib-avr/*/*/*/*/*/*.c) \
+        $(wildcard lib-avr/*/*/*/*/*.c) \
+        $(wildcard lib-avr/*/*/*/*.c) \
+        $(wildcard lib-avr/*/*/*.c) \
+        $(wildcard lib-avr/*/*.c) \
+        $(wildcard lib-avr/*.c) \
+
+LSRCP:= $(wildcard  lib-avr/*/*/*/*/*/*/*.cpp) \
+        $(wildcard lib-avr/*/*/*/*/*/*.cpp) \
+        $(wildcard lib-avr/*/*/*/*/*.cpp) \
+        $(wildcard lib-avr/*/*/*/*.cpp) \
+        $(wildcard lib-avr/*/*/*.cpp) \
+        $(wildcard lib-avr/*/*.cpp) \
+	$(wildcard lib-arm/*.cpp) \
+
+LOBJS := $(LSRC:%.c=$(OBJECT_DIR)/%.o) $(LSRCP:%.cpp=$(OBJECT_DIR)/%.o) $(LSRCSASM:%.s=$(OBJECT_DIR)/%.o)
+LOBJS := $(LOBJS:%.S=$(OBJECT_DIR)/%.o)
+LDEPS :=$(patsubst %.o,%.d,$(LOBJS))
+
+PDE:=$(wildcard src/*.pde)
+PDESRC:=obj/__main_pde.cpp
+
+SRC := $(wildcard  src/*.c)
+SRCP:= $(wildcard  src/*.cpp)
+
+OBJS := $(SRC:%.c=$(OBJECT_DIR)/%.o) $(SRCP:%.cpp=$(OBJECT_DIR)/%.o) $(SRCSASM:%.s=$(OBJECT_DIR)/%.o)
+OBJS := $(OBJS:%.S=$(OBJECT_DIR)/%.o)
+DEPS := $(patsubst %.o,%.d,$(OBJS))
+
+all: $(BIN_DIR)/$(OUT_FILE).elf
+	@mkdir -p $(dir $@)
+	$(OBJCOPY) -O ihex -R .eeprom "$(BIN_DIR)/$(OUT_FILE).elf" "$(BIN_DIR)/$(OUT_FILE).hex"
+	avr-objdump -d -C "$(BIN_DIR)/$(OUT_FILE).elf" > "$(BIN_DIR)/$(OUT_FILE).asm"
+	avr-nm -C -n -S -l "$(BIN_DIR)/$(OUT_FILE).elf" > "$(BIN_DIR)/$(OUT_FILE).mem"
+	$(SIZE) --mcu=$(MCU) -C "$(BIN_DIR)/$(OUT_FILE).elf"
+
+upload: all
+	$(AVRDUDE) -q -q -p atmega328p -c arduino -P $(COMPORT) -b 57600 -D -Uflash:w:$(BIN_DIR)/$(OUT_FILE).hex:i
+
+#Don't create dependencies when we're cleaning, for instance
+ifeq (0, $(words $(findstring $(MAKECMDGOALS), $(NODEPS))))
+    #Chances are, these files don't exist.  GMake will create them and
+    #clean up automatically afterwards
+    -include $(DEPS)
+    -include $(LDEPS)
+endif
+
+$(BIN_DIR)/$(OUT_FILE).elf: $(OBJECT_DIR)/core.a $(OBJS)
+	@mkdir -p $(dir $@)
+	$(CC) -o "$(BIN_DIR)/$(OUT_FILE).elf" $(LINKER_FLAGS) $(OBJS) $(OBJECT_DIR)/core.a -lm
+
+$(OBJECT_DIR)/core.a: $(LOBJS)
+	$(AR) -rcs $@ $^
+
+clean:
+	$(RM) $(LOBJS)
+	$(RM) $(LDEPS)
+	$(RM) $(OBJS)
+	$(RM) $(DEPS)
+	$(RM) $(BIN_DIR)/*
+	$(RM) $(BIN_DIR)/*
+
+$(OBJECT_DIR)/%.o: %.c
+	@mkdir -p $(dir $@)
+	$(CC) -MD $(COMPILER_FLAGS) $< -o $@
+
+$(OBJECT_DIR)/%.o: %.cpp
+	@mkdir -p $(dir $@)
+	$(CCP) -MD $(COMPILER_FLAGS) $< -o $@
+
+$(OBJECT_DIR)/%.o: %.s
+	@mkdir -p $(dir $@)
+	$(CC) -MD $(ASSEMBLER_FLAGS) $< -o $@
+
+$(OBJECT_DIR)/%.o: %.S
+	@mkdir -p $(dir $@)
+	$(CC) -MD $(ASSEMBLER_FLAGS) $< -o $@

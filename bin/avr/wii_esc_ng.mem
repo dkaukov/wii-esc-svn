@@ -1,0 +1,116 @@
+00000000 W __heap_end
+00000000 a __tmp_reg__
+00000000 a __tmp_reg__
+00000000 a __tmp_reg__
+00000000 W __vector_default
+00000000 T __vectors
+00000001 a __zero_reg__
+00000001 a __zero_reg__
+00000001 a __zero_reg__
+00000026 T __ctors_end
+00000026 T __ctors_start
+00000026 T __dtors_end
+00000026 T __dtors_start
+00000026 W __init
+00000026 T __trampolines_end
+00000026 T __trampolines_start
+00000032 T __do_copy_data
+00000034 a __CCP__
+00000034 a __CCP__
+00000034 a __CCP__
+0000003d a __SP_L__
+0000003d a __SP_L__
+0000003d a __SP_L__
+0000003e t .do_copy_data_loop
+0000003e a __SP_H__
+0000003e a __SP_H__
+0000003e a __SP_H__
+0000003f a __SREG__
+0000003f a __SREG__
+0000003f a __SREG__
+00000042 t .do_copy_data_start
+00000048 T __do_clear_bss
+00000050 t .do_clear_bss_loop
+00000052 t .do_clear_bss_start
+0000005c T __bad_interrupt
+0000005c W __vector_10
+0000005c W __vector_11
+0000005c W __vector_12
+0000005c W __vector_13
+0000005c W __vector_14
+0000005c W __vector_15
+0000005c W __vector_16
+0000005c W __vector_17
+0000005c W __vector_18
+0000005c W __vector_2
+0000005c W __vector_3
+0000005c W __vector_4
+0000005c W __vector_5
+0000005c W __vector_6
+0000005c W __vector_7
+0000005c W __vector_8
+0000005e 0000002a T __delay_us(unsigned int)	D:\ziss\MultiWii\ESC\wii-esc-ng/src/hal/m8.h:23
+00000088 0000003a T __delay_ms(unsigned long)	D:\ziss\MultiWii\ESC\wii-esc-ng/src/hal/m8.h:34
+000000c2 0000004a T __vector_1	D:\ziss\MultiWii\ESC\wii-esc-ng/src/hal/m8.h:39
+0000010c 0000004c T filter_ppm_data()	D:\ziss\MultiWii\ESC\wii-esc-ng/src/RX.h:29
+00000158 0000001c T set_pwm_on(unsigned char)	D:\ziss\MultiWii\ESC\wii-esc-ng/src/power_stage.h:14
+00000174 00000096 T change_comm_state(unsigned char)	D:\ziss\MultiWii\ESC\wii-esc-ng/src/power_stage.h:37
+0000020a 00000010 T set_comm_state()	D:\ziss\MultiWii\ESC\wii-esc-ng/src/power_stage.h:84
+00000218 0000004a T sdm()	D:\ziss\MultiWii\ESC\wii-esc-ng/src/sdm.h:14
+00000260 00000052 T start_power_control()	D:\ziss\MultiWii\ESC\wii-esc-ng/src/start.h:12
+000002b2 0000035a T start()	D:\ziss\MultiWii\ESC\wii-esc-ng/src/start.h:69
+0000045f W __stack
+0000060c 00000050 T run_init()	D:\ziss\MultiWii\ESC\wii-esc-ng/src/run.h:15
+0000065c 0000002c T run_power_control()	D:\ziss\MultiWii\ESC\wii-esc-ng/src/run.h:26
+00000688 000002d4 T run()	D:\ziss\MultiWii\ESC\wii-esc-ng/src/run.h:86
+0000095c 00000066 T setup	D:\ziss\MultiWii\ESC\wii-esc-ng/src/wii_esc_ng.cpp:35
+000009c0 0000005c T beep(unsigned char, unsigned char)	D:\ziss\MultiWii\ESC\wii-esc-ng/src/wii_esc_ng.cpp:45
+00000a1c 00000040 T startup_sound()	D:\ziss\MultiWii\ESC\wii-esc-ng/src/wii_esc_ng.cpp:56
+00000a5c 00000012 T wait_for_arm()	D:\ziss\MultiWii\ESC\wii-esc-ng/src/wii_esc_ng.cpp:67
+00000a6e 00000014 T wait_for_power_on()	D:\ziss\MultiWii\ESC\wii-esc-ng/src/wii_esc_ng.cpp:72
+00000a82 00000030 T loop	D:\ziss\MultiWii\ESC\wii-esc-ng/src/wii_esc_ng.cpp:76
+00000ab2 0000000a T main	D:\ziss\MultiWii\ESC\wii-esc-ng/lib-avr/arduino/main.cpp:3
+00000abc 00000090 T __vector_9	D:\ziss\MultiWii\ESC\wii-esc-ng/lib-avr/arduino/wiring.c:45
+00000b4c 00000040 T init	D:\ziss\MultiWii\ESC\wii-esc-ng/lib-avr/arduino/wiring.c:168
+00000b8c T __divmodhi4
+00000b8c T _div
+00000ba0 t __divmodhi4_neg2
+00000ba6 t __divmodhi4_exit
+00000ba8 t __divmodhi4_neg1
+00000bb2 T __prologue_saves__
+00000bea T __epilogue_restores__
+00000c20 T __udivmodhi4
+00000c28 t __udivmodhi4_loop
+00000c36 t __udivmodhi4_ep
+00000c48 T _exit
+00000c48 W exit
+00000c4a t __stop_program
+00000c4c A __data_load_start
+00000c4c T _etext
+00000c8c A __data_load_end
+00800060 00000040 d zc_filter_table
+00800060 D __data_start
+008000a0 B __bss_start
+008000a0 D __data_end
+008000a0 D _edata
+008000a0 00000002 B rx	D:\ziss\MultiWii\ESC\wii-esc-ng/src/global.h:55
+008000a2 00000002 B raw_ppm_data	D:\ziss\MultiWii\ESC\wii-esc-ng/src/RX.h:18
+008000a4 00000002 B ppm_edge_time	D:\ziss\MultiWii\ESC\wii-esc-ng/src/RX.h:19
+008000a6 00000001 b run_result
+008000a7 00000006 b timer_comm
+008000ad 00000006 b timer_comm_delay
+008000b3 00000002 b est_comm_time
+008000b5 00000001 b zc_filter_run
+008000b6 00000002 b last_tick
+008000b8 00000001 b start_result
+008000b9 0000000a b timer_start
+008000c3 00000001 b good_com
+008000c4 00000001 b zc_filter_start
+008000c5 00000002 b last_comm_time
+008000c7 00000002 b sdm_err
+008000c9 00000004 B timer0_overflow_count	D:\ziss\MultiWii\ESC\wii-esc-ng/lib-avr/arduino/wiring.c:40
+008000cd 00000004 B timer0_millis	D:\ziss\MultiWii\ESC\wii-esc-ng/lib-avr/arduino/wiring.c:41
+008000d1 00000001 b timer0_fract	D:\ziss\MultiWii\ESC\wii-esc-ng/lib-avr/arduino/wiring.c:42
+008000d2 B __bss_end
+008000d2 N _end
+00810000 N __eeprom_end
