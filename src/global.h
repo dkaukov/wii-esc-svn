@@ -58,6 +58,7 @@ struct pwr_stage_data {
   uint8_t com_state: 3;
   uint8_t sdm_state: 1;
   uint8_t aco: 1;
+  uint8_t recovery: 1;
 };
 register struct pwr_stage_data pwr_stage asm("r3");
 register int16_t sdm_ref asm("r4");

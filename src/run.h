@@ -1,10 +1,14 @@
+/*
+
+
+
+*/
+
 #ifndef RUN_H_INCLUDED
 #define RUN_H_INCLUDED
 
 static struct timer_small  timer_comm_delay;
 static struct timer_small  timer_comm;
-//static struct timer_small  timer_zc_blank;
-//static struct timer_small  timer_zc_timeout;
 static uint8_t             run_result;
 static uint8_t             zc_recovery;
 
@@ -12,15 +16,28 @@ static uint8_t             zc_recovery;
 #define RUN_RES_TIMEOUT    1
 #define RUN_RES_UNKNOWN    255
 
+void run_timing_control(uint16_t tick) {
+  timer_comm.last_systick = tick;
+  timer_comm_delay.last_systick = tick;
+/*
+  timer_comm_delay.elapsed = est_comm_time >> 3;
+  timer_comm.elapsed = est_comm_time >> 1;
+  timer_comm.elapsed += timer_comm_delay.elapsed;
+  __hw_alarm_a_set(tick + est_comm_time + (est_comm_time >> 1));
+*/
+  uint16_t tmp = est_comm_time >> 1;                //  60 deg
+  timer_comm.elapsed = tmp;
+  __hw_alarm_a_set(tick + est_comm_time + tmp);     // 180 deg
+  tmp =  tmp >> 2;
+  timer_comm.elapsed += tmp;                        //  75 deg
+  timer_comm_delay.elapsed = tmp;                   //  15 deg
+}
+
 void run_init() {
   run_result = RUN_RES_UNKNOWN;
   zc_filter_run_reset();
-  //!!!! Start to run
-  timer_comm.last_systick = last_tick;
-//  timer_zc_timeout.last_systick = start_systick;
-  timer_comm.elapsed = est_comm_time >> 1;
-  __hw_alarm_a_set(last_tick + est_comm_time + (est_comm_time >> 1));
-  DebugStrToggle();
+  run_timing_control(last_tick);
+  pwr_stage.recovery = 0;
 }
 
 void run_power_control() {
@@ -37,38 +54,34 @@ static PT_THREAD(thread_run(struct pt *pt, uint16_t dt)) {
   for (;;) {
     if ((pwr_stage.com_state & 1)) {
       PT_YIELD(pt);
-      PT_WAIT_UNTIL(pt,  zc_kickback_end(pwr_stage.com_state));
+      PT_WAIT_UNTIL(pt, __hw_alarm_a_expired() || zc_kickback_end(pwr_stage.com_state));
       DebugLEDToggle(); DebugLEDToggle();
       PT_WAIT_UNTIL(pt, __hw_alarm_a_expired() || zc_run_detected());
       if (__hw_alarm_a_expired()) {
-        //power_off();
-        //DebugStrToggle();
-        //DebugLEDToggle();
-        //next_comm_state();
-        //next_comm_state();
-        //change_comm_state(pwr_stage.com_state);
-        //power_off();
-        // __hw_alarm_a_set(est_comm_time << 1);
-        //continue;
-        //run_result = RUN_RES_TIMEOUT;
-        //break;
-        //DebugStrToggle();
+        // Power off and free spin
+        free_spin(); sdm_reset();
+        // Skip 2 states
+        next_comm_state(2); set_ac_state(pwr_stage.com_state);
+        // Set alarm on maximum
+        __hw_alarm_a_set(dt - 1);
+        // Wait for ZC
+        PT_WAIT_UNTIL(pt, __hw_alarm_a_expired() || zc_run_detected());
+        if (__hw_alarm_a_expired()) {
+          run_result = RUN_RES_TIMEOUT;
+          break;
+        }
+        t = dt - 56;
+        correct_timing(t);
+        pwr_stage.recovery = 1;
+      } else {
+        t = dt - 56;
+        update_timing(t);
       }
-      DebugLEDToggle(); DebugLEDToggle();
-      t = dt - 56;
-      update_timing(t);
-      timer_comm.last_systick =  t;
-      timer_comm_delay.last_systick = t;
-//      timer_zc_timeout.last_systick = t;
-      timer_comm_delay.elapsed = est_comm_time >> 3;
-      timer_comm.elapsed = est_comm_time >> 1;
-      timer_comm.elapsed += timer_comm_delay.elapsed;
-      __hw_alarm_a_set(t + est_comm_time + (est_comm_time >> 1));
-      //DebugLEDToggle(); DebugLEDToggle();
+      run_timing_control(t);
       PT_WAIT_UNTIL(pt, timer_expired(&timer_comm_delay, dt));
-      //DebugLEDToggle(); DebugLEDToggle();
     } else {
-      run_power_control();
+      if (!pwr_stage.recovery) run_power_control();
+      pwr_stage.recovery = 0;
       if (est_comm_time > (RPM_TO_COMM_TIME(RPM_RUN_MIN_RPM) * 2 * CLK_SCALE)) {
         run_result = RUN_RES_OK;
         break;
@@ -101,5 +114,4 @@ uint8_t run() {
   free_spin(); sdm_reset();
   return run_result;
 }
-
 #endif // RUN_H_INCLUDED

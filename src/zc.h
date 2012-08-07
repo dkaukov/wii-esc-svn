@@ -28,6 +28,15 @@ void update_timing(uint16_t tick) {
   //last_comm_time_03 = comm_time;
 }
 
+
+void correct_timing(uint16_t tick) {
+  uint16_t comm_time = __interval(last_tick, tick);
+  last_tick = tick;
+  comm_time = comm_time >> 1;
+  est_comm_time = comm_time;
+  last_comm_time = comm_time;
+}
+
 inline void zc_filter_start_reset() {
   zc_filter_start = ZC_FILTER_START_CONST * CLK_SCALE;
 }
