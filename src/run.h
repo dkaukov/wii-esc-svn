@@ -10,7 +10,6 @@
 static struct timer_small  timer_comm_delay;
 static struct timer_small  timer_comm;
 static uint8_t             run_result;
-static uint8_t             zc_recovery;
 
 #define RUN_RES_OK         0
 #define RUN_RES_TIMEOUT    1
