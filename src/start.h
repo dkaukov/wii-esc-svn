@@ -2,7 +2,6 @@
 #define START_H_INCLUDED
 
 static struct timer_big      timer_start;
-static uint8_t               start_result;
 
 #define START_RES_OK         0
 #define START_RES_TIMEOUT    1
@@ -31,7 +30,7 @@ void start_timing_control() {
 void start_init() {
   good_com = 0; sdm_ref = PWR_PCT_TO_VAL(PCT_PWR_STARTUP);
   timer_start.interval = RPM_TO_COMM_TIME(RPM_STEP_INITIAL) * CLK_SCALE;
-  start_result = START_RES_UNKNOWN;
+  __result = START_RES_UNKNOWN;
   Debug_Init();
 }
 
@@ -55,20 +54,20 @@ static PT_THREAD(thread_start(struct pt *pt, uint16_t tick)) {
         if (++good_com >= ENOUGH_GOODIES) {
           good_com = ENOUGH_GOODIES;
           if (est_comm_time <= (RPM_TO_COMM_TIME(RPM_START_MIN_RPM) * 2 * CLK_SCALE)) {
-            start_result = START_RES_OK;
+            __result = START_RES_OK;
             break;
           }
         }
       }
     } else good_com = 0;
-    if (sdm_ref == 0) {start_result = START_RES_OFF; break;}
+    if (sdm_ref == 0) {__result = START_RES_OFF; break;}
     if (!pwr_stage.com_state) Debug_Trigger();
     Debug_TraceToggle();
   }
   PT_END(pt);
 }
 
-uint8_t start() {
+static uint8_t start() {
   struct pt thread_start_pt;
   uint16_t current_tick;
   PT_INIT(&thread_start_pt);
@@ -79,7 +78,7 @@ uint8_t start() {
     sdm();
     //if (pwr_stage.aco) DebugLEDOn(); else DebugLEDOff();
   } while (PT_SCHEDULE(thread_start(&thread_start_pt, current_tick)));
-  return start_result;
+  return __result;
 }
 
 #endif // START_H_INCLUDED

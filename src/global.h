@@ -78,6 +78,7 @@ static uint16_t last_comm_time_03;
 
 static uint8_t good_com;
 
+static uint8_t __result;
 
 // Core Function prototypes
 

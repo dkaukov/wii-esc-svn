@@ -9,7 +9,6 @@
 
 static struct timer_small  timer_comm_delay;
 static struct timer_small  timer_comm;
-static uint8_t             run_result;
 
 #define RUN_RES_OK         0
 #define RUN_RES_TIMEOUT    1
@@ -33,7 +32,7 @@ void run_timing_control(uint16_t tick) {
 }
 
 void run_init() {
-  run_result = RUN_RES_UNKNOWN;
+  __result = RUN_RES_UNKNOWN;
   pwr_stage.recovery = 0;
   zc_filter_run_reset();
   run_timing_control(last_tick);
@@ -66,7 +65,7 @@ static PT_THREAD(thread_run(struct pt *pt, uint16_t dt)) {
         // Wait for ZC
         PT_WAIT_UNTIL(pt, __hw_alarm_a_expired() || zc_run_detected());
         if (__hw_alarm_a_expired()) {
-          run_result = RUN_RES_TIMEOUT;
+          __result = RUN_RES_TIMEOUT;
           break;
         }
         t = dt - 56;
@@ -82,7 +81,7 @@ static PT_THREAD(thread_run(struct pt *pt, uint16_t dt)) {
       if (!pwr_stage.recovery) run_power_control();
       pwr_stage.recovery = 0;
       if (est_comm_time > (RPM_TO_COMM_TIME(RPM_RUN_MIN_RPM) * 2 * CLK_SCALE)) {
-        run_result = RUN_RES_OK;
+        __result = RUN_RES_OK;
         break;
       }
       PT_WAIT_UNTIL(pt, timer_expired(&timer_comm, dt));
@@ -95,7 +94,7 @@ static PT_THREAD(thread_run(struct pt *pt, uint16_t dt)) {
   PT_END(pt);
 }
 
-uint8_t run() {
+static uint8_t run() {
   uint8_t sdm_clk;
   uint16_t current_tick;
   struct pt thread_run_pt;
@@ -111,6 +110,6 @@ uint8_t run() {
     #endif
   } while (PT_SCHEDULE(thread_run(&thread_run_pt, current_tick)));
   free_spin(); sdm_reset();
-  return run_result;
+  return __result;
 }
 #endif // RUN_H_INCLUDED
