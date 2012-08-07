@@ -187,6 +187,9 @@
 		<Unit filename="src\core.h">
 			<Option virtualFolder="Core\" />
 		</Unit>
+		<Unit filename="src\debug.h">
+			<Option virtualFolder="Subsystems\" />
+		</Unit>
 		<Unit filename="src\global.h">
 			<Option virtualFolder="Core\" />
 		</Unit>
