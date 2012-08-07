@@ -32,7 +32,7 @@ void start_init() {
   good_com = 0; sdm_ref = PWR_PCT_TO_VAL(PCT_PWR_STARTUP);
   timer_start.interval = RPM_TO_COMM_TIME(RPM_STEP_INITIAL) * CLK_SCALE;
   start_result = START_RES_UNKNOWN;
-  DebugStrOff(); DebugLEDOff();
+  Debug_Init();
 }
 
 static PT_THREAD(thread_start(struct pt *pt, uint16_t tick)) {
@@ -42,7 +42,7 @@ static PT_THREAD(thread_start(struct pt *pt, uint16_t tick)) {
     timer_start.elapsed = timer_start.interval; //timer_start.last_systick = tick;
     PT_YIELD(pt);
     PT_WAIT_UNTIL(pt, (timeout = timer_expired(&timer_start, tick)) || zc_kickback_end(pwr_stage.com_state));
-    DebugLEDToggle(); DebugLEDToggle();
+    Debug_TraceMark();
     zc_filter_start_reset();
     PT_WAIT_UNTIL(pt, (timeout = timer_expired(&timer_start, tick)) || zc_start_detected(pwr_stage.com_state));
     next_comm_state();
@@ -62,8 +62,8 @@ static PT_THREAD(thread_start(struct pt *pt, uint16_t tick)) {
       }
     } else good_com = 0;
     if (sdm_ref == 0) {start_result = START_RES_OFF; break;}
-    if (!pwr_stage.com_state) DebugStrToggle();
-    DebugLEDToggle();
+    if (!pwr_stage.com_state) Debug_Trigger();
+    Debug_TraceToggle();
   }
   PT_END(pt);
 }

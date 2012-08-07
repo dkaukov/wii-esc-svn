@@ -4,6 +4,7 @@
 //#define SERIAL_COM_SPEED 256000
 //#define SERIAL_COM_SPEED 115200
 #define SERIAL_COM_SPEED 57600
+#define OSC_DEBUG
 
 //*************************
 // Power settings         *

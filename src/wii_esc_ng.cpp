@@ -23,8 +23,8 @@
 #include <pt-sem.h>
 #include "global.h"
 #include "config.h"
-#include "debug.h"
 #include "core.h"
+#include "debug.h"
 #include "RX.h"
 #include "power_stage.h"
 #include "sdm.h"

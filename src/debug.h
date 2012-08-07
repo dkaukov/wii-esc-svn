@@ -1,42 +1,36 @@
-#ifndef MWC_Debug_h
-#define MWC_Debug_h
+#ifndef DEBUG_H_INCLUDED
+#define DEBUG_H_INCLUDED
 
-#include <stdio.h>
-
-#if defined(MWC_DEBUG)
-
-#define __ASSERT_USE_STDERR
-#include <assert.h>
-
-#define dprintf(format, ...) printf_P(PSTR( format ), ##__VA_ARGS__)
-
-#if defined(__AVR__)
-static FILE debugout = {0};
-
-static int debug_putchar (char c, FILE *stream) {
-  CLI_serial_write(c);
-  return 1;
-}
+#if defined(OSC_DEBUG)
 
 inline void Debug_Init() {
-  CLI_serial_open(115200);
-  fdev_setup_stream (&debugout, debug_putchar, NULL, _FDEV_SETUP_WRITE);
-  stdout = &debugout;
-  stderr = &debugout;
-}
-#else
-
-inline void Debug_Init() {
+  DebugStrOff();
+  DebugLEDOff();
 }
 
-#endif
+// OSC: External trigger
+volatile void Debug_Trigger() {
+  DebugStrToggle();
+};
+
+// OSC: Invert trace
+volatile void Debug_TraceToggle() {
+  DebugLEDToggle();
+};
+
+// OSC: Put short spike
+volatile void Debug_TraceMark() {
+  DebugLEDToggle();
+  asm("nop");
+  DebugLEDToggle();
+};
 
 #else
 
-  inline void Debug_Init() {};
-  #define dprintf(format, ...)
-  #define assert(expression)
+inline void Debug_Init() {};
+inline void Debug_Trigger() {};
+inline void Debug_TraceToggle() {};
+inline void Debug_TraceMark() {};
 
-#endif
-
-#endif
+#endif //OSC_DEBUG
+#endif //DEBUG_H_INCLUDED

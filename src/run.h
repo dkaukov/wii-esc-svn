@@ -55,7 +55,7 @@ static PT_THREAD(thread_run(struct pt *pt, uint16_t dt)) {
     if ((pwr_stage.com_state & 1)) {
       PT_YIELD(pt);
       PT_WAIT_UNTIL(pt, __hw_alarm_a_expired() || zc_kickback_end(pwr_stage.com_state));
-      DebugLEDToggle(); DebugLEDToggle();
+      Debug_TraceMark();
       PT_WAIT_UNTIL(pt, __hw_alarm_a_expired() || zc_run_detected());
       if (__hw_alarm_a_expired()) {
         // Power off and free spin
@@ -90,8 +90,8 @@ static PT_THREAD(thread_run(struct pt *pt, uint16_t dt)) {
     }
     next_comm_state();
     change_comm_state(pwr_stage.com_state);
-    if (!pwr_stage.com_state) DebugStrToggle();
-    DebugLEDToggle();
+    if (!pwr_stage.com_state) Debug_Trigger();
+    Debug_TraceToggle();
   }
   PT_END(pt);
 }
