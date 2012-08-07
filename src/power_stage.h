@@ -95,13 +95,13 @@ void set_ac_state(uint8_t state) {
 
 inline void next_comm_state() {
   uint8_t r = pwr_stage.com_state;
-  if (++r >= 0x6) r -= 6;
+  if (++r >= 6) r -= 6;
   pwr_stage.com_state = r;
 }
 
 inline void next_comm_state(uint8_t n) {
-  uint8_t r = pwr_stage.com_state;
-  if ((r+=n) >= 0x6) r -= 6;
+  uint8_t r = pwr_stage.com_state + n;
+  if (r >= 6) r -= 6;
   pwr_stage.com_state = r;
 }
 

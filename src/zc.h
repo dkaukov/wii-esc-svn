@@ -60,10 +60,10 @@ inline uint8_t zc_start_detected(uint8_t state) {
 }
 
 inline void zc_filter_run_reset() {
-  zc_filter_run = 1;
+  zc_filter_run = 0;
 }
 
-inline uint8_t zc_run_detected() {
+uint8_t zc_run_detected() {
   uint8_t v = zc_filter_run;
   if (!pwr_stage.aco) v |= 0x01;
   v = pgm_read_byte(&zc_filter_table[v]);
