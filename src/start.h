@@ -47,7 +47,6 @@ static PT_THREAD(thread_start(struct pt *pt, uint16_t tick)) {
     next_comm_state();
     change_comm_state(pwr_stage.com_state);
     start_power_control();
-    start_timing_control();
     if (!timeout) {
       if (!(pwr_stage.com_state & 1)) {
         update_timing(tick);
@@ -63,6 +62,9 @@ static PT_THREAD(thread_start(struct pt *pt, uint16_t tick)) {
     if (sdm_ref == 0) {__result = START_RES_OFF; break;}
     if (!pwr_stage.com_state) Debug_Trigger();
     Debug_TraceToggle();
+    PT_YIELD(pt);
+    start_timing_control();
+    PT_YIELD(pt);
   }
   PT_END(pt);
 }

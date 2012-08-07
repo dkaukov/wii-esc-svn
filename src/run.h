@@ -47,8 +47,7 @@ static PT_THREAD(thread_run(struct pt *pt, uint16_t dt)) {
       run_timing_control(t);
       PT_WAIT_UNTIL(pt, timer_expired(&timer_comm_delay, dt));
     } else {
-      run_power_control();
-      if (est_comm_time > (RPM_TO_COMM_TIME(RPM_RUN_MIN_RPM) * 2 * CLK_SCALE)) {
+      if (est_comm_time > (RPM_TO_COMM_TIME(RPM_RUN_MIN_RPM) * 2)) {
         __result = RUN_RES_OK;
         break;
       }
@@ -58,6 +57,9 @@ static PT_THREAD(thread_run(struct pt *pt, uint16_t dt)) {
     change_comm_state(pwr_stage.com_state);
     if (!pwr_stage.com_state) Debug_Trigger();
     Debug_TraceToggle();
+    PT_YIELD(pt);
+    run_power_control();
+    PT_YIELD(pt);
   }
   PT_END(pt);
 }
