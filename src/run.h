@@ -34,9 +34,9 @@ void run_timing_control(uint16_t tick) {
 
 void run_init() {
   run_result = RUN_RES_UNKNOWN;
+  pwr_stage.recovery = 0;
   zc_filter_run_reset();
   run_timing_control(last_tick);
-  pwr_stage.recovery = 0;
 }
 
 void run_power_control() {

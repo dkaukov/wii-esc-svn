@@ -30,8 +30,8 @@ void __delay_us(uint16_t __us) {
   while (__interval(i_start) < __us) {};
 };
 
-void __delay_ms(uint32_t __ms) __attribute__ ((noinline));
-void __delay_ms(uint32_t __ms) {
+void __delay_ms(uint16_t __ms) __attribute__ ((noinline));
+void __delay_ms(uint16_t __ms) {
   while (__ms--) __delay_us(1000);
 }
 
