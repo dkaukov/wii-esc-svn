@@ -1,7 +1,7 @@
 #ifndef SDM_H_INCLUDED
 #define SDM_H_INCLUDED
 
-#define POWER_RANGE    1000 * CLK_SCALE
+#define POWER_RANGE    (1000U * CLK_SCALE)
 
 static int16_t sdm_err;
 

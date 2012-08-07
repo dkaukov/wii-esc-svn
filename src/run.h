@@ -80,7 +80,7 @@ static PT_THREAD(thread_run(struct pt *pt, uint16_t dt)) {
     } else {
       if (!pwr_stage.recovery) run_power_control();
       pwr_stage.recovery = 0;
-      if (est_comm_time > (RPM_TO_COMM_TIME(RPM_RUN_MIN_RPM) * 2 * CLK_SCALE)) {
+      if (est_comm_time > (RPM_TO_COMM_TIME(RPM_RUN_MIN_RPM) * 2)) {
         __result = RUN_RES_OK;
         break;
       }

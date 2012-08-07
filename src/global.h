@@ -43,8 +43,8 @@
 #define _TGY_          120
 #define _TGY_16_       130
 
-#define RPM_TO_COMM_TIME(x) (1000000 * 10 / x)
-#define PWR_PCT_TO_VAL(x)   (x*POWER_RANGE/100)
+#define RPM_TO_COMM_TIME(x) (1000000UL * 10U / x * CLK_SCALE)
+#define PWR_PCT_TO_VAL(x)   (x * POWER_RANGE / 100U)
 
 
 struct rx_data {

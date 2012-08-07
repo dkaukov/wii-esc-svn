@@ -23,13 +23,13 @@ void start_power_control() {
 
 void start_timing_control() {
   timer_start.interval -= 40;
-  if (timer_start.interval < RPM_TO_COMM_TIME(RPM_STEP_MAX) * CLK_SCALE)
-    timer_start.interval = RPM_TO_COMM_TIME(RPM_STEP_MAX) * CLK_SCALE;
+  if (timer_start.interval < RPM_TO_COMM_TIME(RPM_STEP_MAX))
+    timer_start.interval = RPM_TO_COMM_TIME(RPM_STEP_MAX);
 }
 
 void start_init() {
   good_com = 0; sdm_ref = PWR_PCT_TO_VAL(PCT_PWR_STARTUP);
-  timer_start.interval = RPM_TO_COMM_TIME(RPM_STEP_INITIAL) * CLK_SCALE;
+  timer_start.interval = RPM_TO_COMM_TIME(RPM_STEP_INITIAL);
   __result = START_RES_UNKNOWN;
   Debug_Init();
 }
@@ -53,7 +53,7 @@ static PT_THREAD(thread_start(struct pt *pt, uint16_t tick)) {
         update_timing(tick);
         if (++good_com >= ENOUGH_GOODIES) {
           good_com = ENOUGH_GOODIES;
-          if (est_comm_time <= (RPM_TO_COMM_TIME(RPM_START_MIN_RPM) * 2 * CLK_SCALE)) {
+          if (est_comm_time <= (RPM_TO_COMM_TIME(RPM_START_MIN_RPM) * 2)) {
             __result = START_RES_OK;
             break;
           }
