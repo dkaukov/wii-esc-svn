@@ -17,14 +17,14 @@ void sdm() {
   sdm_err -= err;
   if (sdm_err < 0) {
     if (!pwr_stage.sdm_state) {
-  	  pwr_stage.sdm_state = 1;
-  	  set_pwm_on(pwr_stage.com_state);
-	}
+      pwr_stage.sdm_state = 1;
+      set_pwm_on(pwr_stage.com_state);
+    }
   } else {
     if (pwr_stage.sdm_state) {
       pwr_stage.sdm_state = 0;
-  	  set_pwm_off(pwr_stage.com_state);
-	}
+      set_pwm_off(pwr_stage.com_state);
+    }
   }
 }
 
