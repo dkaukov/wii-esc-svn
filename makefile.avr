@@ -95,7 +95,6 @@ clean:
 	$(RM) $(OBJS)
 	$(RM) $(DEPS)
 	$(RM) $(BIN_DIR)/*
-	$(RM) $(BIN_DIR)/*
 
 $(OBJECT_DIR)/%.o: %.c
 	@mkdir -p $(dir $@)
