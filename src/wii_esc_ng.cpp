@@ -66,11 +66,11 @@ void startup_sound() {
 
 void wait_for_arm() {
   filter_ppm_data();
-  while (rx.raw > 1000 * CLK_SCALE) filter_ppm_data();
+  while (rx.raw > US_TO_TICKS(1000)) filter_ppm_data();
 }
 
 void wait_for_power_on() {
-  while (rx.raw < 1000 * CLK_SCALE + PWR_PCT_TO_VAL(PCT_PWR_MIN)) filter_ppm_data();
+  while (rx.raw < US_TO_TICKS(1000) + PWR_PCT_TO_VAL(PCT_PWR_MIN)) filter_ppm_data();
 }
 
 void loop() {

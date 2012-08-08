@@ -92,7 +92,7 @@ void run_init() {
 
 void run_power_control() {
   filter_ppm_data();
-  int16_t tmp = rx.raw - (1000 * CLK_SCALE);
+  int16_t tmp = rx.raw - US_TO_TICKS(1000);
   if (tmp < PWR_PCT_TO_VAL(PCT_PWR_MIN)) tmp = 0;
   if (tmp > POWER_RANGE)                 tmp = POWER_RANGE;
   sdm_ref = tmp;

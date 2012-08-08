@@ -1,7 +1,7 @@
 #ifndef ZC_H_INCLUDED
 #define ZC_H_INCLUDED
 
-#define ZC_FILTER_START_CONST 9
+#define ZC_FILTER_START_CONST (9 * TICKS_PER_US)
 
 static uint8_t zc_filter_start;
 static uint8_t zc_filter_run;
@@ -38,7 +38,7 @@ void correct_timing(uint16_t tick) {
 }
 
 inline void zc_filter_start_reset() {
-  zc_filter_start = ZC_FILTER_START_CONST * CLK_SCALE;
+  zc_filter_start = ZC_FILTER_START_CONST;
 }
 
 inline uint8_t zc_kickback_end(uint8_t state) {
@@ -55,7 +55,7 @@ inline uint8_t zc_start_detected(uint8_t state) {
   } else {
     if (!pwr_stage.aco) zc_filter_start--; else zc_filter_start++;
   }
-  if (zc_filter_start > (ZC_FILTER_START_CONST * CLK_SCALE)) zc_filter_start = ZC_FILTER_START_CONST * CLK_SCALE;
+  if (zc_filter_start > (ZC_FILTER_START_CONST)) zc_filter_start = ZC_FILTER_START_CONST;
   return (zc_filter_start == 0);
 }
 

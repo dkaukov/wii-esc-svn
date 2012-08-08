@@ -10,7 +10,7 @@ static struct timer_big      timer_start;
 
 void start_power_control() {
   filter_ppm_data();
-  int16_t val = rx.raw - (1000 * CLK_SCALE);
+  int16_t val = rx.raw - US_TO_TICKS(1000);
   if (val < PWR_PCT_TO_VAL(PCT_PWR_MIN)) {
     sdm_ref = 0;
     return;

@@ -16,7 +16,7 @@
 // EEPROM
 #include <nvram.h>
 
-#define CLK_SCALE (F_CPU / 8000000)
+#define TICKS_PER_US (F_CPU / 8000000L)
 
 // Delay support
 void __delay_us(uint16_t __us) __attribute__ ((noinline));
