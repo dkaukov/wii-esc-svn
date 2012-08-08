@@ -60,12 +60,14 @@ static PT_THREAD(thread_run(struct pt *pt, uint16_t dt)) {
     PT_YIELD(pt);
     run_power_control();
     PT_YIELD(pt);
+    PT_YIELD(pt);
+    PT_YIELD(pt);
   }
   PT_END(pt);
 }
 
 static uint8_t run() {
-  uint8_t sdm_clk;
+  uint8_t sdm_clk = 0;
   uint16_t current_tick;
   struct pt thread_run_pt;
   PT_INIT(&thread_run_pt);
@@ -73,7 +75,7 @@ static uint8_t run() {
   while (1) {
     current_tick = __systick();
     aco_sample();
-    #if (CLK_SCALE == 2)
+    #if (TICKS_PER_US == 2)
       if (sdm_clk++ & 0x01) sdm();
     #else
       sdm();

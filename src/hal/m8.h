@@ -21,7 +21,7 @@
 // Delay support
 void __delay_us(uint16_t __us) __attribute__ ((noinline));
 void __delay_us(uint16_t __us) {
-#if (CLK_SCALE==2)
+#if (TICKS_PER_US == 2)
   __us = (__us << 1) - 4;
 #else
   __us = __us  - 4;

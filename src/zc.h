@@ -3,13 +3,12 @@
 
 #define ZC_FILTER_START_CONST (9 * TICKS_PER_US)
 
-static uint8_t zc_filter_start;
-static uint8_t zc_filter_run;
+register uint8_t zc_filter asm("r2");
 
-const uint8_t PROGMEM zc_filter_table[64]=   {0 ,2 ,4 ,6 ,8 ,10,12,14,16,18,20,22,24,26,28,30,
-                                              32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,
-                                              0 ,2 ,4 ,6 ,8 ,10,12,14,16,18,1 ,22,1 ,26,28,30,
-                                              32,34,36,38,1 ,42,44,46,1 ,1 ,1 ,54,56,58,60,62};
+const uint8_t zc_filter_table[64]=   {0 ,2 ,4 ,6 ,8 ,10,12,14,16,18,20,22,24,26,28,30,
+                                      32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,
+                                      0 ,2 ,4 ,6 ,8 ,10,12,14,16,18,1 ,22,1 ,26,28,30,
+                                      32,34,36,38,1 ,42,44,46,1 ,1 ,1 ,54,56,58,60,62};
 
 
 void update_timing(uint16_t tick) {
@@ -38,7 +37,7 @@ void correct_timing(uint16_t tick) {
 }
 
 inline void zc_filter_start_reset() {
-  zc_filter_start = ZC_FILTER_START_CONST;
+  zc_filter = ZC_FILTER_START_CONST;
 }
 
 inline uint8_t zc_kickback_end(uint8_t state) {
@@ -51,23 +50,24 @@ inline uint8_t zc_kickback_end(uint8_t state) {
 
 inline uint8_t zc_start_detected(uint8_t state) {
   if (state & 1) {
-    if (pwr_stage.aco) zc_filter_start--; else zc_filter_start++;
+    if (pwr_stage.aco) zc_filter--; else zc_filter++;
   } else {
-    if (!pwr_stage.aco) zc_filter_start--; else zc_filter_start++;
+    if (!pwr_stage.aco) zc_filter--; else zc_filter++;
   }
-  if (zc_filter_start > (ZC_FILTER_START_CONST)) zc_filter_start = ZC_FILTER_START_CONST;
-  return (zc_filter_start == 0);
+  if (zc_filter > (ZC_FILTER_START_CONST)) zc_filter = ZC_FILTER_START_CONST;
+  return (zc_filter == 0);
 }
 
 inline void zc_filter_run_reset() {
-  zc_filter_run = 0;
+  zc_filter = 0;
 }
 
+uint8_t zc_run_detected() __attribute__ ((noinline));
 uint8_t zc_run_detected() {
-  uint8_t v = zc_filter_run;
+  uint8_t v = zc_filter;
   if (!pwr_stage.aco) v |= 0x01;
-  v = pgm_read_byte(&zc_filter_table[v]);
-  zc_filter_run = v;
+  v = zc_filter_table[v];
+  zc_filter = v;
   return (v & 0x01);
 }
 

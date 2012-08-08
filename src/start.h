@@ -40,8 +40,6 @@ static PT_THREAD(thread_start(struct pt *pt, uint16_t tick)) {
   while (1) {
     timer_start.elapsed = timer_start.interval; //timer_start.last_systick = tick;
     PT_YIELD(pt);
-    PT_WAIT_UNTIL(pt, (timeout = timer_expired(&timer_start, tick)) || zc_kickback_end(pwr_stage.com_state));
-    Debug_TraceMark();
     zc_filter_start_reset();
     PT_WAIT_UNTIL(pt, (timeout = timer_expired(&timer_start, tick)) || zc_start_detected(pwr_stage.com_state));
     next_comm_state();
@@ -78,7 +76,6 @@ static uint8_t start() {
     current_tick = __systick();
     aco_sample();
     sdm();
-    //if (pwr_stage.aco) DebugLEDOn(); else DebugLEDOff();
   } while (PT_SCHEDULE(thread_start(&thread_start_pt, current_tick)));
   return __result;
 }
