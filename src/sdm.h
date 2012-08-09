@@ -1,7 +1,10 @@
 #ifndef SDM_H_INCLUDED
 #define SDM_H_INCLUDED
 
-#define POWER_RANGE    (1000U * TICKS_PER_US)
+#define RCP_RANGE      US_TO_TICKS(RCP_FULL - RCP_START)
+#define SDM_TOP        (RCP_RANGE + (RCP_RANGE * PCT_PWR_MIN) / 100)
+#define SDM_LEFT       (US_TO_TICKS(RCP_START) - (RCP_RANGE * PCT_PWR_MIN) / 100)
+#define RCP_TO_SDM(x)  (x - SDM_LEFT)
 
 static int16_t sdm_err;
 
@@ -13,7 +16,7 @@ void sdm_reset() {
 
 void sdm() {
   int16_t err = sdm_ref;
-  if (pwr_stage.sdm_state) err -= POWER_RANGE;
+  if (pwr_stage.sdm_state) err -= SDM_TOP;
   sdm_err -= err;
   if (sdm_err < 0) {
     if (!pwr_stage.sdm_state) {

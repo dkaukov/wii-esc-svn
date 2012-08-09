@@ -31,6 +31,9 @@
 //*************************
 #define RCP_MIN                900
 #define RCP_MAX                2200
+#define RCP_START              1000
+#define RCP_FULL               2000
+#define RCP_DEADBAND           5
 
 
 #endif

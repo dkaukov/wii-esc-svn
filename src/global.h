@@ -44,7 +44,7 @@
 #define _TGY_16_       130
 
 #define RPM_TO_COMM_TIME(x) (1000000UL * 10U / x * TICKS_PER_US)
-#define PWR_PCT_TO_VAL(x)   (x * POWER_RANGE / 100U)
+#define PWR_PCT_TO_VAL(x)   (x * SDM_TOP / 100U)
 #define US_TO_TICKS(x)      (x * TICKS_PER_US)
 
 

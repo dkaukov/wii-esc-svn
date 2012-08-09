@@ -94,9 +94,9 @@ void run_init() {
 
 void run_power_control() {
   filter_ppm_data();
-  int16_t tmp = rx.raw - US_TO_TICKS(1000);
+  int16_t tmp = RCP_TO_SDM(rx.raw);
   if (tmp < PWR_PCT_TO_VAL(PCT_PWR_MIN)) tmp = 0;
-  if (tmp > POWER_RANGE)                 tmp = POWER_RANGE;
+  if (tmp > SDM_TOP)                     tmp = SDM_TOP;
   sdm_ref = tmp;
 }
 
