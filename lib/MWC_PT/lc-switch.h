@@ -66,9 +66,11 @@ typedef unsigned char lc_t;
 
 #define LC_INIT(s) s = 0;
 
-#define LC_RESUME(s) switch(s) { case 0:
+#define LC_RESUME(s) const unsigned int __line__ = __COUNTER__; switch(s) { case 0:
 
-#define LC_SET(s) s = __LINE__; case __LINE__:
+#define __LC_SET__(s, c) s = (c - __line__); case (c  - __line__):
+
+#define LC_SET(s) __LC_SET__(s, __COUNTER__)
 
 #define LC_END(s) }
 
