@@ -48,7 +48,7 @@ inline uint8_t zc_kickback_end(uint8_t state) {
   }
 }
 
-inline uint8_t zc_start_detected(uint8_t state) {
+uint8_t zc_start_detected(uint8_t state) {
   if (state & 1) {
     if (pwr_stage.aco) zc_filter--; else zc_filter++;
   } else {

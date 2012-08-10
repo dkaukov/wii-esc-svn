@@ -43,9 +43,9 @@
 #define _TGY_          120
 #define _TGY_16_       130
 
-#define RPM_TO_COMM_TIME(x) (1000000UL * 10U / x * TICKS_PER_US)
-#define PWR_PCT_TO_VAL(x)   (x * SDM_TOP / 100U)
-#define US_TO_TICKS(x)      (x * TICKS_PER_US)
+#define RPM_TO_COMM_TIME(x) (1000000UL * 10U / (x) * TICKS_PER_US)
+#define PWR_PCT_TO_VAL(x)   ((x) * SDM_TOP / 100U)
+#define US_TO_TICKS(x)      ((x) * TICKS_PER_US)
 
 
 struct rx_data {
@@ -60,6 +60,7 @@ struct pwr_stage_data {
   uint8_t sdm_state: 1;
   uint8_t aco: 1;
   uint8_t recovery: 1;
+  uint8_t sdm_fast: 1;
 };
 register struct pwr_stage_data pwr_stage asm("r3");
 register int16_t sdm_ref asm("r4");
@@ -100,7 +101,7 @@ void Board_Init();
 struct timer_small { uint16_t elapsed, interval; uint16_t last_systick;};
 struct timer_big   { uint32_t elapsed, interval; uint16_t last_systick;};
 
-uint8_t timer_expired(struct timer_small *t, uint16_t systick = __systick()) {
+__attribute__ ((noinline)) uint8_t timer_expired(struct timer_small *t, uint16_t systick = __systick()) {
   uint16_t dt = __interval(t->last_systick, systick);
   t->last_systick = systick;
   if (t->elapsed <= dt) {
@@ -111,7 +112,7 @@ uint8_t timer_expired(struct timer_small *t, uint16_t systick = __systick()) {
   return 0;
 };
 
-uint8_t timer_expired(struct timer_big *t, uint16_t systick = __systick()) {
+__attribute__ ((noinline)) uint8_t timer_expired(struct timer_big *t, uint16_t systick = __systick()) {
   uint16_t dt = __interval(t->last_systick, systick);
   t->last_systick = systick;
   if (t->elapsed <= dt) {

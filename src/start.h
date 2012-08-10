@@ -18,7 +18,7 @@ void start_power_control() {
   if (val < PWR_PCT_TO_VAL(PCT_PWR_STARTUP)) val = PWR_PCT_TO_VAL(PCT_PWR_STARTUP);
   else
   if (val > PWR_PCT_TO_VAL(PCT_PWR_MAX_STARTUP)) val = PWR_PCT_TO_VAL(PCT_PWR_MAX_STARTUP);
-  sdm_ref += (val - sdm_ref) >> 4;
+  sdm_ref += (val - sdm_ref) >> 2;
 }
 
 void start_timing_control() {
@@ -33,51 +33,42 @@ void start_init() {
   __result = START_RES_UNKNOWN;
   Debug_Init();
 }
-
-static PT_THREAD(thread_start(struct pt *pt, uint16_t tick)) {
-  uint8_t timeout;
-  PT_BEGIN(pt);
+uint8_t start_wait_for_zc() {
   while (1) {
-    timer_start.elapsed = timer_start.interval; //timer_start.last_systick = tick;
-    PT_YIELD(pt);
-    zc_filter_start_reset();
-    PT_WAIT_UNTIL(pt, (timeout = timer_expired(&timer_start, tick)) || zc_start_detected(pwr_stage.com_state));
-    next_comm_state();
-    change_comm_state(pwr_stage.com_state);
-    start_power_control();
-    if (!timeout) {
-      if (!(pwr_stage.com_state & 1)) {
-        update_timing(tick);
-        if (++good_com >= ENOUGH_GOODIES) {
-          good_com = ENOUGH_GOODIES;
-          if (est_comm_time <= (RPM_TO_COMM_TIME(RPM_START_MIN_RPM) * 2)) {
-            __result = START_RES_OK;
-            break;
-          }
-        }
-      }
-    } else good_com = 0;
-    if (sdm_ref == 0) {__result = START_RES_OFF; break;}
-    if (!pwr_stage.com_state) Debug_Trigger();
-    Debug_TraceToggle();
-    PT_YIELD(pt);
-    start_timing_control();
-    PT_YIELD(pt);
-  }
-  PT_END(pt);
-}
-
-static uint8_t start() {
-  struct pt thread_start_pt;
-  uint16_t current_tick;
-  PT_INIT(&thread_start_pt);
-  start_init();
-  do {
-    current_tick = __systick();
     aco_sample();
     sdm();
-  } while (PT_SCHEDULE(thread_start(&thread_start_pt, current_tick)));
-  return __result;
+    if (timer_expired(&timer_start, __systick())) return 0;
+    if (zc_start_detected(pwr_stage.com_state)) return 1;
+    aco_sample();
+    if (zc_start_detected(pwr_stage.com_state)) return 1;
+  }
+ }
+
+static uint8_t start() {
+  start_init();
+  while (1) {
+    timer_start.elapsed = timer_start.interval;
+    zc_filter_start_reset();
+    if (start_wait_for_zc()) {
+      update_timing(__systick());
+      if (++good_com >= ENOUGH_GOODIES) {
+        good_com = ENOUGH_GOODIES;
+        if ((est_comm_time <= RPM_TO_COMM_TIME(RPM_START_MIN_RPM))  &&  (!pwr_stage.com_state)) {
+          return START_RES_OK;
+        }
+      }
+    }  else good_com = 0;
+    next_comm_state();
+    set_pwm_off(pwr_stage.com_state);
+    pwr_stage.sdm_state = 0;
+    change_comm_state(pwr_stage.com_state);
+    if (!pwr_stage.com_state) start_power_control();
+    start_timing_control();
+    if (sdm_ref == 0) return START_RES_OFF;
+    if (!pwr_stage.com_state) Debug_Trigger();
+    Debug_TraceToggle();
+    __delay_us(300);
+  }
 }
 
 #endif // START_H_INCLUDED
