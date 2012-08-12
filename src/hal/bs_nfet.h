@@ -82,6 +82,8 @@ inline void ACPhaseC() {
    ACChannel(mux_c);
 };
 
+#define BEMF_FILTER_DELAY_US 22
+
 void Board_Idle() {
 };
 

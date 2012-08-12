@@ -101,7 +101,8 @@ void Board_Init();
 struct timer_small { uint16_t elapsed, interval; uint16_t last_systick;};
 struct timer_big   { uint32_t elapsed, interval; uint16_t last_systick;};
 
-__attribute__ ((noinline)) uint8_t timer_expired(struct timer_small *t, uint16_t systick = __systick()) {
+// __attribute__ ((noinline))
+uint8_t timer_expired(struct timer_small *t, uint16_t systick = __systick()) {
   uint16_t dt = __interval(t->last_systick, systick);
   t->last_systick = systick;
   if (t->elapsed <= dt) {

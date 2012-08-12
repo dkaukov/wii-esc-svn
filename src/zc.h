@@ -2,6 +2,7 @@
 #define ZC_H_INCLUDED
 
 #define ZC_FILTER_START_CONST (9 * TICKS_PER_US)
+#define ZC_PROCESSING_DELAY   (42)
 
 register uint8_t zc_filter asm("r2");
 
@@ -14,19 +15,9 @@ const uint8_t zc_filter_table[64]=   {0 ,2 ,4 ,6 ,8 ,10,12,14,16,18,20,22,24,26,
 void update_timing(uint16_t tick) {
   uint16_t comm_time = __interval(last_tick, tick);
   last_tick = tick;
-
-   //est_comm_time = comm_time;
-  //est_comm_time += (comm_time - est_comm_time) >> 2;
-
-  est_comm_time = (est_comm_time + comm_time) >> 1;
+  est_comm_time = (last_comm_time + comm_time) >> 1;
   last_comm_time = comm_time;
-
-  //est_comm_time = (last_comm_time_01 + last_comm_time_02 + last_comm_time_03 + comm_time) >> 2;
-  //last_comm_time_01 = last_comm_time_02;
-  //last_comm_time_02 = last_comm_time_03;
-  //last_comm_time_03 = comm_time;
 }
-
 
 void correct_timing(uint16_t tick) {
   uint16_t comm_time = __interval(last_tick, tick);
@@ -62,8 +53,7 @@ inline void zc_filter_run_reset() {
   zc_filter = 0;
 }
 
-uint8_t zc_run_detected() __attribute__ ((noinline));
-uint8_t zc_run_detected() {
+__attribute__ ((noinline)) uint8_t zc_run_detected() {
   uint8_t v = zc_filter;
   if (!pwr_stage.aco) v |= 0x01;
   v = zc_filter_table[v];
