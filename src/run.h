@@ -56,7 +56,7 @@ void run_timing_control(uint16_t tick) {
 void run_init() {
   __result = RUN_RES_UNKNOWN;
   pwr_stage.recovery = 0;
-  est_comm_time = est_comm_time < 1;
+  est_comm_time = est_comm_time << 1;
   pwr_stage.sdm_fast = 0;
   sys_limit = sdm_ref;
   run_timing_control(last_tick);
