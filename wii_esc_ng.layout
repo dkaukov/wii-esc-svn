@@ -1,21 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="tgy_16" />
-	<File name="lib-avr\avr_usart.h" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="0" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="src\RX.h" open="0" top="0" tabpos="14" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1302" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="src\config.h" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="142" topLine="5" />
-		</Cursor>
-	</File>
 	<File name="src\core.h" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="47" topLine="0" />
@@ -26,9 +11,9 @@
 			<Cursor1 position="436" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="src\global.h" open="1" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="src\global.h" open="1" top="1" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1972" topLine="35" />
+			<Cursor1 position="2193" topLine="1" />
 		</Cursor>
 	</File>
 	<File name="src\hal\bs_nfet.h" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -38,7 +23,7 @@
 	</File>
 	<File name="src\hal\tgy.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2651" topLine="41" />
+			<Cursor1 position="2476" topLine="41" />
 		</Cursor>
 	</File>
 	<File name="src\hal\tp.h" open="0" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -51,9 +36,9 @@
 			<Cursor1 position="64" topLine="2" />
 		</Cursor>
 	</File>
-	<File name="src\run.h" open="1" top="1" tabpos="6" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+	<File name="src\run.h" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2936" topLine="69" />
+			<Cursor1 position="1733" topLine="69" />
 		</Cursor>
 	</File>
 	<File name="src\sdm.h" open="1" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -73,7 +58,22 @@
 	</File>
 	<File name="src\zc.h" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1872" topLine="3" />
+			<Cursor1 position="1257" topLine="18" />
+		</Cursor>
+	</File>
+	<File name="lib-avr\avr_usart.h" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src\RX.h" open="1" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="799" topLine="25" />
+		</Cursor>
+	</File>
+	<File name="src\config.h" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="142" topLine="5" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>

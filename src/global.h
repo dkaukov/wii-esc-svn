@@ -43,6 +43,10 @@
 #define _TGY_          120
 #define _TGY_16_       130
 
+////////////////////////////////////////////////////////////////////////////////
+///
+//  Unit conversions
+//
 #define RPM_TO_COMM_TIME(x) (1000000UL * 10U / (x) * TICKS_PER_US)
 #define PWR_PCT_TO_VAL(x)   ((x) * SDM_TOP / 100U)
 #define US_TO_TICKS(x)      ((x) * TICKS_PER_US)
@@ -65,30 +69,17 @@ struct pwr_stage_data {
 register struct pwr_stage_data pwr_stage asm("r3");
 register int16_t sdm_ref asm("r4");
 
-//register uint8_t com_state asm("r2");
-//register uint8_t sdm_state asm("r3");
-//static int16_t sdm_ref;
-
 static uint16_t last_tick;
 static uint16_t est_comm_time;
 static uint16_t last_comm_time;
-
-static uint16_t last_comm_time_01;
-static uint16_t last_comm_time_02;
-static uint16_t last_comm_time_03;
-
-
 static uint8_t good_com;
-
 static uint8_t __result;
 
 // Core Function prototypes
 
 // RX input capture
 void AttachPPM();
-void AttachPPMSerial();
 inline void rx_ppm_callback(uint16_t time, uint8_t state);
-inline void PPMCallback(uint8_t ch, uint16_t time, uint8_t state);
 
 // SysTick
 inline uint16_t __systick();
