@@ -35,14 +35,14 @@
 #define    RPM_STEP_INITIAL    155
 #define    RPM_STEP_MAX        200
 #define    PCT_PWR_STARTUP     10
-#define    PCT_PWR_MAX_STARTUP 30
+#define    PCT_PWR_MAX_STARTUP 25
 #define    RPM_START_MIN_RPM   7000
 #define    ENOUGH_GOODIES      240
 
 //*************************
 // Run settings           *
 //*************************
-#define    RPM_RUN_MIN_RPM     3200
+#define    RPM_RUN_MIN_RPM     6000
 
 //*************************
 // RC Input               *

@@ -68,11 +68,15 @@ static uint8_t start() {
     timer_start.elapsed = timer_start.interval;
     zc_filter_start_reset();
     if (start_wait_for_zc()) {
-      update_timing(__systick());
-      if (++good_com >= ENOUGH_GOODIES) {
-        good_com = ENOUGH_GOODIES;
-        if ((est_comm_time <= RPM_TO_COMM_TIME(RPM_START_MIN_RPM))  &&  (!pwr_stage.com_state)) {
-          return START_RES_OK;
+      if ((pwr_stage.com_state & 1)) {
+        update_timing(__systick());
+        if (++good_com >= ENOUGH_GOODIES) {
+          good_com = ENOUGH_GOODIES;
+          if ((est_comm_time <= RPM_TO_COMM_TIME(RPM_START_MIN_RPM) * 2)) {
+            next_comm_state();
+            change_comm_state(pwr_stage.com_state);
+            return START_RES_OK;
+          }
         }
       }
     }  else good_com = 0;

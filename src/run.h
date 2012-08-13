@@ -35,9 +35,9 @@ void run_power_control() {
   int16_t tmp = RCP_TO_SDM(rx.raw);
   if (tmp < PWR_PCT_TO_VAL(PCT_PWR_MIN)) tmp = 0;
   if (tmp > SDM_TOP)                     tmp = SDM_TOP;
-  if ((tmp > (FAST_SDM * SDM_TOP / 100)) && (tmp < ((100 - FAST_SDM) * SDM_TOP / 100))) pwr_stage.sdm_fast = 0; else pwr_stage.sdm_fast = 1;
-  if (sys_limit < SDM_TOP) sys_limit += 3;
+  if (sys_limit < SDM_TOP) sys_limit += 5;
   if (tmp > sys_limit) tmp = sys_limit;
+  if ((tmp > (FAST_SDM * SDM_TOP / 100)) && (tmp < ((100 - FAST_SDM) * SDM_TOP / 100))) pwr_stage.sdm_fast = 0; else pwr_stage.sdm_fast = 1;
   sdm_ref = tmp;
 }
 
@@ -50,13 +50,12 @@ void run_timing_control(uint16_t tick) {
   tmp =  tmp >> 2;
   timer_comm.elapsed += tmp;                        //  75 deg
   timer_comm_delay.elapsed = tmp;                   //  15 deg
-  timer_zc_blank.interval = tmp;
+  timer_zc_blank.elapsed = tmp >> 1;
 }
 
 void run_init() {
   __result = RUN_RES_UNKNOWN;
   pwr_stage.recovery = 0;
-  est_comm_time = est_comm_time << 1;
   pwr_stage.sdm_fast = 0;
   sys_limit = sdm_ref;
   run_timing_control(last_tick);
@@ -67,8 +66,6 @@ static PT_THREAD(thread_run(struct pt *pt, uint16_t dt)) {
   PT_BEGIN(pt);
   for (;;) {
     if ((pwr_stage.com_state & 1)) {
-      timer_zc_blank.last_systick = dt;
-      timer_zc_blank.elapsed = timer_zc_blank.interval;
       PT_YIELD(pt);
       PT_WAIT_UNTIL(pt, timer_expired(&timer_zc_blank, dt));
       Debug_TraceMark();
@@ -100,7 +97,7 @@ static PT_THREAD(thread_run(struct pt *pt, uint16_t dt)) {
         pwr_stage.recovery = 0;
       } else update_timing(t);
       run_timing_control(t);
-      PT_WAIT_UNTIL(pt, timer_expired(&timer_comm_delay, dt));
+      PT_WAIT_UNTIL(pt, timer_expired(&timer_comm_delay));
     } else {
       if (est_comm_time > (RPM_TO_COMM_TIME(RPM_RUN_MIN_RPM) * 2)) {
         __result = RUN_RES_OK;
@@ -114,6 +111,7 @@ static PT_THREAD(thread_run(struct pt *pt, uint16_t dt)) {
     if (!pwr_stage.com_state) Debug_Trigger();
     Debug_TraceToggle();
     run_power_control();
+    timer_zc_blank.last_systick = dt;
   }
   PT_END(pt);
 }
@@ -125,11 +123,7 @@ static uint8_t run() {
   run_init();
   while (1) {
     aco_sample();
-    #ifdef BEMF_FILTER_DELAY_US
-      sdm();
-    #else
-      if ((pwr_stage.sdm_fast) || (sdm_clk++ & 0x01)) sdm();
-    #endif
+    if ((pwr_stage.sdm_fast) || (sdm_clk++ & 0x01)) sdm();
     if (!PT_SCHEDULE(thread_run(&thread_run_pt, __systick()))) break;
   };
   free_spin(); sdm_reset();
