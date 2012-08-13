@@ -85,14 +85,6 @@ inline void Board_Init() {
   // Timer1
   TCCR1A = 0;
   TCCR1B = _BV(CS11);                 /* div 8 clock prescaler */
-         //| _BV(ICNC1);                /* Input Capture Noise Canceler */
-         //| _BV(ICES1);               /* rising (positive) edge will trigger the capture */
-  // Serial Init
-  //GUI_serial_open(SERIAL_COM_SPEED);
-
-  // Serial Init
-  //GUI_serial_open(SERIAL_COM_SPEED);
-
   PORTB = PORTB_INIT; DDRB = PORTB_DD;
   PORTC = PORTC_INIT; DDRC = PORTC_DD;
   PORTD = PORTD_INIT; DDRD = PORTD_DD;

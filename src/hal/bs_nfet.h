@@ -1,11 +1,6 @@
 #ifndef _BS_NFET_H_
 #define _BS_NFET_H_
 
-inline void StatusLEDOn()     {PORTB |= _BV(5);}
-inline void StatusLEDOff()    {PORTB &= ~_BV(5);}
-inline void StatusLEDToggle() {PORTB ^= _BV(5);
-}
-
 //*********************
 // PORT B definitions *
 //*********************
@@ -13,7 +8,7 @@ inline void StatusLEDToggle() {PORTB ^= _BV(5);
 #define DbgStr          4
 #define CnFET           0
 #define PORTB_INIT      0
-#define PORTB_DD        (1<<CnFET)+(1<<DbgLED)
+#define PORTB_DD        (1<<CnFET)+(1<<DbgLED)+(1<<DbgStr)
 #define BRAKE_PB        (1<<CnFET)
 
 inline void DebugLEDOn()     {PORTB |= _BV(DbgLED);}
@@ -23,6 +18,7 @@ inline void DebugLEDToggle() {PORTB ^= _BV(DbgLED);}
 inline void DebugStrOn()     {PORTB |= _BV(DbgStr);}
 inline void DebugStrOff()    {PORTB &= ~_BV(DbgStr);}
 inline void DebugStrToggle() {PORTB ^= _BV(DbgStr);}
+
 //*********************
 // PORT C definitions *
 //*********************
@@ -92,11 +88,6 @@ inline void Board_Init() {
   // Timer1
   TCCR1A = 0;
   TCCR1B = _BV(CS11);                 /* div 8 clock prescaler */
-        // | _BV(ICNC1);                /* Input Capture Noise Canceler */
-         //| _BV(ICES1);               /* rising (positive) edge will trigger the capture */
-  // Serial Init
-  //GUI_serial_open(SERIAL_COM_SPEED);
-
   PORTB = PORTB_INIT; DDRB = PORTB_DD;
   PORTC = PORTC_INIT; DDRC = PORTC_DD;
   PORTD = PORTD_INIT; DDRD = PORTD_DD;

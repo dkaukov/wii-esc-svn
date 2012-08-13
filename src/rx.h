@@ -1,5 +1,5 @@
 /**
- * MultiWii NG 0.1 - 2012
+ * Wii ESC NG 2.0 - 2012
  * RC Receiver support. ->(RX)
  *
  * This program is free software: you can redistribute it and/or modify
@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
 uint16_t raw_ppm_data;
 uint16_t ppm_edge_time;
 
@@ -55,13 +56,4 @@ inline void RX_Init() {
   AttachPPM();
   init_ppm();
 }
-
-inline void RX_loop_50hz() {
-  filter_ppm_data();
-}
-
-inline void RX_loop_200hz() {
-}
-
-
 
