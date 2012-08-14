@@ -20,7 +20,6 @@
 #define RUN_H_INCLUDED
 
 static struct timer_small  timer_comm_delay;
-static struct timer_small  timer_comm;
 static struct timer_small  timer_zc_blank;
 static int16_t sys_limit;
 
@@ -42,13 +41,10 @@ void run_power_control() {
 }
 
 void run_timing_control(uint16_t tick) {
-  timer_comm.last_systick = tick;
   timer_comm_delay.last_systick = tick;
-  uint16_t tmp = est_comm_time >> 1;                //  60 deg
-  timer_comm.elapsed = tmp;
-  __hw_alarm_a_set(tick + est_comm_time + tmp);     // 180 deg
-  tmp =  tmp >> 2;
-  timer_comm.elapsed += tmp;                        //  75 deg
+  uint16_t tmp = est_comm_time;                     // 120 deg
+  __hw_alarm_a_set(tick +  tmp);                    // 120 deg
+  tmp =  tmp >> 3;
   timer_comm_delay.elapsed = tmp;                   //  15 deg
   timer_zc_blank.elapsed = tmp >> 1;
 }
@@ -64,47 +60,50 @@ void run_init() {
 static PT_THREAD(thread_run(struct pt *pt, uint16_t dt)) {
   uint16_t t;
   PT_BEGIN(pt);
-  for (;;) {
+  while (1) {
+    PT_YIELD(pt);
+    PT_WAIT_UNTIL(pt, timer_expired(&timer_zc_blank, dt));
+    Debug_TraceMark();
+    zc_filter_run_reset();
     if ((pwr_stage.com_state & 1)) {
-      PT_YIELD(pt);
-      PT_WAIT_UNTIL(pt, timer_expired(&timer_zc_blank, dt));
-      Debug_TraceMark();
-      zc_filter_run_reset();
-      PT_WAIT_UNTIL(pt, __hw_alarm_a_expired() || zc_run_detected());
-      Debug_TraceMark();
-      if (__hw_alarm_a_expired()) {
-        if (pwr_stage.recovery) {
-          __result = RUN_RES_TIMEOUT;
-          break;
-        }
-        Debug_Trigger();
-        // Power off and free spin
-        free_spin(); sdm_reset();
-        // Skip 2 states
-        next_comm_state(2); set_ac_state(pwr_stage.com_state);
-        // Set alarm on maximum
-        __hw_alarm_a_set(dt + 0x3FFF);
-        pwr_stage.recovery = 1;
-        continue;
-      }
-      #ifdef BEMF_FILTER_DELAY_US
-      t = dt - (ZC_PROCESSING_DELAY + US_TO_TICKS(BEMF_FILTER_DELAY_US));
-      #else
-      t = dt - (ZC_PROCESSING_DELAY);
-      #endif
-      if (pwr_stage.recovery) {
-        correct_timing(t);
-        pwr_stage.recovery = 0;
-      } else update_timing(t);
-      run_timing_control(t);
-      PT_WAIT_UNTIL(pt, timer_expired(&timer_comm_delay));
+      PT_WAIT_UNTIL(pt, __hw_alarm_a_expired() || zc_run_detected_lh());
     } else {
-      if (est_comm_time > (RPM_TO_COMM_TIME(RPM_RUN_MIN_RPM) * 2)) {
-        __result = RUN_RES_OK;
+      PT_WAIT_UNTIL(pt, __hw_alarm_a_expired() || zc_run_detected_hl());
+    }
+    Debug_TraceMark();
+    if (__hw_alarm_a_expired()) {
+      if (pwr_stage.recovery) {
+        __result = RUN_RES_TIMEOUT;
         break;
       }
-      PT_YIELD(pt);
-      PT_WAIT_UNTIL(pt, timer_expired(&timer_comm, dt));
+      Debug_Trigger();
+      // Power off and free spin
+      free_spin(); sdm_reset();
+      // Skip 2 states
+      next_comm_state(2); set_ac_state(pwr_stage.com_state);
+      // Set alarm on maximum
+      __hw_alarm_a_set(dt + 0x3FFF);
+      // Set blanking interval
+      timer_zc_blank.last_systick = dt;
+      timer_zc_blank.elapsed = est_comm_time >> 3;
+      //
+      pwr_stage.recovery = 1;
+      continue;
+    }
+    #ifdef BEMF_FILTER_DELAY_US
+    t = dt - (ZC_PROCESSING_DELAY + US_TO_TICKS(BEMF_FILTER_DELAY_US));
+    #else
+    t = dt - (ZC_PROCESSING_DELAY);
+    #endif
+    if (pwr_stage.recovery) {
+      correct_timing(t);
+      pwr_stage.recovery = 0;
+    } else update_timing(t);
+    run_timing_control(t);
+    PT_WAIT_UNTIL(pt, timer_expired(&timer_comm_delay));
+    if (est_comm_time > (RPM_TO_COMM_TIME(RPM_RUN_MIN_RPM) * 2)) {
+      __result = RUN_RES_OK;
+      break;
     }
     next_comm_state();
     change_comm_state(pwr_stage.com_state);
