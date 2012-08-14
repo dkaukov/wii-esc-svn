@@ -99,8 +99,10 @@ static PT_THREAD(thread_run(struct pt *pt, uint16_t dt)) {
       correct_timing(t);
       pwr_stage.recovery = 0;
     } else update_timing(t);
-    run_timing_control(t);
-    PT_WAIT_UNTIL(pt, timer_expired(&timer_comm_delay));
+    PT_YIELD(pt);
+    run_timing_control(last_tick);
+    PT_YIELD(pt);
+    PT_WAIT_UNTIL(pt, timer_expired(&timer_comm_delay, dt));
     if (est_comm_time > (RPM_TO_COMM_TIME(RPM_RUN_MIN_RPM) * 2)) {
       __result = RUN_RES_OK;
       break;
