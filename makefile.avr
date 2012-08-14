@@ -16,6 +16,7 @@ BOARD ?= _BS_NFET_
 SUFFIXES += .d
 #We don't need to clean up when we're making these targets
 NODEPS:=clean tags svn
+lc = $(subst A,a,$(subst B,b,$(subst C,c,$(subst D,d,$(subst E,e,$(subst F,f,$(subst G,g,$(subst H,h,$(subst I,i,$(subst J,j,$(subst K,k,$(subst L,l,$(subst M,m,$(subst N,n,$(subst O,o,$(subst P,p,$(subst Q,q,$(subst R,r,$(subst S,s,$(subst T,t,$(subst U,u,$(subst V,v,$(subst W,w,$(subst X,x,$(subst Y,y,$(subst Z,z,$1))))))))))))))))))))))))))
 
 # Define output directory
 OBJECT_DIR = obj/avr
@@ -54,9 +55,6 @@ LOBJS := $(LSRC:%.c=$(OBJECT_DIR)/%.o) $(LSRCP:%.cpp=$(OBJECT_DIR)/%.o) $(LSRCSA
 LOBJS := $(LOBJS:%.S=$(OBJECT_DIR)/%.o)
 LDEPS :=$(patsubst %.o,%.d,$(LOBJS))
 
-PDE:=$(wildcard src/*.pde)
-PDESRC:=obj/__main_pde.cpp
-
 SRC := $(wildcard  src/*.c)
 SRCP:= $(wildcard  src/*.cpp)
 
@@ -66,10 +64,11 @@ DEPS := $(patsubst %.o,%.d,$(OBJS))
 
 all: $(BIN_DIR)/$(OUT_FILE).elf
 	@mkdir -p $(dir $@)
-	$(OBJCOPY) -O ihex -R .eeprom "$(BIN_DIR)/$(OUT_FILE).elf" "$(BIN_DIR)/$(OUT_FILE).hex"
-	avr-objdump -d -C "$(BIN_DIR)/$(OUT_FILE).elf" > "$(BIN_DIR)/$(OUT_FILE).asm"
-	avr-nm -C -n -S -l "$(BIN_DIR)/$(OUT_FILE).elf" > "$(BIN_DIR)/$(OUT_FILE).mem"
-	$(SIZE) --mcu=$(MCU) -C "$(BIN_DIR)/$(OUT_FILE).elf"
+	@$(OBJCOPY) -O ihex -R .eeprom "$(BIN_DIR)/$(OUT_FILE).elf" "$(BIN_DIR)/$(OUT_FILE).hex"
+	@avr-objdump -d -C "$(BIN_DIR)/$(OUT_FILE).elf" > "$(BIN_DIR)/$(OUT_FILE).asm"
+	@avr-nm -C -n -S -l "$(BIN_DIR)/$(OUT_FILE).elf" > "$(BIN_DIR)/$(OUT_FILE).mem"
+	@$(SIZE) --mcu=$(MCU) -C "$(BIN_DIR)/$(OUT_FILE).elf"
+	@cp "$(BIN_DIR)/$(OUT_FILE).hex" "$(BIN_DIR)/$(call lc,$(patsubst _%_,%,$(BOARD))).hex"
 
 upload: all
 	$(AVRDUDE) -q -q -p atmega328p -c arduino -P $(COMPORT) -b 57600 -D -Uflash:w:$(BIN_DIR)/$(OUT_FILE).hex:i
