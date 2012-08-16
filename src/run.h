@@ -20,6 +20,7 @@
 #define RUN_H_INCLUDED
 
 static struct timer_small  timer_comm_delay;
+static struct timer_small  timer_comm_timeout;
 static struct timer_small  timer_zc_blank;
 static int16_t sys_limit;
 
@@ -42,8 +43,9 @@ void run_power_control() {
 
 void run_timing_control(uint16_t tick) {
   timer_comm_delay.last_systick = tick;
+  timer_comm_timeout.last_systick = tick;
   uint16_t tmp = est_comm_time;                     // 120 deg
-  __hw_alarm_a_set(tick +  tmp);                    // 120 deg
+  timer_comm_timeout.elapsed = tmp;                 // 120 deg
   tmp =  tmp >> 3;
   timer_comm_delay.elapsed = tmp;                   //  15 deg
   timer_zc_blank.elapsed = tmp >> 1;
@@ -59,6 +61,7 @@ void run_init() {
 
 static PT_THREAD(thread_run(struct pt *pt, uint16_t dt)) {
   uint16_t t;
+  uint8_t timeout;
   PT_BEGIN(pt);
   while (1) {
     PT_YIELD(pt);
@@ -66,12 +69,12 @@ static PT_THREAD(thread_run(struct pt *pt, uint16_t dt)) {
     Debug_TraceMark();
     zc_filter_run_reset();
     if ((pwr_stage.com_state & 1)) {
-      PT_WAIT_UNTIL(pt, __hw_alarm_a_expired() || zc_run_detected_lh());
+      PT_WAIT_UNTIL(pt, (timeout = timer_expired(&timer_comm_timeout, dt)) || zc_run_detected_lh());
     } else {
-      PT_WAIT_UNTIL(pt, __hw_alarm_a_expired() || zc_run_detected_hl());
+      PT_WAIT_UNTIL(pt, (timeout = timer_expired(&timer_comm_timeout, dt)) || zc_run_detected_hl());
     }
     Debug_TraceMark();
-    if (__hw_alarm_a_expired()) {
+    if (timeout) {
       if (pwr_stage.recovery) {
         __result = RUN_RES_TIMEOUT;
         break;
@@ -79,10 +82,11 @@ static PT_THREAD(thread_run(struct pt *pt, uint16_t dt)) {
       Debug_Trigger();
       // Power off and free spin
       free_spin(); sdm_reset();
-      // Skip 2 states
-      next_comm_state(2); set_ac_state(pwr_stage.com_state);
+      // Skip 3 states
+      next_comm_state(3); set_ac_state(pwr_stage.com_state);
       // Set alarm on maximum
-      __hw_alarm_a_set(dt + 0x3FFF);
+      timer_comm_timeout.last_systick = dt;
+      timer_comm_timeout.elapsed = 0x3FFF;
       // Set blanking interval
       timer_zc_blank.last_systick = dt;
       timer_zc_blank.elapsed = est_comm_time >> 3;
