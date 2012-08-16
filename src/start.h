@@ -20,7 +20,6 @@
 #define START_H_INCLUDED
 
 static struct timer_big      timer_start;
-static struct timer_small    timer_pwm;
 
 #define START_RES_OK         0
 #define START_RES_TIMEOUT    1
@@ -52,19 +51,12 @@ void start_init() {
   __result = START_RES_UNKNOWN;
   Debug_Init();
 }
-
 uint8_t start_wait_for_zc() {
-  uint16_t tick;
-  timer_pwm.last_systick = __systick();
-  timer_pwm.elapsed = US_TO_TICKS(500);
-  set_pwm_on(pwr_stage.com_state);
   while (1) {
-    tick = __systick();
-    if (timer_expired(&timer_start, tick)) return 0;
-    if (timer_expired(&timer_pwm,   tick)) {
-      set_pwm_off(pwr_stage.com_state);
-      __delay_us(50);
-    }
+    aco_sample();
+    sdm();
+    if (timer_expired(&timer_start, __systick())) return 0;
+    if (zc_start_detected(pwr_stage.com_state)) return 1;
     aco_sample();
     if (zc_start_detected(pwr_stage.com_state)) return 1;
   }
