@@ -24,10 +24,10 @@
 
 register uint8_t zc_filter asm("r2");
 
-const uint8_t zc_filter_table[64]=   {0 ,2 ,4 ,6 ,8 ,10,12,14,16,18,20,22,24,26,28,30,
-                                      32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,
-                                      0 ,2 ,4 ,6 ,8 ,10,12,14,16,18,1 ,22,1 ,26,28,30,
-                                      32,34,36,38,1 ,42,44,46,1 ,1 ,1 ,54,56,58,60,62};
+const uint8_t PROGMEM zc_filter_table[64]=   {0 ,2 ,4 ,6 ,8 ,10,12,14,16,18,20,22,24,26,28,30,
+                                              32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,
+                                              0 ,2 ,4 ,6 ,8 ,10,12,14,16,18,1 ,22,1 ,26,28,30,
+                                              32,34,36,38,1 ,42,44,46,1 ,1 ,1 ,54,56,58,60,62};
 
 void update_timing(uint16_t tick) {
   uint16_t comm_time = __interval(last_tick, tick);
@@ -73,7 +73,7 @@ inline void zc_filter_run_reset() {
 __attribute__ ((noinline)) uint8_t zc_run_detected_lh() {
   uint8_t v = zc_filter;
   if (!pwr_stage.aco) v |= 0x01;
-  v = zc_filter_table[v];
+  v = pgm_read_byte(&zc_filter_table[v]);
   zc_filter = v;
   return (v & 0x01);
 }
@@ -81,7 +81,7 @@ __attribute__ ((noinline)) uint8_t zc_run_detected_lh() {
 __attribute__ ((noinline)) uint8_t zc_run_detected_hl() {
   uint8_t v = zc_filter;
   if (pwr_stage.aco) v |= 0x01;
-  v = zc_filter_table[v];
+  v = pgm_read_byte(&zc_filter_table[v]);
   zc_filter = v;
   return (v & 0x01);
 }
