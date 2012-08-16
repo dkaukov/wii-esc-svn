@@ -132,7 +132,7 @@
 					<SilentBuild command="$make -f $makefile.avr MCU=$(mcu) BOARD=$(board)  F_CPU=$(f_cpu)" />
 				</MakeCommands>
 			</Target>
-			<Target title=" bs">
+			<Target title="bs">
 				<Option output="bin\avr\wii_esc_ng.elf" imp_lib="lib$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_BASENAME).def" prefix_auto="0" extension_auto="0" />
 				<Option working_dir="bin\avr" />
 				<Option object_output="C:\Ziss\mwc-ng\trunk\crosscomp\.objs" />
@@ -222,10 +222,14 @@
 		<Unit filename="src\global.h">
 			<Option virtualFolder="Core\" />
 		</Unit>
+		<Unit filename="src\hal\bs.h">
+			<Option virtualFolder="HAL\" />
+			<Option target="bs" />
+		</Unit>
 		<Unit filename="src\hal\bs_nfet.h">
 			<Option virtualFolder="HAL\" />
 			<Option target="bs_nfet" />
-			<Option target=" bs" />
+			<Option target="bs" />
 		</Unit>
 		<Unit filename="src\hal\tgy.h">
 			<Option virtualFolder="HAL\" />

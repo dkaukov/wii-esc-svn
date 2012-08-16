@@ -22,7 +22,7 @@
 //*************************
 // System settings        *
 //*************************
-#define    OSC_DEBUG
+//#define    OSC_DEBUG
 
 //*************************
 // Power settings         *
