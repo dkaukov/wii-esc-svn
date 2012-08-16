@@ -22,6 +22,11 @@
   #include "hal/bs_nfet.h"
 #endif
 
+#if (BOARD == _BS_)
+  #include "hal/m8.h"
+  #include "hal/bs.h"
+#endif
+
 #if (BOARD == _TP_)
   #include "hal/m8.h"
   #include "hal/tp.h"
