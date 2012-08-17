@@ -1,5 +1,5 @@
-#ifndef _BS_NFET_H_
-#define _BS_NFET_H_
+#ifndef _BS_H_
+#define _BS_H_
 
 //*********************
 // PORT B definitions *
