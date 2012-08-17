@@ -31,7 +31,7 @@ const uint8_t PROGMEM zc_filter_table[64]=   {0 ,2 ,4 ,6 ,8 ,10,12,14,16,18,20,2
 
 uint16_t timing_hst[4];
 
-static uint16_t cubuc_extrapolate(uint16_t y0, uint16_t y1, uint16_t y2, uint16_t y3) {
+static uint16_t cubic_extrapolate(uint16_t y0, uint16_t y1, uint16_t y2, uint16_t y3) {
   int16_t a0 = y3 - y2 - y0 + y1;
   int16_t a1 = y0 - y1 - a0;
   int16_t a2 = y2 - y0;
@@ -44,7 +44,7 @@ uint16_t extrapolate_new_timing(uint16_t comm_time) {
   timing_hst[1] = timing_hst[2];
   timing_hst[2] = timing_hst[3];
   timing_hst[3] = comm_time;
-  return cubuc_extrapolate(timing_hst[0], timing_hst[1], timing_hst[2], timing_hst[3]);
+  return cubic_extrapolate(timing_hst[3], timing_hst[2], timing_hst[1], timing_hst[0]);
 }
 
 void update_timing(uint16_t tick) {
