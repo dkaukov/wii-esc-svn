@@ -63,15 +63,17 @@ uint8_t start_wait_for_zc() {
  }
 
 static uint8_t start() {
+  int16_t start_timing = 0x3FFF;
   start_init();
   while (1) {
     timer_start.elapsed = timer_start.interval;
     zc_filter_start_reset();
     if (start_wait_for_zc()) {
       update_timing(__systick());
+      start_timing += ((int16_t)est_comm_time - start_timing) >> 2;
       if (++good_com >= ENOUGH_GOODIES) {
         good_com = ENOUGH_GOODIES;
-        if ((est_comm_time <= RPM_TO_COMM_TIME(RPM_START_MIN_RPM) * 2)) {
+        if ((start_timing <= RPM_TO_COMM_TIME(RPM_START_MIN_RPM) * 2)) {
           next_comm_state();
           change_comm_state(pwr_stage.com_state);
           return START_RES_OK;
