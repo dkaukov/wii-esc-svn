@@ -86,7 +86,7 @@ static PT_THREAD(thread_run(struct pt *pt, uint16_t dt)) {
       next_comm_state(3); set_ac_state(pwr_stage.com_state);
       // Set alarm on maximum
       timer_comm_timeout.last_systick = dt;
-      timer_comm_timeout.elapsed = 0x3FFF;
+      timer_comm_timeout.elapsed = 0x7FFF;
       // Set blanking interval
       timer_zc_blank.last_systick = dt;
       timer_zc_blank.elapsed = est_comm_time >> 3;
