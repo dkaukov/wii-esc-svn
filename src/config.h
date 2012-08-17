@@ -36,7 +36,7 @@
 #define    RPM_STEP_MAX        200
 #define    PCT_PWR_STARTUP     10
 #define    PCT_PWR_MAX_STARTUP 25
-#define    RPM_START_MIN_RPM   5000
+#define    RPM_START_MIN_RPM   5600
 #define    ENOUGH_GOODIES      120
 
 //*************************
