@@ -29,10 +29,28 @@ const uint8_t PROGMEM zc_filter_table[64]=   {0 ,2 ,4 ,6 ,8 ,10,12,14,16,18,20,2
                                               0 ,2 ,4 ,6 ,8 ,10,12,14,16,18,1 ,22,1 ,26,28,30,
                                               32,34,36,38,1 ,42,44,46,1 ,1 ,1 ,54,56,58,60,62};
 
+uint16_t timing_hst[4];
+
+static uint16_t cubuc_extrapolate(uint16_t y0, uint16_t y1, uint16_t y2, uint16_t y3) {
+  int16_t a0 = y3 - y2 - y0 + y1;
+  int16_t a1 = y0 - y1 - a0;
+  int16_t a2 = y2 - y0;
+  int16_t a3 = y1;
+  return (a0 << 3) + (a1 << 2) + (a2 << 1) + a3;
+}
+
+uint16_t extrapolate_new_timing(uint16_t comm_time) {
+  timing_hst[0] = timing_hst[1];
+  timing_hst[1] = timing_hst[2];
+  timing_hst[2] = timing_hst[3];
+  timing_hst[3] = comm_time;
+  return cubuc_extrapolate(timing_hst[0], timing_hst[1], timing_hst[2], timing_hst[3]);
+}
+
 void update_timing(uint16_t tick) {
   uint16_t comm_time = __interval(last_tick, tick);
   last_tick = tick;
-  est_comm_time = (last_comm_time + comm_time);
+  est_comm_time = extrapolate_new_timing(last_comm_time + comm_time);
   last_comm_time = comm_time;
 }
 
@@ -41,6 +59,10 @@ void correct_timing(uint16_t tick) {
   last_tick = tick;
   comm_time = comm_time >> 1;
   est_comm_time = comm_time;
+  timing_hst[0] = comm_time;
+  timing_hst[1] = comm_time;
+  timing_hst[2] = comm_time;
+  timing_hst[3] = comm_time;
   last_comm_time = comm_time >> 1;
 }
 
