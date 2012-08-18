@@ -19,7 +19,7 @@
 uint16_t raw_ppm_data;
 uint16_t ppm_edge_time;
 
-#define PPM_HYST 2
+#define PPM_HYST 0
 
 inline uint16_t get_raw_ppm_data_no_block() {
   uint16_t res = raw_ppm_data;
