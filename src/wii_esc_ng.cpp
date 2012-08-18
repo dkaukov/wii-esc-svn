@@ -80,7 +80,9 @@ void loop() {
   beep(12, 50);
   for (;;) {
     free_spin(); sdm_reset();
+    if (pwr_stage.braking_enabled) brake();
     wait_for_power_on();
+    free_spin();
     if (start() == START_RES_OK) {
       if (run() != RUN_RES_OK) break;
     }
