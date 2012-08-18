@@ -75,10 +75,7 @@ static PT_THREAD(thread_run(struct pt *pt, uint16_t dt)) {
     }
     Debug_TraceMark();
     if (timeout) {
-      if (pwr_stage.recovery) {
-        __result = RUN_RES_TIMEOUT;
-        break;
-      }
+      if (pwr_stage.recovery) PT_EXIT_EX(pt, RUN_RES_TIMEOUT);
       Debug_Trigger();
       // Power off and free spin
       free_spin(); sdm_reset();
@@ -107,15 +104,13 @@ static PT_THREAD(thread_run(struct pt *pt, uint16_t dt)) {
     run_timing_control(last_tick);
     PT_YIELD(pt);
     PT_WAIT_UNTIL(pt, timer_expired(&timer_comm_delay, dt));
-    if (est_comm_time > (RPM_TO_COMM_TIME(RPM_RUN_MIN_RPM) * 2)) {
-      __result = RUN_RES_OK;
-      break;
-    }
+    if (est_comm_time > (RPM_TO_COMM_TIME(RPM_RUN_MIN_RPM) * 2)) PT_EXIT_EX(pt, RUN_RES_OK);
     next_comm_state();
     change_comm_state(pwr_stage.com_state);
     if (!pwr_stage.com_state) Debug_Trigger();
     Debug_TraceToggle();
     run_power_control();
+    if (pwr_stage.braking_enabled && (sdm_ref == 0)) PT_EXIT_EX(pt, RUN_RES_OK);
     timer_zc_blank.last_systick = dt;
   }
   PT_END(pt);

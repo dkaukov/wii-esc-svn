@@ -23,6 +23,10 @@ inline void free_spin() {
   PORTB = PORTB_INIT; PORTC = PORTC_INIT; PORTD = PORTD_INIT;
 }
 
+inline void brake() {
+  AnFETOn(); BnFETOn(); CnFETOn();
+}
+
 inline void precharge_bootstrap_caps() {
   AnFETOn(); BnFETOn(); CnFETOn();
   __delay_ms(5);
@@ -112,7 +116,6 @@ void set_ac_state(uint8_t state) {
       break;
   }
 }
-
 
 inline void next_comm_state() {
   uint8_t r = pwr_stage.com_state;

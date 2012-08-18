@@ -52,6 +52,16 @@
 #define PWR_PCT_TO_VAL(x)   ((x) * SDM_TOP / 100U)
 #define US_TO_TICKS(x)      ((x) * TICKS_PER_US)
 
+////////////////////////////////////////////////////////////////////////////////
+///
+//  Helpers
+//
+#define PT_EXIT_EX(pt, result)	        \
+  if (1) {	 		                    \
+    __result = result;                  \
+    break;                              \
+  }
+
 
 struct rx_data {
   union {
@@ -66,6 +76,7 @@ struct pwr_stage_data {
   uint8_t aco: 1;
   uint8_t recovery: 1;
   uint8_t sdm_fast: 1;
+  uint8_t braking_enabled: 1;
 };
 register struct pwr_stage_data pwr_stage asm("r3");
 register int16_t sdm_ref asm("r4");
