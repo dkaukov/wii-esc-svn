@@ -55,40 +55,43 @@ inline void set_pwm_off(uint8_t state) {
 void change_comm_state(uint8_t state) {
   switch (state) {
     case 0:
+      BpFETOff();
       CpFETOff();
       ApFETOn();
       ACPhaseB();
-      BpFETOff();
       break;
     case 1:
       CpFETOff();
+      CnFETOff();
+      AnFETOff();
       if (pwr_stage.sdm_state) BnFETOn();
       ACPhaseC();
-      CnFETOff();
       break;
     case 2:
       BpFETOff();
+      ApFETOff();
       CpFETOn();
       ACPhaseA();
-      ApFETOff();
       break;
     case 3:
       BpFETOff();
+      BnFETOff();
+      AnFETOff();
       if (pwr_stage.sdm_state) AnFETOn();
       ACPhaseB();
-      BnFETOff();
       break;
     case 4:
+      CpFETOff();
       ApFETOff();
       BpFETOn();
       ACPhaseC();
-      CpFETOff();
       break;
     case 5:
       ApFETOff();
+      AnFETOff();
+      BnFETOff();
       if (pwr_stage.sdm_state) CnFETOn();
       ACPhaseA();
-      AnFETOff();
       break;
   }
 }
