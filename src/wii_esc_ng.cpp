@@ -66,13 +66,25 @@ void startup_sound() {
   __delay_ms(250);
 }
 
+uint16_t get_ppm_frame() {
+  rx.frame_received = 0; rx.raw = 0;
+  while (rx.raw == 0) filter_ppm_data();
+  return rx.raw;
+}
+
+void wait_for(uint16_t low, uint16_t high, uint8_t cnt) {
+  while (cnt) {
+    uint16_t tmp = get_ppm_frame();
+    if ((tmp >= low) && (tmp <= high)) cnt--;
+  }
+}
+
 void wait_for_arm() {
-  rx.frame_received = 0; rx.raw = US_TO_TICKS(RCP_MAX);
-  while (rx.raw > US_TO_TICKS(RCP_START)) filter_ppm_data();
+  wait_for(US_TO_TICKS(RCP_MIN), US_TO_TICKS(RCP_START), 50);
 }
 
 void wait_for_power_on() {
-  while (rx.raw < US_TO_TICKS(RCP_START + RCP_DEADBAND)) filter_ppm_data();
+  wait_for(US_TO_TICKS(RCP_START + RCP_DEADBAND), US_TO_TICKS(RCP_MAX), 5);
 }
 
 void calibrate_osc() {
