@@ -44,14 +44,14 @@ void filter_ppm_data() {
 static void ppm_timeout(uint16_t tick) {
   if (timer_expired(&timer_ppm_timeout_prescaler, tick)) {
     if (--rx.frame_received == 0) {
-      rx.raw = US_TO_TICKS(RCP_MIN);
+      rx.raw = 0;
       raw_ppm_data = 0;
     }
   }
 }
 
 inline void init_ppm() {
-  raw_ppm_data = US_TO_TICKS((RCP_MAX + RCP_MIN) / 2);
+  raw_ppm_data = 0;
 }
 
 inline void rx_ppm_callback(uint16_t time, uint8_t state) {
