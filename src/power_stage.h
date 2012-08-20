@@ -19,8 +19,9 @@
 #ifndef POWER_STAGE_H_INCLUDED
 #define POWER_STAGE_H_INCLUDED
 
-inline void free_spin() {
-  PORTB = PORTB_INIT; PORTC = PORTC_INIT; PORTD = PORTD_INIT;
+void free_spin() {
+  AnFETOff(); BnFETOff(); CnFETOff();
+  ApFETOff(); BpFETOff(); CpFETOff();
 }
 
 inline void brake() {
