@@ -41,7 +41,7 @@ void filter_ppm_data() {
   }
 }
 
-void ppm_timeout(uint16_t tick) {
+static void ppm_timeout(uint16_t tick) {
   if (timer_expired(&timer_ppm_timeout_prescaler, tick)) {
     if (--rx.frame_received == 0) {
       rx.raw = US_TO_TICKS(RCP_MIN);
