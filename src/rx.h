@@ -16,7 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-uint16_t raw_ppm_data;
+volatile uint16_t raw_ppm_data;
 uint16_t ppm_edge_time;
 struct   timer_small timer_ppm_timeout_prescaler;
 
@@ -60,13 +60,13 @@ inline void rx_ppm_callback(uint16_t time, uint8_t state) {
   } else {
     uint16_t d_time = __interval(ppm_edge_time, time);
     raw_ppm_data = d_time;
-    rx.frame_received = US_TO_TICKS(RCP_TIMEOUT_MS) * 1000U / 50000U;
+    rx.frame_received = US_TO_TICKS(RCP_TIMEOUT_MS) * 1000U / 0xFFFFU;
   }
 }
 
 inline void RX_Init() {
   AttachPPM();
   init_ppm();
-  timer_ppm_timeout_prescaler.interval = 50000U;
+  timer_ppm_timeout_prescaler.interval = 0xFFFFU;
 }
 
