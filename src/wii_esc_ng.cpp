@@ -67,7 +67,7 @@ void startup_sound() {
 }
 
 void wait_for_arm() {
-  filter_ppm_data();
+  rx.frame_received = 0; rx.raw = US_TO_TICKS(RCP_MAX);
   while (rx.raw > US_TO_TICKS(RCP_START)) filter_ppm_data();
 }
 

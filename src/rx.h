@@ -29,6 +29,7 @@ inline uint16_t get_raw_ppm_data_no_block() {
 }
 
 void filter_ppm_data() {
+  if (!rx.frame_received) return;
   uint16_t tmp = get_raw_ppm_data_no_block();
   if ((tmp > US_TO_TICKS(RCP_MIN)) && (tmp < US_TO_TICKS(RCP_MAX))) {
   #if (PPM_HYST > 0)
@@ -42,7 +43,7 @@ void filter_ppm_data() {
 
 void ppm_timeout(uint16_t tick) {
   if (timer_expired(&timer_ppm_timeout_prescaler, tick)) {
-    if (--rx.timeout == 0) {
+    if (--rx.frame_received == 0) {
       rx.raw = US_TO_TICKS(RCP_MIN);
       raw_ppm_data = 0;
     }
@@ -59,7 +60,7 @@ inline void rx_ppm_callback(uint16_t time, uint8_t state) {
   } else {
     uint16_t d_time = __interval(ppm_edge_time, time);
     raw_ppm_data = d_time;
-    rx.timeout = US_TO_TICKS(RCP_TIMEOUT_MS) * 1000U / 50000U;
+    rx.frame_received = US_TO_TICKS(RCP_TIMEOUT_MS) * 1000U / 50000U;
   }
 }
 
