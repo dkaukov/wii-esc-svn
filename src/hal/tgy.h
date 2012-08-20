@@ -1,6 +1,8 @@
 #ifndef _TGY_H_
 #define _TGY_H_
 
+#define INT_OSC
+
 //*********************
 // PORT B definitions *
 //*********************
