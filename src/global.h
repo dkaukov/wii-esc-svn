@@ -67,7 +67,7 @@ struct rx_data {
   union {
     uint16_t raw;
   };
-  uint8_t new_frame;
+  uint8_t timeout;
 };
 struct rx_data rx;
 
