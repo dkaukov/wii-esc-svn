@@ -63,7 +63,6 @@ void startup_sound() {
     beep(6 + i, 10);
     __delay_ms(5);
   }
-  __delay_ms(250);
 }
 
 uint16_t get_ppm_frame() {
