@@ -52,6 +52,7 @@
 #define    RCP_START           1060
 #define    RCP_FULL            1860
 #define    RCP_DEADBAND        5
+#define    RCP_TIMEOUT_MS      5000
 
 
 #endif

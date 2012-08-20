@@ -18,6 +18,8 @@
 
 uint16_t raw_ppm_data;
 uint16_t ppm_edge_time;
+uint8_t  ppm_new_frame;
+struct timer_big timer_ppm_timeout;
 
 #define PPM_HYST 2
 
@@ -28,14 +30,28 @@ inline uint16_t get_raw_ppm_data_no_block() {
 }
 
 void filter_ppm_data() {
-  uint16_t tmp = get_raw_ppm_data_no_block();
-  if ((tmp > US_TO_TICKS(RCP_MIN)) && (tmp < US_TO_TICKS(RCP_MAX))) {
-  #if (PPM_HYST > 0)
-    if (tmp > rx.raw + (PPM_HYST)) rx.raw = tmp - (PPM_HYST - 1);
-    if (tmp < rx.raw - (PPM_HYST)) rx.raw = tmp + (PPM_HYST - 1);
-  #else
-    rx.raw = tmp;
-  #endif
+  if  (ppm_new_frame) {
+    uint16_t tmp = get_raw_ppm_data_no_block();  ppm_new_frame = 0;
+    if ((tmp > US_TO_TICKS(RCP_MIN)) && (tmp < US_TO_TICKS(RCP_MAX))) {
+    #if (PPM_HYST > 0)
+      if (tmp > rx.raw + (PPM_HYST)) rx.raw = tmp - (PPM_HYST - 1);
+      if (tmp < rx.raw - (PPM_HYST)) rx.raw = tmp + (PPM_HYST - 1);
+    #else
+      rx.raw = tmp;
+    #endif
+      rx.new_frame = 1;
+    }
+  }
+}
+
+void ppm_timeout(uint16_t tick) {
+  if (rx.new_frame) {
+    timer_ppm_timeout.elapsed = US_TO_TICKS(RCP_TIMEOUT_MS) * 1000;
+    timer_ppm_timeout.last_systick = tick;
+  } else {
+    if (timer_expired(&timer_ppm_timeout)) {
+      rx.raw = US_TO_TICKS(RCP_MIN);
+    }
   }
 }
 
@@ -49,6 +65,7 @@ inline void rx_ppm_callback(uint16_t time, uint8_t state) {
   } else {
     uint16_t d_time = __interval(ppm_edge_time, time);
     raw_ppm_data = d_time;
+    ppm_new_frame = 1;
   }
 }
 
