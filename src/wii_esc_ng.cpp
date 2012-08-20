@@ -75,9 +75,17 @@ void wait_for_power_on() {
   while (rx.raw < US_TO_TICKS(RCP_START + RCP_DEADBAND)) filter_ppm_data();
 }
 
+void calibrate_osc() {
+#if defined(RCP_CAL) && defined(INT_OSC)
+  while ((rx.raw > US_TO_TICKS(RCP_CAL)) && (OSCCAL > 0x00)) {OSCCAL--; wait_for_arm();}
+  while ((rx.raw < US_TO_TICKS(RCP_CAL)) && (OSCCAL < 0xFF)) {OSCCAL++; wait_for_arm();}
+#endif
+}
+
 void loop() {
   startup_sound();
   wait_for_arm();
+  calibrate_osc();
   beep(12, 50);
   for (;;) {
     free_spin(); sdm_reset();

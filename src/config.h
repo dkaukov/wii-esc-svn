@@ -22,7 +22,7 @@
 //*************************
 // System settings        *
 //*************************
-//#define    OSC_DEBUG
+#define    OSC_DEBUG
 
 //*************************
 // Power settings         *
@@ -52,7 +52,8 @@
 #define    RCP_START           1060
 #define    RCP_FULL            1860
 #define    RCP_DEADBAND        5
-#define    RCP_TIMEOUT_MS      5000
+#define    RCP_TIMEOUT_MS      2500
+#define    RCP_CAL             1000
 
 
 #endif
