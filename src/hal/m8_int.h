@@ -45,7 +45,7 @@ ISR(INT1_vect) {
 inline void AttachPPM() {
   PORTD  |= _BV(3);
   MCUCR = (MCUCR & ~((1 << ISC10) | (1 << ISC11))) | (1 << ISC10);
-  GICR |= (1 << INT0);
+  GICR |= (1 << INT1);
 }
 #endif
 
