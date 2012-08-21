@@ -20,24 +20,35 @@
 #if (BOARD == _BS_NFET_)
   #include "hal/m8.h"
   #include "hal/bs_nfet.h"
+  #include "hal/m8_int.h"
 #endif
 
 #if (BOARD == _BS_)
   #include "hal/m8.h"
   #include "hal/bs.h"
+  #include "hal/m8_int.h"
 #endif
 
 #if (BOARD == _TP_)
   #include "hal/m8.h"
   #include "hal/tp.h"
+  #include "hal/m8_int.h"
 #endif
 
 #if (BOARD == _TGY_)
   #include "hal/m8.h"
   #include "hal/tgy.h"
+  #include "hal/m8_int.h"
 #endif
 
 #if (BOARD == _TGY_16_)
   #include "hal/m8.h"
   #include "hal/tgy.h"
+  #include "hal/m8_int.h"
+#endif
+
+#if (BOARD == _QYNX_)
+  #include "hal/m8.h"
+  #include "hal/qynx.h"
+  #include "hal/m8_int.h"
 #endif
