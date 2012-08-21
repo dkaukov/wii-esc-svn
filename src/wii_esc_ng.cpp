@@ -63,7 +63,6 @@ void startup_sound() {
     beep(6 + i, 10);
     __delay_ms(5);
   }
-  __delay_ms(250);
 }
 
 uint16_t get_ppm_frame() {
@@ -73,9 +72,10 @@ uint16_t get_ppm_frame() {
 }
 
 void wait_for(uint16_t low, uint16_t high, uint8_t cnt) {
-  while (cnt) {
+  uint8_t _cnt = cnt;
+  while (_cnt) {
     uint16_t tmp = get_ppm_frame();
-    if ((tmp >= low) && (tmp <= high)) cnt--;
+    if ((tmp >= low) && (tmp <= high)) _cnt--; else _cnt = cnt;
   }
 }
 
@@ -84,7 +84,7 @@ void wait_for_arm() {
 }
 
 void wait_for_power_on() {
-  wait_for(US_TO_TICKS(RCP_START + RCP_DEADBAND), US_TO_TICKS(RCP_MAX), 5);
+  wait_for(US_TO_TICKS(RCP_START + RCP_DEADBAND), US_TO_TICKS(RCP_MAX), 15);
 }
 
 void calibrate_osc() {

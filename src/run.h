@@ -109,8 +109,9 @@ static PT_THREAD(thread_run(struct pt *pt, uint16_t dt)) {
     change_comm_state(pwr_stage.com_state);
     if (!pwr_stage.com_state) Debug_Trigger();
     Debug_TraceToggle();
-    run_power_control();
     ppm_timeout(dt);
+    PT_YIELD(pt);
+    run_power_control();
     if (pwr_stage.braking_enabled && (sdm_ref == 0)) PT_EXIT_EX(pt, RUN_RES_OK);
     timer_zc_blank.last_systick = dt;
   }
