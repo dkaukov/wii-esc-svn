@@ -65,16 +65,10 @@ void startup_sound() {
   }
 }
 
-uint16_t get_ppm_frame() {
-  rx.frame_received = 0; rx.raw = 0;
-  while (rx.raw == 0) filter_ppm_data();
-  return rx.raw;
-}
-
 void wait_for(uint16_t low, uint16_t high, uint8_t cnt) {
   uint8_t _cnt = cnt;
   while (_cnt) {
-    uint16_t tmp = get_ppm_frame();
+    uint16_t tmp = rx_get_frame();
     if ((tmp >= low) && (tmp <= high)) _cnt--; else _cnt = cnt;
   }
 }
@@ -87,10 +81,16 @@ void wait_for_power_on() {
   wait_for(US_TO_TICKS(RCP_START + RCP_DEADBAND), US_TO_TICKS(RCP_MAX), 15);
 }
 
-void calibrate_osc() {
+static void calibrate_osc() {
 #if defined(RCP_CAL) && defined(INT_OSC)
-  while ((rx.raw > US_TO_TICKS(RCP_CAL)) && (OSCCAL > 0x00)) {OSCCAL--; wait_for_arm();}
-  while ((rx.raw < US_TO_TICKS(RCP_CAL)) && (OSCCAL < 0xFF)) {OSCCAL++; wait_for_arm();}
+  while ((rx_get_frame() > US_TO_TICKS(RCP_CAL)) && (OSCCAL > 0x00)) {
+    OSCCAL--;
+    rx_get_frame();
+  }
+  while ((rx_get_frame() < US_TO_TICKS(RCP_CAL)) && (OSCCAL < 0xFF)) {
+    OSCCAL++;
+    rx_get_frame();
+  }
 #endif
 }
 
