@@ -64,6 +64,12 @@ inline void rx_ppm_callback(uint16_t time, uint8_t state) {
   }
 }
 
+uint16_t rx_get_frame() {
+  rx.frame_received = 0; rx.raw = 0;
+  while (rx.raw == 0) filter_ppm_data();
+  return rx.raw;
+}
+
 inline void RX_Init() {
   AttachPPM();
   init_ppm();
