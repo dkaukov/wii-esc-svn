@@ -47,7 +47,6 @@
 //*************************
 // RC Input               *
 //*************************
-/*
 #define    RCP_MIN             900
 #define    RCP_MAX             2200
 #define    RCP_START           1060
@@ -55,8 +54,8 @@
 #define    RCP_DEADBAND        5
 #define    RCP_TIMEOUT_MS      2500
 #define    RCP_CAL             1000
-*/
 
+/* Extended range
 #define    RCP_MIN             14
 #define    RCP_MAX             2200
 #define    RCP_START           18
@@ -64,6 +63,7 @@
 #define    RCP_DEADBAND        2
 #define    RCP_TIMEOUT_MS      2500
 #define    RCP_CAL             16
+*/
 
 #endif
 
