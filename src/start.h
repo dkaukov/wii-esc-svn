@@ -48,7 +48,6 @@ static void start_timing_control() {
 static void start_init() {
   sdm_ref = PWR_PCT_TO_VAL(PCT_PWR_STARTUP);
   timer_start.interval = RPM_TO_COMM_TIME(RPM_STEP_INITIAL);
-  __result = START_RES_UNKNOWN;
   Debug_Init();
 }
 
