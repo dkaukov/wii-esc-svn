@@ -86,7 +86,6 @@ register int16_t sdm_ref asm("r4");
 static uint16_t last_tick;
 static uint16_t est_comm_time;
 static uint16_t last_comm_time;
-static uint8_t good_com;
 static uint8_t __result;
 
 // Core Function prototypes
