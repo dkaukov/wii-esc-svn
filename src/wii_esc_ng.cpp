@@ -67,9 +67,11 @@ void startup_sound() {
 
 void wait_for(uint16_t low, uint16_t high, uint8_t cnt) {
   uint8_t _cnt = cnt;
-  while (_cnt) {
+  while (1) {
     uint16_t tmp = rx_get_frame();
-    if ((tmp >= low) && (tmp <= high)) _cnt--; else _cnt = cnt;
+    if ((tmp >= low) && (tmp <= high)) {
+      if (!(--_cnt)) break;
+    } else _cnt = cnt;
   }
 }
 
