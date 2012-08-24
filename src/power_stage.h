@@ -35,11 +35,21 @@ inline void precharge_bootstrap_caps() {
 }
 
 void set_pwm_on(uint8_t state) {
+  #ifdef COMP_PWM
   switch (state) {
-    case 5:
-    case 0:
-      CnFETOn();
+    case 1:
+    case 2:
+      BpFETOff();
       break;
+    case 3:
+    case 4:
+      ApFETOff();
+      break;
+    default:
+      CpFETOff();
+  }
+  #endif
+  switch (state) {
     case 1:
     case 2:
       BnFETOn();
@@ -48,6 +58,8 @@ void set_pwm_on(uint8_t state) {
     case 4:
       AnFETOn();
       break;
+    default:
+      CnFETOn();
   }
 }
 
@@ -55,6 +67,20 @@ inline void set_pwm_off(uint8_t state) {
   AnFETOff();
   BnFETOff();
   CnFETOff();
+  #ifdef COMP_PWM
+  switch (state) {
+    case 1:
+    case 2:
+      BpFETOn();
+      break;
+    case 3:
+    case 4:
+      ApFETOn();
+      break;
+    default:
+      CpFETOn();
+  }
+  #endif
 }
 
 void change_comm_state(uint8_t state) {
