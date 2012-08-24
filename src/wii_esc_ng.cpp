@@ -83,14 +83,18 @@ void wait_for_power_on() {
   wait_for(US_TO_TICKS(RCP_START + RCP_DEADBAND), US_TO_TICKS(RCP_MAX), 15);
 }
 
-static void calibrate_osc() {
+void calibrate_osc() {
 #if defined(RCP_CAL) && defined(INT_OSC)
-  while ((rx_get_frame() > US_TO_TICKS(RCP_CAL)) && (OSCCAL > 0x00)) {
-    OSCCAL--;
+  while (rx_get_frame() > US_TO_TICKS(RCP_CAL)) {
+    uint8_t tmp = OSCCAL;
+    if (!(--tmp)) break;
+    OSCCAL = tmp;
     rx_get_frame();
   }
-  while ((rx_get_frame() < US_TO_TICKS(RCP_CAL)) && (OSCCAL < 0xFF)) {
-    OSCCAL++;
+  while (rx_get_frame() < US_TO_TICKS(RCP_CAL)) {
+    uint8_t tmp = OSCCAL;
+    if ((++tmp) == 0) break;
+    OSCCAL = tmp;
     rx_get_frame();
   }
 #endif
