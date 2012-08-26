@@ -26,7 +26,7 @@ static struct timer_big      timer_start;
 #define START_RES_OFF        2
 #define START_RES_UNKNOWN    255
 
-void start_power_control() {
+static void start_power_control() {
   filter_ppm_data();
   int16_t val = RCP_TO_SDM(rx.raw);
   if (val < PWR_PCT_TO_VAL(PCT_PWR_MIN)) {
@@ -39,19 +39,19 @@ void start_power_control() {
   sdm_ref += (val - sdm_ref) >> 2;
 }
 
-void start_timing_control() {
+static void start_timing_control() {
   timer_start.interval -= 40;
   if (timer_start.interval < RPM_TO_COMM_TIME(RPM_STEP_MAX))
     timer_start.interval = RPM_TO_COMM_TIME(RPM_STEP_MAX);
 }
 
-void start_init() {
-  good_com = 0; sdm_ref = PWR_PCT_TO_VAL(PCT_PWR_STARTUP);
+static void start_init() {
+  sdm_ref = PWR_PCT_TO_VAL(PCT_PWR_STARTUP);
   timer_start.interval = RPM_TO_COMM_TIME(RPM_STEP_INITIAL);
-  __result = START_RES_UNKNOWN;
   Debug_Init();
 }
-uint8_t start_wait_for_zc() {
+
+static uint8_t start_wait_for_zc() {
   while (1) {
     aco_sample();
     sdm();
@@ -63,6 +63,7 @@ uint8_t start_wait_for_zc() {
  }
 
 static uint8_t start() {
+  uint8_t good_com  = 0;
   int16_t start_timing = 0x3FFF;
   start_init();
   while (1) {

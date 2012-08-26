@@ -80,13 +80,12 @@ struct pwr_stage_data {
   uint8_t sdm_fast: 1;
   uint8_t braking_enabled: 1;
 };
-register struct pwr_stage_data pwr_stage asm("r3");
+register struct pwr_stage_data pwr_stage asm("r16");
 register int16_t sdm_ref asm("r4");
 
 static uint16_t last_tick;
 static uint16_t est_comm_time;
 static uint16_t last_comm_time;
-static uint8_t good_com;
 static uint8_t __result;
 
 // Core Function prototypes
