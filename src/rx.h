@@ -31,7 +31,7 @@ inline uint16_t get_raw_ppm_data_no_block() {
 void filter_ppm_data() {
   if (!rx.frame_received) return;
   uint16_t tmp = get_raw_ppm_data_no_block();
-  if ((tmp > US_TO_TICKS(RCP_MIN)) && (tmp < US_TO_TICKS(RCP_MAX))) {
+  if ((tmp >= US_TO_TICKS(RCP_MIN)) && (tmp <= US_TO_TICKS(RCP_MAX))) {
   #if (PPM_HYST > 0)
     if (tmp > rx.raw + (PPM_HYST)) rx.raw = tmp - (PPM_HYST - 1);
     if (tmp < rx.raw - (PPM_HYST)) rx.raw = tmp + (PPM_HYST - 1);
