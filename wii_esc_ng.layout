@@ -1,44 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
-	<ActiveTarget name="qynx" />
-	<File name="src\zc.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<ActiveTarget name="tp_nfet" />
+	<File name="src\debug.h" open="1" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="771" topLine="54" />
-		</Cursor>
-	</File>
-	<File name="src\wii_esc_ng.cpp" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1976" topLine="53" />
-		</Cursor>
-	</File>
-	<File name="src\start.h" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="767" topLine="8" />
-		</Cursor>
-	</File>
-	<File name="src\sdm.h" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1138" topLine="17" />
-		</Cursor>
-	</File>
-	<File name="src\run.h" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2591" topLine="62" />
-		</Cursor>
-	</File>
-	<File name="src\power_stage.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2622" topLine="108" />
-		</Cursor>
-	</File>
-	<File name="src\hal\tp.h" open="0" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2157" topLine="60" />
-		</Cursor>
-	</File>
-	<File name="src\hal\tgy.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2476" topLine="62" />
+			<Cursor1 position="843" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="src\hal\bs_nfet.h" open="0" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -46,24 +11,14 @@
 			<Cursor1 position="894" topLine="33" />
 		</Cursor>
 	</File>
-	<File name="src\global.h" open="0" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="src\core.h" open="1" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2630" topLine="85" />
+			<Cursor1 position="709" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="src\debug.h" open="0" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="src\config.h" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="436" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="src\core.h" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="846" topLine="18" />
-		</Cursor>
-	</File>
-	<File name="src\config.h" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="848" topLine="14" />
+			<Cursor1 position="1420" topLine="17" />
 		</Cursor>
 	</File>
 	<File name="src\RX.h" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -76,9 +31,59 @@
 			<Cursor1 position="0" topLine="0" />
 		</Cursor>
 	</File>
+	<File name="src\hal\tp_nfet.h" open="1" top="1" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="997" topLine="0" />
+		</Cursor>
+	</File>
 	<File name="src\hal\qynx.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="532" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src\hal\tgy.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2476" topLine="62" />
+		</Cursor>
+	</File>
+	<File name="src\hal\tp.h" open="0" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src\power_stage.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2622" topLine="108" />
+		</Cursor>
+	</File>
+	<File name="src\run.h" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2591" topLine="62" />
+		</Cursor>
+	</File>
+	<File name="src\sdm.h" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1138" topLine="17" />
+		</Cursor>
+	</File>
+	<File name="src\start.h" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="767" topLine="8" />
+		</Cursor>
+	</File>
+	<File name="src\wii_esc_ng.cpp" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1976" topLine="53" />
+		</Cursor>
+	</File>
+	<File name="src\zc.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="771" topLine="46" />
+		</Cursor>
+	</File>
+	<File name="src\global.h" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1613" topLine="29" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>
