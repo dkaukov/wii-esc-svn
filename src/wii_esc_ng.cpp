@@ -41,6 +41,7 @@ void setup() {
   Debug_Init();
   sei();
   pwr_stage.braking_enabled = 0;
+  sdm_setup_rt(US_TO_TICKS(RCP_START), US_TO_TICKS(RCP_FULL));
   __delay_ms(250);
 }
 

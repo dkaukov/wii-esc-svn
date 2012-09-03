@@ -28,16 +28,14 @@ static int16_t sys_limit;
 #define RUN_RES_TIMEOUT    1
 #define RUN_RES_UNKNOWN    255
 
-#define FAST_SDM           18
-
 void run_power_control() {
   filter_ppm_data();
   int16_t tmp = RCP_TO_SDM(rx.raw);
-  if (tmp < PWR_PCT_TO_VAL(PCT_PWR_MIN)) tmp = 0;
-  if (tmp > SDM_TOP)                     tmp = SDM_TOP;
-  if (sys_limit < SDM_TOP) sys_limit += 5;
+  if (tmp < sdm_rt.sdm_run_min) tmp = 0;
+  if (tmp > sdm_rt.sdm_top)     tmp = sdm_rt.sdm_top;
+  if (sys_limit < sdm_rt.sdm_top) sys_limit += 5;
   if (tmp > sys_limit) tmp = sys_limit;
-  if ((tmp > (FAST_SDM * SDM_TOP / 100)) && (tmp < ((100 - FAST_SDM) * SDM_TOP / 100))) pwr_stage.sdm_fast = 0; else pwr_stage.sdm_fast = 1;
+  if ((tmp > sdm_rt.sdm_fast_min) && (tmp < sdm_rt.sdm_fast_max)) pwr_stage.sdm_fast = 0; else pwr_stage.sdm_fast = 1;
   sdm_ref = tmp;
 }
 
