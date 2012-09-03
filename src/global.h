@@ -59,7 +59,7 @@
 //  Helpers
 //
 #define PT_EXIT_EX(pt, result)	        \
-  if (1) {	 		                    \
+  if (1) {	 		                        \
     __result = result;                  \
     break;                              \
   }
@@ -74,12 +74,15 @@ struct rx_data {
   uint8_t frame_received;
   uint16_t rcp_min;
   uint16_t rcp_max;
+  uint16_t rcp_start;
+  uint16_t rcp_cal;
   struct {
     uint16_t rcp_min_us;
     uint16_t rcp_max_us;
     uint16_t rcp_start_us;
     uint16_t rcp_full_us;
     uint16_t rcp_cal_us;
+    uint8_t  rcp_deadband_us;
   } setup;
 };
 struct rx_data rx;

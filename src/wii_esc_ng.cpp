@@ -33,6 +33,15 @@
 #include "start.h"
 #include "run.h"
 
+void setup_to_rt() {
+  pwr_stage.braking_enabled = 0;
+  rx.rcp_min = rx.setup.rcp_min_us * (uint8_t)TICKS_PER_US;
+  rx.rcp_max = rx.setup.rcp_max_us * (uint8_t)TICKS_PER_US;
+  rx.rcp_start = rx.setup.rcp_start_us * (uint8_t)TICKS_PER_US;
+  rx.rcp_cal = rx.setup.rcp_cal_us * (uint8_t)TICKS_PER_US;
+  sdm_setup_rt(rx.rcp_start, rx.setup.rcp_full_us * (uint8_t)TICKS_PER_US);
+}
+
 void setup() {
   cli();
   Board_Init();
@@ -40,8 +49,7 @@ void setup() {
   RX_Init();
   Debug_Init();
   sei();
-  pwr_stage.braking_enabled = 0;
-  sdm_setup_rt(US_TO_TICKS(RCP_START), US_TO_TICKS(RCP_FULL));
+  setup_to_rt();
   __delay_ms(250);
 }
 
@@ -77,22 +85,22 @@ void wait_for(uint16_t low, uint16_t high, uint8_t cnt) {
 }
 
 void wait_for_arm() {
-  wait_for(US_TO_TICKS(RCP_MIN), US_TO_TICKS(RCP_START), 50);
+  wait_for(rx.rcp_min, rx.rcp_start, 50);
 }
 
 void wait_for_power_on() {
-  wait_for(US_TO_TICKS(RCP_START + RCP_DEADBAND), US_TO_TICKS(RCP_MAX), 15);
+  wait_for(rx.rcp_start + (rx.setup.rcp_deadband_us * (uint8_t)TICKS_PER_US), rx.rcp_max, 15);
 }
 
 void calibrate_osc() {
 #if defined(RCP_CAL) && defined(INT_OSC)
-  while (rx_get_frame() > US_TO_TICKS(RCP_CAL)) {
+  while (rx_get_frame() > rx.rcp_cal) {
     uint8_t tmp = OSCCAL;
     if (!(--tmp)) break;
     OSCCAL = tmp;
     rx_get_frame();
   }
-  while (rx_get_frame() < US_TO_TICKS(RCP_CAL)) {
+  while (rx_get_frame() < rx.rcp_cal) {
     uint8_t tmp = OSCCAL;
     if ((++tmp) == 0) break;
     OSCCAL = tmp;
