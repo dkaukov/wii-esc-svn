@@ -32,9 +32,11 @@
 #include "zc.h"
 #include "start.h"
 #include "run.h"
+#include "storage.h"
 
 void setup_to_rt() {
   pwr_stage.braking_enabled = 0;
+  if (braking_enabled) pwr_stage.braking_enabled = 1;
   rx_setup_rt();
   sdm_setup_rt(rx.rcp_start, rx.setup.rcp_full_us * (uint8_t)TICKS_PER_US);
 }
@@ -45,6 +47,7 @@ void setup() {
   PowerStage_Init();
   RX_Init();
   Debug_Init();
+  Storage_Init();
   sei();
   setup_to_rt();
   __delay_ms(250);

@@ -115,6 +115,7 @@ static uint16_t last_tick;
 static uint16_t est_comm_time;
 static uint16_t last_comm_time;
 static uint8_t __result;
+static uint8_t braking_enabled;
 
 // Core Function prototypes
 
