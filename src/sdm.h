@@ -34,7 +34,7 @@ uint16_t pct_to_val(uint8_t pct) {
   return ((uint32_t)sdm_rt.sdm_top * pct) / 100;
 }
 
-void sdm_setup_rt(uint16_t _min, uint16_t _max) {
+static void sdm_setup_rt(uint16_t _min, uint16_t _max) {
   uint16_t range = _max - _min;
   uint16_t shift = (range * PCT_PWR_MIN) / 100;
   sdm_rt.sdm_top = range + shift;

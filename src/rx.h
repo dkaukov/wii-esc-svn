@@ -76,6 +76,13 @@ uint16_t rx_get_frame() {
   return rx.raw;
 }
 
+static void rx_setup_rt() {
+  rx.rcp_min = rx.setup.rcp_min_us * (uint8_t)TICKS_PER_US;
+  rx.rcp_max = rx.setup.rcp_max_us * (uint8_t)TICKS_PER_US;
+  rx.rcp_start = rx.setup.rcp_start_us * (uint8_t)TICKS_PER_US;
+  rx.rcp_cal = rx.setup.rcp_cal_us * (uint8_t)TICKS_PER_US;
+}
+
 inline void RX_Init() {
   AttachPPM();
   init_ppm();

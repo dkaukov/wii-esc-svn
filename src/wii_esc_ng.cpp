@@ -35,10 +35,7 @@
 
 void setup_to_rt() {
   pwr_stage.braking_enabled = 0;
-  rx.rcp_min = rx.setup.rcp_min_us * (uint8_t)TICKS_PER_US;
-  rx.rcp_max = rx.setup.rcp_max_us * (uint8_t)TICKS_PER_US;
-  rx.rcp_start = rx.setup.rcp_start_us * (uint8_t)TICKS_PER_US;
-  rx.rcp_cal = rx.setup.rcp_cal_us * (uint8_t)TICKS_PER_US;
+  rx_setup_rt();
   sdm_setup_rt(rx.rcp_start, rx.setup.rcp_full_us * (uint8_t)TICKS_PER_US);
 }
 
