@@ -19,7 +19,14 @@
 #ifndef STORAGE_H_INCLUDED
 #define STORAGE_H_INCLUDED
 
-static uint8_t ver_magic = 25;
+const uint8_t ver_magic = 25;
+
+static uint8_t __ver_magic = ver_magic;
+
+struct eeprom_layout {
+  uint8_t __ver_magic;
+  struct config_data cfg;
+};
 
 typedef struct nvr_entry nvr_entry_t;
 struct nvr_entry{
@@ -28,9 +35,8 @@ struct nvr_entry{
 };
 
 static const nvr_entry_t nvr_entry[] = {
-  {&ver_magic, sizeof(ver_magic)},
-  {&rx.setup, sizeof(rx.setup)},
-  {&braking_enabled, sizeof(braking_enabled)},
+  {&__ver_magic, sizeof(__ver_magic)},
+  {&cfg, sizeof(cfg)},
 };
 const uint8_t nvr_entry_cnt = sizeof(nvr_entry) / sizeof(nvr_entry_t);
 

@@ -67,6 +67,18 @@
 
 #define FAST_SDM           18
 
+
+struct config_data {
+  uint16_t rcp_min_us;
+  uint16_t rcp_max_us;
+  uint16_t rcp_start_us;
+  uint16_t rcp_full_us;
+  uint16_t rcp_cal_us;
+  uint8_t  rcp_deadband_us;
+  uint8_t  braking;
+};
+struct config_data cfg;
+
 struct rx_data {
   union {
     uint16_t raw;
@@ -76,14 +88,6 @@ struct rx_data {
   uint16_t rcp_max;
   uint16_t rcp_start;
   uint16_t rcp_cal;
-  struct {
-    uint16_t rcp_min_us;
-    uint16_t rcp_max_us;
-    uint16_t rcp_start_us;
-    uint16_t rcp_full_us;
-    uint16_t rcp_cal_us;
-    uint8_t  rcp_deadband_us;
-  } setup;
 };
 struct rx_data rx;
 
@@ -115,7 +119,6 @@ static uint16_t last_tick;
 static uint16_t est_comm_time;
 static uint16_t last_comm_time;
 static uint8_t __result;
-static uint8_t braking_enabled;
 
 // Core Function prototypes
 

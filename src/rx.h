@@ -52,12 +52,12 @@ static void ppm_timeout(uint16_t tick) {
 
 inline void init_ppm() {
   raw_ppm_data = 0;
-  rx.setup.rcp_cal_us = RCP_CAL;
-  rx.setup.rcp_min_us = RCP_MIN;
-  rx.setup.rcp_max_us = RCP_MAX;
-  rx.setup.rcp_start_us = RCP_START;
-  rx.setup.rcp_full_us = RCP_FULL;
-  rx.setup.rcp_deadband_us = RCP_DEADBAND;
+  cfg.rcp_cal_us = RCP_CAL;
+  cfg.rcp_min_us = RCP_MIN;
+  cfg.rcp_max_us = RCP_MAX;
+  cfg.rcp_start_us = RCP_START;
+  cfg.rcp_full_us = RCP_FULL;
+  cfg.rcp_deadband_us = RCP_DEADBAND;
 }
 
 inline void rx_ppm_callback(uint16_t time, uint8_t state) {
@@ -77,10 +77,10 @@ uint16_t rx_get_frame() {
 }
 
 static void rx_setup_rt() {
-  rx.rcp_min = rx.setup.rcp_min_us * (uint8_t)TICKS_PER_US;
-  rx.rcp_max = rx.setup.rcp_max_us * (uint8_t)TICKS_PER_US;
-  rx.rcp_start = rx.setup.rcp_start_us * (uint8_t)TICKS_PER_US;
-  rx.rcp_cal = rx.setup.rcp_cal_us * (uint8_t)TICKS_PER_US;
+  rx.rcp_min = cfg.rcp_min_us * (uint8_t)TICKS_PER_US;
+  rx.rcp_max = cfg.rcp_max_us * (uint8_t)TICKS_PER_US;
+  rx.rcp_start = cfg.rcp_start_us * (uint8_t)TICKS_PER_US;
+  rx.rcp_cal = cfg.rcp_cal_us * (uint8_t)TICKS_PER_US;
 }
 
 inline void RX_Init() {
