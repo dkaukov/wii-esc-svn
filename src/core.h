@@ -52,3 +52,9 @@
   #include "hal/qynx.h"
   #include "hal/m8_int.h"
 #endif
+
+#if (BOARD == _TP_NFET_)
+  #include "hal/m8.h"
+  #include "hal/tp_nfet.h"
+  #include "hal/m8_int.h"
+#endif
