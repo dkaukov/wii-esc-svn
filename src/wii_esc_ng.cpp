@@ -39,7 +39,7 @@ void setup_to_rt() {
   pwr_stage.braking_enabled = 0;
   if (cfg.braking) pwr_stage.braking_enabled = 1;
   rx_setup_rt();
-  sdm_setup_rt(rx.rcp_start, cfg.rcp_full_us * (uint8_t)TICKS_PER_US);
+  sdm_setup_rt(rx.rcp_start, US_TO_TICKS(cfg.rcp_full_us));
 }
 
 void setup() {
@@ -90,7 +90,7 @@ void wait_for_arm() {
 }
 
 void wait_for_power_on() {
-  wait_for(rx.rcp_start + (cfg.rcp_deadband_us * (uint8_t)TICKS_PER_US), rx.rcp_max, 15);
+  wait_for(rx.rcp_start + US_TO_TICKS(cfg.rcp_deadband_us), rx.rcp_max, 15);
 }
 
 void calibrate_osc() {

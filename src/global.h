@@ -51,8 +51,7 @@
 //  Unit conversions
 //
 #define RPM_TO_COMM_TIME(x) (1000000UL * 10U / (x) * TICKS_PER_US)
-//#define PWR_PCT_TO_VAL(x)   ((x) * SDM_TOP / 100U)
-#define US_TO_TICKS(x)      ((x) * TICKS_PER_US)
+#define US_TO_TICKS(x)      ((x) * (uint8_t)TICKS_PER_US)
 
 ////////////////////////////////////////////////////////////////////////////////
 ///
