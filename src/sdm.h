@@ -19,10 +19,10 @@
 #ifndef SDM_H_INCLUDED
 #define SDM_H_INCLUDED
 
-//#define RCP_RANGE      US_TO_TICKS(RCP_FULL - RCP_START)
-//#define SDM_TOP        (RCP_RANGE + (RCP_RANGE * PCT_PWR_MIN) / 100)
-//#define SDM_LEFT       (US_TO_TICKS(RCP_START) - (RCP_RANGE * PCT_PWR_MIN) / 100)
-#define RCP_TO_SDM(x)  (x - sdm_rt.sdm_left)
+static int16_t rcp_to_sdm(uint16_t rcp) {
+  int16_t val = rcp - sdm_rt.sdm_left;
+  return val;
+}
 
 void sdm_reset() {
   sdm_rt.sdm_err = 0;

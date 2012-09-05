@@ -28,7 +28,7 @@ static struct timer_big      timer_start;
 
 static void start_power_control() {
   filter_ppm_data();
-  int16_t val = RCP_TO_SDM(rx.raw);
+  int16_t val = rcp_to_sdm(rx.raw);
   if (val < sdm_rt.sdm_run_min) {
     sdm_ref = 0;
     return;
