@@ -41,7 +41,7 @@
   #include "hal/m8_int.h"
 #endif
 
-#if (BOARD == _TGY_16_)
+#if (BOARD == _TGY_8_)
   #include "hal/m8.h"
   #include "hal/tgy.h"
   #include "hal/m8_int.h"

@@ -119,7 +119,7 @@
 					<Add option="-s" />
 				</Linker>
 				<Environment>
-					<Variable name="BOARD" value="_TGY_16_" />
+					<Variable name="BOARD" value="_TGY_8_" />
 					<Variable name="F_CPU" value="8000000" />
 					<Variable name="MCU" value="atmega8" />
 				</Environment>
