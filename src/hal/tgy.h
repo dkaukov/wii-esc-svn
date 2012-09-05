@@ -82,7 +82,7 @@ void Board_Idle() {
 };
 
 inline void Board_Init() {
-  #if (BOARD == _TGY_16_)
+  #if (BOARD != _TGY_8_)
   OSCCAL = 0xFF;
   #endif
   TIMSK = 0;

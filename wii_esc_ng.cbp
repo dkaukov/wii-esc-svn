@@ -91,7 +91,7 @@
 				</Linker>
 				<Environment>
 					<Variable name="BOARD" value="_TGY_" />
-					<Variable name="F_CPU" value="8000000" />
+					<Variable name="F_CPU" value="16000000" />
 					<Variable name="MCU" value="atmega8" />
 				</Environment>
 				<MakeCommands>
@@ -103,7 +103,7 @@
 					<SilentBuild command="$make -f $makefile.avr MCU=$(mcu) BOARD=$(board)  F_CPU=$(f_cpu)" />
 				</MakeCommands>
 			</Target>
-			<Target title="tgy_16">
+			<Target title="tgy_8">
 				<Option output="bin\avr\wii_esc_ng.elf" imp_lib="lib$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_BASENAME).def" prefix_auto="0" extension_auto="0" />
 				<Option working_dir="bin\avr" />
 				<Option object_output="C:\Ziss\mwc-ng\trunk\crosscomp\.objs" />
@@ -120,7 +120,7 @@
 				</Linker>
 				<Environment>
 					<Variable name="BOARD" value="_TGY_16_" />
-					<Variable name="F_CPU" value="16000000" />
+					<Variable name="F_CPU" value="8000000" />
 					<Variable name="MCU" value="atmega8" />
 				</Environment>
 				<MakeCommands>
@@ -304,7 +304,7 @@
 		<Unit filename="src\hal\tgy.h">
 			<Option virtualFolder="HAL\" />
 			<Option target="tgy" />
-			<Option target="tgy_16" />
+			<Option target="tgy_8" />
 		</Unit>
 		<Unit filename="src\hal\tp.h">
 			<Option virtualFolder="HAL\" />
