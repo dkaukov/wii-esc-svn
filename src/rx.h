@@ -66,7 +66,7 @@ inline void rx_ppm_callback(uint16_t time, uint8_t state) {
   } else {
     uint16_t d_time = __interval(ppm_edge_time, time);
     raw_ppm_data = d_time;
-    rx.frame_received = US_TO_TICKS(RCP_TIMEOUT_MS) * 1000U / 0xFFFFU;
+    rx.frame_received = (RCP_TIMEOUT_MS * TICKS_PER_US) * 1000U / 0xFFFFU;
   }
 }
 
