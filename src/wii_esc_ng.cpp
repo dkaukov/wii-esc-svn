@@ -32,6 +32,15 @@
 #include "zc.h"
 #include "start.h"
 #include "run.h"
+#include "storage.h"
+#include "config_data.h"
+
+void setup_to_rt() {
+  pwr_stage.braking_enabled = 0;
+  if (cfg.braking) pwr_stage.braking_enabled = 1;
+  rx_setup_rt();
+  sdm_setup_rt(rx.rcp_start, US_TO_TICKS(cfg.rcp_full_us));
+}
 
 void setup() {
   cli();
@@ -39,8 +48,9 @@ void setup() {
   PowerStage_Init();
   RX_Init();
   Debug_Init();
+  Storage_Init();
   sei();
-  pwr_stage.braking_enabled = 0;
+  setup_to_rt();
   __delay_ms(250);
 }
 
@@ -76,22 +86,22 @@ void wait_for(uint16_t low, uint16_t high, uint8_t cnt) {
 }
 
 void wait_for_arm() {
-  wait_for(US_TO_TICKS(RCP_MIN), US_TO_TICKS(RCP_START), 50);
+  wait_for(rx.rcp_min, rx.rcp_start, 50);
 }
 
 void wait_for_power_on() {
-  wait_for(US_TO_TICKS(RCP_START + RCP_DEADBAND), US_TO_TICKS(RCP_MAX), 15);
+  wait_for(rx.rcp_start + US_TO_TICKS(cfg.rcp_deadband_us), rx.rcp_max, 15);
 }
 
 void calibrate_osc() {
 #if defined(RCP_CAL) && defined(INT_OSC)
-  while (rx_get_frame() > US_TO_TICKS(RCP_CAL)) {
+  while (rx_get_frame() > rx.rcp_cal) {
     uint8_t tmp = OSCCAL;
     if (!(--tmp)) break;
     OSCCAL = tmp;
     rx_get_frame();
   }
-  while (rx_get_frame() < US_TO_TICKS(RCP_CAL)) {
+  while (rx_get_frame() < rx.rcp_cal) {
     uint8_t tmp = OSCCAL;
     if ((++tmp) == 0) break;
     OSCCAL = tmp;

@@ -63,8 +63,12 @@ OBJS := $(OBJS:%.S=$(OBJECT_DIR)/%.o)
 DEPS := $(patsubst %.o,%.d,$(OBJS))
 
 all: $(BIN_DIR)/$(OUT_FILE).elf
-	@mkdir -p $(dir $@)
+	@mkdir -p $(dir $@) "$(BIN_DIR)/conf"
 	@$(OBJCOPY) -O ihex -R .eeprom "$(BIN_DIR)/$(OUT_FILE).elf" "$(BIN_DIR)/$(OUT_FILE).hex"
+	@$(OBJCOPY) -j default_eep --change-section-lma default_eep=0 -O ihex "$(OBJECT_DIR)/src/wii_esc_ng.o" "$(BIN_DIR)/conf/default.eep"
+	@$(OBJCOPY) -j extended_eep --change-section-lma extended_eep=0 -O ihex "$(OBJECT_DIR)/src/wii_esc_ng.o" "$(BIN_DIR)/conf/extended.eep"
+	@$(OBJCOPY) -j free_flight_eep --change-section-lma free_flight_eep=0 -O ihex "$(OBJECT_DIR)/src/wii_esc_ng.o" "$(BIN_DIR)/conf/free_flight.eep"
+	@$(OBJCOPY) -j ultra_pwm_eep --change-section-lma ultra_pwm_eep=0 -O ihex "$(OBJECT_DIR)/src/wii_esc_ng.o" "$(BIN_DIR)/conf/ultra_pwm.eep"
 	@avr-objdump -d -C "$(BIN_DIR)/$(OUT_FILE).elf" > "$(BIN_DIR)/$(OUT_FILE).asm"
 	@avr-nm -C -n -S -l "$(BIN_DIR)/$(OUT_FILE).elf" > "$(BIN_DIR)/$(OUT_FILE).mem"
 	@$(SIZE) --mcu=$(MCU) -C "$(BIN_DIR)/$(OUT_FILE).elf"

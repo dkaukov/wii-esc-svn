@@ -31,7 +31,7 @@ inline uint16_t get_raw_ppm_data_no_block() {
 void filter_ppm_data() {
   if (!rx.frame_received) return;
   uint16_t tmp = get_raw_ppm_data_no_block();
-  if ((tmp >= US_TO_TICKS(RCP_MIN)) && (tmp <= US_TO_TICKS(RCP_MAX))) {
+  if ((tmp >= rx.rcp_min) && (tmp <= rx.rcp_max)) {
   #if (PPM_HYST > 0)
     if (tmp > rx.raw + (PPM_HYST)) rx.raw = tmp - (PPM_HYST - 1);
     if (tmp < rx.raw - (PPM_HYST)) rx.raw = tmp + (PPM_HYST - 1);
@@ -52,6 +52,12 @@ static void ppm_timeout(uint16_t tick) {
 
 inline void init_ppm() {
   raw_ppm_data = 0;
+  cfg.rcp_cal_us = RCP_CAL;
+  cfg.rcp_min_us = RCP_MIN;
+  cfg.rcp_max_us = RCP_MAX;
+  cfg.rcp_start_us = RCP_START;
+  cfg.rcp_full_us = RCP_FULL;
+  cfg.rcp_deadband_us = RCP_DEADBAND;
 }
 
 inline void rx_ppm_callback(uint16_t time, uint8_t state) {
@@ -60,7 +66,7 @@ inline void rx_ppm_callback(uint16_t time, uint8_t state) {
   } else {
     uint16_t d_time = __interval(ppm_edge_time, time);
     raw_ppm_data = d_time;
-    rx.frame_received = US_TO_TICKS(RCP_TIMEOUT_MS) * 1000U / 0xFFFFU;
+    rx.frame_received = (RCP_TIMEOUT_MS * TICKS_PER_US) * 1000U / 0xFFFFU;
   }
 }
 
@@ -68,6 +74,13 @@ uint16_t rx_get_frame() {
   rx.frame_received = 0; rx.raw = 0;
   while (rx.raw == 0) filter_ppm_data();
   return rx.raw;
+}
+
+static void rx_setup_rt() {
+  rx.rcp_min = US_TO_TICKS(cfg.rcp_min_us);
+  rx.rcp_max = US_TO_TICKS(cfg.rcp_max_us);
+  rx.rcp_start = US_TO_TICKS(cfg.rcp_start_us);
+  rx.rcp_cal = US_TO_TICKS(cfg.rcp_cal_us);
 }
 
 inline void RX_Init() {

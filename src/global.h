@@ -51,25 +51,42 @@
 //  Unit conversions
 //
 #define RPM_TO_COMM_TIME(x) (1000000UL * 10U / (x) * TICKS_PER_US)
-#define PWR_PCT_TO_VAL(x)   ((x) * SDM_TOP / 100U)
-#define US_TO_TICKS(x)      ((x) * TICKS_PER_US)
+#define US_TO_TICKS(x)      ((x) * (uint8_t)TICKS_PER_US)
 
 ////////////////////////////////////////////////////////////////////////////////
 ///
 //  Helpers
 //
 #define PT_EXIT_EX(pt, result)	        \
-  if (1) {	 		                    \
+  if (1) {	 		                        \
     __result = result;                  \
     break;                              \
   }
 
+
+#define FAST_SDM           18
+
+
+struct config_data {
+  uint16_t rcp_min_us;
+  uint16_t rcp_max_us;
+  uint16_t rcp_start_us;
+  uint16_t rcp_full_us;
+  uint16_t rcp_cal_us;
+  uint8_t  rcp_deadband_us;
+  uint8_t  braking;
+};
+struct config_data cfg;
 
 struct rx_data {
   union {
     uint16_t raw;
   };
   uint8_t frame_received;
+  uint16_t rcp_min;
+  uint16_t rcp_max;
+  uint16_t rcp_start;
+  uint16_t rcp_cal;
 };
 struct rx_data rx;
 
@@ -82,7 +99,20 @@ struct pwr_stage_data {
   uint8_t braking_enabled: 1;
 };
 register struct pwr_stage_data pwr_stage asm("r16");
+
 register int16_t sdm_ref asm("r4");
+
+struct sdm_rt_data {
+  int16_t sdm_err;
+  int16_t sdm_left;
+  int16_t sdm_top;
+  int16_t sdm_run_min;
+  int16_t sdm_start_min;
+  int16_t sdm_start_max;
+  int16_t sdm_fast_min;
+  int16_t sdm_fast_max;
+};
+struct sdm_rt_data sdm_rt;
 
 static uint16_t last_tick;
 static uint16_t est_comm_time;

@@ -271,6 +271,9 @@
 		<Unit filename="src\config.h">
 			<Option virtualFolder="Config\" />
 		</Unit>
+		<Unit filename="src\config_data.h">
+			<Option virtualFolder="Config\" />
+		</Unit>
 		<Unit filename="src\core.h">
 			<Option virtualFolder="Core\" />
 		</Unit>
@@ -323,6 +326,9 @@
 		</Unit>
 		<Unit filename="src\start.h">
 			<Option virtualFolder="Core\" />
+		</Unit>
+		<Unit filename="src\storage.h">
+			<Option virtualFolder="Subsystems\" />
 		</Unit>
 		<Unit filename="src\wii_esc_ng.cpp">
 			<Option virtualFolder="Core\" />

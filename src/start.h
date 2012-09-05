@@ -28,14 +28,14 @@ static struct timer_big      timer_start;
 
 static void start_power_control() {
   filter_ppm_data();
-  int16_t val = RCP_TO_SDM(rx.raw);
-  if (val < PWR_PCT_TO_VAL(PCT_PWR_MIN)) {
+  int16_t val = rcp_to_sdm(rx.raw);
+  if (val < sdm_rt.sdm_run_min) {
     sdm_ref = 0;
     return;
   }
-  if (val < PWR_PCT_TO_VAL(PCT_PWR_STARTUP)) val = PWR_PCT_TO_VAL(PCT_PWR_STARTUP);
+  if (val < sdm_rt.sdm_start_min) val = sdm_rt.sdm_start_min;
   else
-  if (val > PWR_PCT_TO_VAL(PCT_PWR_MAX_STARTUP)) val = PWR_PCT_TO_VAL(PCT_PWR_MAX_STARTUP);
+  if (val > sdm_rt.sdm_start_max) val = sdm_rt.sdm_start_max;
   sdm_ref += (val - sdm_ref) >> 2;
 }
 
@@ -46,7 +46,7 @@ static void start_timing_control() {
 }
 
 static void start_init() {
-  sdm_ref = PWR_PCT_TO_VAL(PCT_PWR_STARTUP);
+  sdm_ref = sdm_rt.sdm_start_min;
   timer_start.interval = RPM_TO_COMM_TIME(RPM_STEP_INITIAL);
   Debug_Init();
 }
