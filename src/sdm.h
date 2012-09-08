@@ -41,8 +41,6 @@ static void sdm_setup_rt(uint16_t _min, uint16_t _max) {
   sdm_rt.sdm_left = _min - shift;
   //
   sdm_rt.sdm_run_min   = pct_to_val(PCT_PWR_MIN);
-  sdm_rt.sdm_fast_min  = pct_to_val(FAST_SDM);
-  sdm_rt.sdm_fast_max  = sdm_rt.sdm_top - sdm_rt.sdm_fast_min;
   sdm_rt.sdm_start_min = pct_to_val(PCT_PWR_STARTUP);
   sdm_rt.sdm_start_max = pct_to_val(PCT_PWR_MAX_STARTUP);
 }

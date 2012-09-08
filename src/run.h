@@ -35,7 +35,6 @@ void run_power_control() {
   if (tmp > sdm_rt.sdm_top)     tmp = sdm_rt.sdm_top;
   if (sys_limit < sdm_rt.sdm_top) sys_limit += 5;
   if (tmp > sys_limit) tmp = sys_limit;
-  if ((tmp > sdm_rt.sdm_fast_min) && (tmp < sdm_rt.sdm_fast_max)) pwr_stage.sdm_fast = 0; else pwr_stage.sdm_fast = 1;
   sdm_ref = tmp;
 }
 
@@ -52,7 +51,6 @@ void run_timing_control(uint16_t tick) {
 void run_init() {
   __result = RUN_RES_UNKNOWN;
   pwr_stage.recovery = 0;
-  pwr_stage.sdm_fast = 0;
   sys_limit = sdm_ref;
   run_timing_control(last_tick);
 }
@@ -123,7 +121,7 @@ static uint8_t run() {
   run_init();
   while (1) {
     aco_sample();
-    if ((pwr_stage.sdm_fast) || (sdm_clk++ & 0x01)) sdm();
+    if (sdm_clk++ & 0x01) sdm();
     if (!PT_SCHEDULE(thread_run(&thread_run_pt, __systick()))) break;
   };
   free_spin(); sdm_reset();
