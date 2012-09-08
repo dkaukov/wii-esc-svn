@@ -58,14 +58,10 @@
 //  Helpers
 //
 #define PT_EXIT_EX(pt, result)	        \
-  if (1) {	 		                        \
+  if (1) {                              \
     __result = result;                  \
     break;                              \
   }
-
-
-#define FAST_SDM           18
-
 
 struct config_data {
   uint16_t rcp_min_us;
@@ -95,7 +91,6 @@ struct pwr_stage_data {
   uint8_t sdm_state: 1;
   uint8_t aco: 1;
   uint8_t recovery: 1;
-  uint8_t sdm_fast: 1;
   uint8_t braking_enabled: 1;
 };
 register struct pwr_stage_data pwr_stage asm("r16");
@@ -109,8 +104,6 @@ struct sdm_rt_data {
   int16_t sdm_run_min;
   int16_t sdm_start_min;
   int16_t sdm_start_max;
-  int16_t sdm_fast_min;
-  int16_t sdm_fast_max;
 };
 struct sdm_rt_data sdm_rt;
 
