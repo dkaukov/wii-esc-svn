@@ -45,6 +45,11 @@
 #define    RPM_RUN_MIN_RPM     4000
 
 //*************************
+// System settings        *
+//*************************
+#define    READ_EXTERNAL_CONFIG
+
+//*************************
 // RC Input               *
 //*************************
 #define    RCP_MIN             900

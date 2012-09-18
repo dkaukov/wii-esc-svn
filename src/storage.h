@@ -55,10 +55,12 @@ void write_storage() {
 }
 
 inline void Storage_Init() {
+#ifdef READ_EXTERNAL_CONFIG
   uint8_t test_val = ver_magic;
   nvram_open(NVRAM_MODE_READ); nvram_read(&test_val, 1); nvram_close();
   if (test_val == ver_magic)
     read_storage();
+#endif
 }
 
 #endif // STORAGE_H_INCLUDED
