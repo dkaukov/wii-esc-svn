@@ -30,6 +30,7 @@ struct eeprom_layout __default_eep__  = {
     rcp_cal_us:      RCP_CAL,
     rcp_deadband_us: RCP_DEADBAND,
     braking:         0,
+    timing_adv:      0,
   }
 };
 
@@ -44,6 +45,7 @@ struct eeprom_layout __extended_eep__  = {
     rcp_cal_us:      16,
     rcp_deadband_us: 2,
     braking:         0,
+    timing_adv:      0,
   }
 };
 
@@ -58,6 +60,7 @@ struct eeprom_layout __free_flight_eep__  = {
     rcp_cal_us:      900,
     rcp_deadband_us: 5,
     braking:         0,
+    timing_adv:      0,
   }
 };
 
@@ -72,6 +75,7 @@ struct eeprom_layout __ultra_pwm_eep__  = {
     rcp_cal_us:      0,
     rcp_deadband_us: 0,
     braking:         0,
+    timing_adv:      0,
   }
 };
 
