@@ -38,6 +38,7 @@
 void setup_to_rt() {
   pwr_stage.braking_enabled = 0;
   if (cfg.braking) pwr_stage.braking_enabled = 1;
+  timing_adv = cfg.timing_adv;
   rx_setup_rt();
   sdm_setup_rt(rx.rcp_start, US_TO_TICKS(cfg.rcp_full_us));
 }

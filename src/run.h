@@ -45,7 +45,14 @@ void run_timing_control(uint16_t tick) {
   timer_comm_timeout.elapsed = tmp;                 // 120 deg
   tmp =  tmp >> 3;
   timer_comm_delay.elapsed = tmp;                   //  15 deg
-  timer_zc_blank.elapsed = tmp >> 1;
+  tmp =  tmp >> 1;
+  timer_zc_blank.elapsed = tmp;                     // 7.5 deg
+  tmp =  tmp >> 2;                                  // 1.8 deg
+  switch (timing_adv) {
+    case 3: timer_comm_delay.elapsed -= tmp;
+    case 2: timer_comm_delay.elapsed -= tmp;
+    case 1: timer_comm_delay.elapsed -= tmp;
+  }
 }
 
 void run_init() {

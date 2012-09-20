@@ -71,6 +71,7 @@ struct config_data {
   uint16_t rcp_cal_us;
   uint8_t  rcp_deadband_us;
   uint8_t  braking;
+  int8_t   timing_adv;
 };
 struct config_data cfg;
 
@@ -111,6 +112,7 @@ static uint16_t last_tick;
 static uint16_t est_comm_time;
 static uint16_t last_comm_time;
 static uint8_t __result;
+static int8_t timing_adv;
 
 // Core Function prototypes
 
