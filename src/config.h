@@ -23,6 +23,7 @@
 // System settings        *
 //*************************
 //#define    OSC_DEBUG
+#define    READ_EXTERNAL_CONFIG
 
 //*************************
 // Power settings         *
@@ -43,11 +44,6 @@
 // Run settings           *
 //*************************
 #define    RPM_RUN_MIN_RPM     4000
-
-//*************************
-// System settings        *
-//*************************
-#define    READ_EXTERNAL_CONFIG
 
 //*************************
 // RC Input               *
