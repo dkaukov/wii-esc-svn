@@ -19,7 +19,7 @@
 #ifndef STORAGE_H_INCLUDED
 #define STORAGE_H_INCLUDED
 
-const uint8_t ver_magic = 25;
+const uint8_t ver_magic = 26;
 
 static uint8_t __ver_magic = ver_magic;
 
