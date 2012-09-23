@@ -79,4 +79,20 @@ struct eeprom_layout __ultra_pwm_eep__  = {
   }
 };
 
+__attribute__((section("multiwii_eep")))
+struct eeprom_layout __multiwii_eep__  = {
+  __ver_magic:       ver_magic,
+  cfg: {
+    rcp_min_us:      900,
+    rcp_max_us:      2200,
+    rcp_start_us:    1140,
+    rcp_full_us:     1850,
+    rcp_cal_us:      1000,
+    rcp_deadband_us: 5,
+    braking:         0,
+    timing_adv:      0,
+  }
+};
+
+
 #endif // CONFIG_DATA_H_INCLUDED
