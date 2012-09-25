@@ -23,8 +23,6 @@
 #define ZC_PROCESSING_DELAY   (42)
 
 register uint8_t zc_filter asm("r2");
-static uint8_t zc_group_delay;
-
 
 const uint8_t PROGMEM zc_filter_table[64]=   {0 ,2 ,4 ,6 ,8 ,10,12,14,16,18,20,22,24,26,28,30,
                                               32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,
@@ -86,33 +84,6 @@ __attribute__ ((noinline)) uint8_t zc_run_detected_hl() {
   v = pgm_read_byte(&zc_filter_table[v]);
   zc_filter = v;
   return (v & 0x01);
-}
-
-static uint16_t zc_get_response_time() {
-  zc_filter_run_reset();
-  uint16_t _start = __systick();
-  while (!zc_run_detected_lh());
-  return __interval(_start);
-}
-
-void zc_measure_response_time() {
-  uint16_t response = 0;
-  for (uint8_t i = 0; i < 8; i++) {
-    AnFETOn(); __delay_us(200); AnFETOff(); ApFETOn(); ACPhaseA();
-    response += zc_get_response_time();
-    ApFETOff(); __delay_us(200);
-  }
-  for (uint8_t i = 0; i < 4; i++) {
-    BnFETOn(); __delay_us(200); BnFETOff(); BpFETOn(); ACPhaseB();
-    response += zc_get_response_time();
-    BpFETOff(); __delay_us(200);
-  }
-  for (uint8_t i = 0; i < 4; i++) {
-    CnFETOn(); __delay_us(200); CnFETOff(); CpFETOn(); ACPhaseC();
-    response += zc_get_response_time();
-    CpFETOff(); __delay_us(200);
-  }
-  zc_group_delay = response >> 4;
 }
 
 #endif // ZC_H_INCLUDED

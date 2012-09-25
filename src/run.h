@@ -94,7 +94,11 @@ static PT_THREAD(thread_run(struct pt *pt, uint16_t dt)) {
       pwr_stage.recovery = 1;
       continue;
     }
-    t = dt - zc_group_delay;
+    #ifdef BEMF_FILTER_DELAY_US
+    t = dt - (ZC_PROCESSING_DELAY + US_TO_TICKS(BEMF_FILTER_DELAY_US));
+    #else
+    t = dt - (ZC_PROCESSING_DELAY);
+    #endif
     if (pwr_stage.recovery) {
       correct_timing(t);
       pwr_stage.recovery = 0;

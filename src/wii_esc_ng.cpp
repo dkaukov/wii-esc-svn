@@ -115,7 +115,6 @@ void loop() {
   startup_sound();
   wait_for_arm();
   calibrate_osc();
-  zc_measure_response_time();
   beep(12, 50);
   for (;;) {
     free_spin(); sdm_reset();
