@@ -89,6 +89,7 @@ __attribute__ ((noinline)) uint8_t zc_run_detected_hl() {
 }
 
 static uint16_t zc_get_response_time() {
+  zc_filter_run_reset();
   uint16_t _start = __systick();
   while (!zc_run_detected_lh());
   return __interval(_start);
