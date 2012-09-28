@@ -128,7 +128,7 @@ static uint8_t run() {
   run_init();
   while (1) {
     aco_sample();
-    if (sdm_clk++ & 0x01) sdm();
+    sdm();
     if (!PT_SCHEDULE(thread_run(&thread_run_pt, __systick()))) break;
   };
   free_spin(); sdm_reset();

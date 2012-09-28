@@ -47,7 +47,10 @@ static void sdm_setup_rt(uint16_t _min, uint16_t _max) {
 
 void sdm() {
   int16_t err = sdm_ref;
-  if (pwr_stage.sdm_state) err -= sdm_rt.sdm_top;
+  if (pwr_stage.sdm_state_delay) err -= sdm_rt.sdm_top;
+  // One bit delay
+  pwr_stage.sdm_state_delay = 0; if (pwr_stage.sdm_state) pwr_stage.sdm_state_delay = 1;
+  //
   sdm_rt.sdm_err -= err;
   if (sdm_rt.sdm_err < 0) {
     if (!pwr_stage.sdm_state) {
