@@ -90,7 +90,6 @@ struct rx_data rx;
 struct pwr_stage_data {
   uint8_t com_state: 3;
   uint8_t sdm_state: 1;
-  uint8_t sdm_state_delay: 1;
   uint8_t aco: 1;
   uint8_t recovery: 1;
   uint8_t braking_enabled: 1;
@@ -101,6 +100,7 @@ register int16_t sdm_ref asm("r4");
 
 struct sdm_rt_data {
   int16_t sdm_err;
+  int16_t sdm_err2;
   int16_t sdm_left;
   int16_t sdm_top;
   int16_t sdm_run_min;
