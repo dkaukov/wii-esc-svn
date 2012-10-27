@@ -46,42 +46,42 @@ void change_comm_state(uint8_t state) {
       BpFETOff(); BnFETOff();
       CpFETOff(); AnFETOff();
       ApFETOn();
-      if (pwr_stage.sdm_state) CnFETOn();
+      if (!pwr_stage.sdm_state) CnFETOff();
       ACPhaseB();
       break;
     case 1:
       CnFETOff(); CpFETOff();
       BpFETOff(); AnFETOff();
       BnFETOn();
-      if (pwr_stage.sdm_state) ApFETOn();
+      if (!pwr_stage.sdm_state) ApFETOff();
       ACPhaseC();
       break;
     case 2:
       ApFETOff(); AnFETOff();
       BpFETOff(); CnFETOff();
       CpFETOn();
-      if (pwr_stage.sdm_state) BnFETOn();
+      if (!pwr_stage.sdm_state) BnFETOff();
       ACPhaseA();
       break;
     case 3:
       BpFETOff(); BnFETOff();
       ApFETOff(); CnFETOff();
       AnFETOn();
-      if (pwr_stage.sdm_state) CpFETOn();
+      if (!pwr_stage.sdm_state) CpFETOff();
       ACPhaseB();
       break;
     case 4:
       CpFETOff(); CnFETOff();
       ApFETOff(); BnFETOff();
       BpFETOn();
-      if (pwr_stage.sdm_state) AnFETOn();
+      if (!pwr_stage.sdm_state) AnFETOff();
       ACPhaseC();
       break;
     case 5:
       ApFETOff(); AnFETOff();
       CpFETOff(); BnFETOff();
       CnFETOn();
-      if (pwr_stage.sdm_state) BpFETOn();
+      if (!pwr_stage.sdm_state) BpFETOff();
       ACPhaseA();
       break;
   }
