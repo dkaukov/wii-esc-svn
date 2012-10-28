@@ -22,7 +22,8 @@
 //*************************
 // System settings        *
 //*************************
-#define    OSC_DEBUG
+//#define    OSC_DEBUG
+#define    READ_EXTERNAL_CONFIG
 
 //*************************
 // Power settings         *
@@ -45,11 +46,6 @@
 #define    RPM_RUN_MIN_RPM     4000
 
 //*************************
-// System settings        *
-//*************************
-#define    READ_EXTERNAL_CONFIG
-
-//*************************
 // RC Input               *
 //*************************
 #define    RCP_MIN             900
@@ -59,7 +55,6 @@
 #define    RCP_DEADBAND        5
 #define    RCP_TIMEOUT_MS      2500
 #define    RCP_CAL             1000
-
 
 #endif
 

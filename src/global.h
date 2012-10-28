@@ -41,10 +41,11 @@
 #define _BS_NFET_      100
 #define _TP_           110
 #define _TGY_          120
-#define _TGY_8_       130
+#define _TGY_8_        130
 #define _BS_           140
 #define _QYNX_         150
 #define _TP_NFET_      160
+#define _RB50A_        170
 
 ////////////////////////////////////////////////////////////////////////////////
 ///
@@ -100,7 +101,6 @@ register int16_t sdm_ref asm("r4");
 
 struct sdm_rt_data {
   int16_t sdm_err;
-  int16_t sdm_err2;
   int16_t sdm_left;
   int16_t sdm_top;
   int16_t sdm_run_min;

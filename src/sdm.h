@@ -26,7 +26,6 @@ static int16_t rcp_to_sdm(uint16_t rcp) {
 
 void sdm_reset() {
   sdm_rt.sdm_err = 0;
-  sdm_rt.sdm_err2 = 0;
   sdm_ref = 0;
   pwr_stage.sdm_state = 0;
 }
@@ -48,18 +47,9 @@ static void sdm_setup_rt(uint16_t _min, uint16_t _max) {
 
 void sdm() {
   int16_t err = sdm_ref;
-  int16_t top = sdm_rt.sdm_top;
-  if (pwr_stage.sdm_state) err -= top;
+  if (pwr_stage.sdm_state) err -= sdm_rt.sdm_top;
   sdm_rt.sdm_err -= err;
-  err = sdm_rt.sdm_err;
-  if (pwr_stage.sdm_state) err += top;
-  int16_t tmp = sdm_rt.sdm_err2; tmp -= err;
-  // Constrain 2nd integral, to make modulator stable
-  if (tmp >  top) tmp =  top;
-  if (tmp < -top) tmp = -top;
-  //
-  sdm_rt.sdm_err2 = tmp;
-  if (tmp >= 0) {
+  if (sdm_rt.sdm_err < 0) {
     if (!pwr_stage.sdm_state) {
       pwr_stage.sdm_state = 1;
       set_pwm_on(pwr_stage.com_state);
