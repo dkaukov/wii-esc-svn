@@ -99,7 +99,7 @@ uint16_t get_stable_ppm_value() {
   return (frame_max + frame_min) >> 1;
 }
 
-void throttle_range_calibration_high() {
+static void throttle_range_calibration_high() {
   uint16_t tmp;
   do {
     tmp = get_stable_ppm_value();
@@ -107,21 +107,28 @@ void throttle_range_calibration_high() {
   cfg.rcp_full_us = tmp / TICKS_PER_US;
 }
 
-void throttle_range_calibration_low() {
+static void throttle_range_calibration_low() {
   uint16_t tmp;
   do {
     tmp = get_stable_ppm_value();
   } while (!tmp);
-  cfg.rcp_start_us = (tmp / TICKS_PER_US) + US_TO_TICKS(10);
+  cfg.rcp_start_us = (tmp / TICKS_PER_US);
+}
+
+static void throttle_range_calibration_apply_correction() {
+  uint16_t reserve = ((cfg.rcp_full_us - cfg.rcp_start_us) * 8) / 100;
+  cfg.rcp_full_us  -= reserve;
+  cfg.rcp_start_us += reserve;
 }
 
 void wait_for_arm() {
   wait_for(rx.rcp_min, rx.rcp_max, 5);
-  if (rx_get_frame() > US_TO_TICKS(1500)) {
+  if ((!cfg.stick_cal_dis) && (rx_get_frame() > US_TO_TICKS(RCP_STICK_CAL))) {
     throttle_range_calibration_high();
     beep(10, 25); __delay_ms(200); beep(10, 25);
-    wait_for(rx.rcp_min, US_TO_TICKS(1500), 25);
+    wait_for(rx.rcp_min, US_TO_TICKS(RCP_STICK_CAL), 25);
     throttle_range_calibration_low();
+    throttle_range_calibration_apply_correction();
     write_storage();
     setup_to_rt();
   }
