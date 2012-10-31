@@ -73,6 +73,7 @@ struct config_data {
   uint8_t  rcp_deadband_us;
   uint8_t  braking;
   int8_t   timing_adv;
+  uint8_t  stick_cal_dis;
 };
 struct config_data cfg;
 

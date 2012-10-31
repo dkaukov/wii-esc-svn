@@ -19,7 +19,7 @@
 #ifndef STORAGE_H_INCLUDED
 #define STORAGE_H_INCLUDED
 
-const uint8_t ver_magic = 26;
+const uint8_t ver_magic = 29;
 
 static uint8_t __ver_magic = ver_magic;
 
@@ -48,10 +48,19 @@ void read_storage() {
 }
 
 void write_storage() {
+#if defined(INT_OSC)
+  uint8_t tmp = OSCCAL;
+  OSCCAL = 127;
+  __delay_ms(2);
+#endif
   nvram_open(NVRAM_MODE_WRITE);
   for(uint8_t i = 0; i < nvr_entry_cnt; i++)
     nvram_write(nvr_entry[i].var, nvr_entry[i].size);
   nvram_close();
+#if defined(INT_OSC)
+  OSCCAL = tmp;
+  __delay_ms(2);
+#endif
 }
 
 inline void Storage_Init() {

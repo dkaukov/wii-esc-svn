@@ -17,9 +17,9 @@
 		</MakeCommands>
 		<Build>
 			<Target title="bs_nfet">
-				<Option output="bin\avr\wii_esc_ng.elf" imp_lib="lib$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_BASENAME).def" prefix_auto="0" extension_auto="0" />
-				<Option working_dir="bin\avr" />
-				<Option object_output="C:\Ziss\mwc-ng\trunk\crosscomp\.objs" />
+				<Option output="bin/avr/wii_esc_ng.elf" imp_lib="lib$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_BASENAME).def" prefix_auto="0" extension_auto="0" />
+				<Option working_dir="bin/avr" />
+				<Option object_output="C:/Ziss/mwc-ng/trunk/crosscomp/.objs" />
 				<Option type="3" />
 				<Option compiler="avrgcc" />
 				<Option parameters="-p m8 -P com3  -c arduino -b 57600 -U flash:w:wii_esc_ng.hex " />
@@ -46,9 +46,9 @@
 				</MakeCommands>
 			</Target>
 			<Target title="tp">
-				<Option output="bin\avr\wii_esc_ng.elf" imp_lib="lib$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_BASENAME).def" prefix_auto="0" extension_auto="0" />
-				<Option working_dir="bin\avr" />
-				<Option object_output="C:\Ziss\mwc-ng\trunk\crosscomp\.objs" />
+				<Option output="bin/avr/wii_esc_ng.elf" imp_lib="lib$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_BASENAME).def" prefix_auto="0" extension_auto="0" />
+				<Option working_dir="bin/avr" />
+				<Option object_output="C:/Ziss/mwc-ng/trunk/crosscomp/.objs" />
 				<Option type="3" />
 				<Option compiler="avrgcc" />
 				<Option parameters="-p m8 -P com3  -c arduino -b 57600 -U flash:w:wii_esc_ng.hex " />
@@ -75,9 +75,9 @@
 				</MakeCommands>
 			</Target>
 			<Target title="tgy">
-				<Option output="bin\avr\wii_esc_ng.elf" imp_lib="lib$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_BASENAME).def" prefix_auto="0" extension_auto="0" />
-				<Option working_dir="bin\avr" />
-				<Option object_output="C:\Ziss\mwc-ng\trunk\crosscomp\.objs" />
+				<Option output="bin/avr/wii_esc_ng.elf" imp_lib="lib$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_BASENAME).def" prefix_auto="0" extension_auto="0" />
+				<Option working_dir="bin/avr" />
+				<Option object_output="C:/Ziss/mwc-ng/trunk/crosscomp/.objs" />
 				<Option type="3" />
 				<Option compiler="avrgcc" />
 				<Option parameters="-p m8 -P com3  -c arduino -b 57600 -U flash:w:wii_esc_ng.hex " />
@@ -104,9 +104,9 @@
 				</MakeCommands>
 			</Target>
 			<Target title="tgy_8">
-				<Option output="bin\avr\wii_esc_ng.elf" imp_lib="lib$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_BASENAME).def" prefix_auto="0" extension_auto="0" />
-				<Option working_dir="bin\avr" />
-				<Option object_output="C:\Ziss\mwc-ng\trunk\crosscomp\.objs" />
+				<Option output="bin/avr/wii_esc_ng.elf" imp_lib="lib$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_BASENAME).def" prefix_auto="0" extension_auto="0" />
+				<Option working_dir="bin/avr" />
+				<Option object_output="C:/Ziss/mwc-ng/trunk/crosscomp/.objs" />
 				<Option type="3" />
 				<Option compiler="avrgcc" />
 				<Option parameters="-p m8 -P com3  -c arduino -b 57600 -U flash:w:wii_esc_ng.hex " />
@@ -133,9 +133,9 @@
 				</MakeCommands>
 			</Target>
 			<Target title="bs">
-				<Option output="bin\avr\wii_esc_ng.elf" imp_lib="lib$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_BASENAME).def" prefix_auto="0" extension_auto="0" />
-				<Option working_dir="bin\avr" />
-				<Option object_output="C:\Ziss\mwc-ng\trunk\crosscomp\.objs" />
+				<Option output="bin/avr/wii_esc_ng.elf" imp_lib="lib$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_BASENAME).def" prefix_auto="0" extension_auto="0" />
+				<Option working_dir="bin/avr" />
+				<Option object_output="C:/Ziss/mwc-ng/trunk/crosscomp/.objs" />
 				<Option type="3" />
 				<Option compiler="avrgcc" />
 				<Option parameters="-p m8 -P com3  -c arduino -b 57600 -U flash:w:wii_esc_ng.hex " />
@@ -162,9 +162,9 @@
 				</MakeCommands>
 			</Target>
 			<Target title="qynx">
-				<Option output="bin\avr\wii_esc_ng.elf" imp_lib="lib$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_BASENAME).def" prefix_auto="0" extension_auto="0" />
-				<Option working_dir="bin\avr" />
-				<Option object_output="C:\Ziss\mwc-ng\trunk\crosscomp\.objs" />
+				<Option output="bin/avr/wii_esc_ng.elf" imp_lib="lib$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_BASENAME).def" prefix_auto="0" extension_auto="0" />
+				<Option working_dir="bin/avr" />
+				<Option object_output="C:/Ziss/mwc-ng/trunk/crosscomp/.objs" />
 				<Option type="3" />
 				<Option compiler="avrgcc" />
 				<Option parameters="-p m8 -P com3  -c arduino -b 57600 -U flash:w:wii_esc_ng.hex " />
@@ -191,9 +191,9 @@
 				</MakeCommands>
 			</Target>
 			<Target title="tp_nfet">
-				<Option output="bin\avr\wii_esc_ng.elf" imp_lib="lib$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_BASENAME).def" prefix_auto="0" extension_auto="0" />
-				<Option working_dir="bin\avr" />
-				<Option object_output="C:\Ziss\mwc-ng\trunk\crosscomp\.objs" />
+				<Option output="bin/avr/wii_esc_ng.elf" imp_lib="lib$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_BASENAME).def" prefix_auto="0" extension_auto="0" />
+				<Option working_dir="bin/avr" />
+				<Option object_output="C:/Ziss/mwc-ng/trunk/crosscomp/.objs" />
 				<Option type="3" />
 				<Option compiler="avrgcc" />
 				<Option parameters="-p m8 -P com3  -c arduino -b 57600 -U flash:w:wii_esc_ng.hex " />
@@ -220,9 +220,9 @@
 				</MakeCommands>
 			</Target>
 			<Target title="rb50a">
-				<Option output="bin\avr\wii_esc_ng.elf" imp_lib="lib$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_BASENAME).def" prefix_auto="0" extension_auto="0" />
-				<Option working_dir="bin\avr" />
-				<Option object_output="C:\Ziss\mwc-ng\trunk\crosscomp\.objs" />
+				<Option output="bin/avr/wii_esc_ng.elf" imp_lib="lib$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_BASENAME).def" prefix_auto="0" extension_auto="0" />
+				<Option working_dir="bin/avr" />
+				<Option object_output="C:/Ziss/mwc-ng/trunk/crosscomp/.objs" />
 				<Option type="3" />
 				<Option compiler="avrgcc" />
 				<Option parameters="-p m8 -P com3  -c arduino -b 57600 -U flash:w:wii_esc_ng.hex " />
@@ -253,123 +253,126 @@
 			<Add option="-Wall" />
 		</Compiler>
 		<Unit filename="Makefile.avr">
-			<Option virtualFolder="Makefiles\" />
+			<Option virtualFolder="Makefiles/" />
 		</Unit>
-		<Unit filename="lib-avr\arduino\HardwareSerial.h">
-			<Option virtualFolder="lib-avr\" />
+		<Unit filename="lib-avr/arduino/HardwareSerial.h">
+			<Option virtualFolder="lib-avr/" />
 		</Unit>
-		<Unit filename="lib-avr\arduino\Print.h">
-			<Option virtualFolder="lib-avr\" />
+		<Unit filename="lib-avr/arduino/Print.h">
+			<Option virtualFolder="lib-avr/" />
 		</Unit>
-		<Unit filename="lib-avr\arduino\Stream.h">
-			<Option virtualFolder="lib-avr\" />
+		<Unit filename="lib-avr/arduino/Stream.h">
+			<Option virtualFolder="lib-avr/" />
 		</Unit>
-		<Unit filename="lib-avr\arduino\WCharacter.h">
-			<Option virtualFolder="lib-avr\" />
+		<Unit filename="lib-avr/arduino/WCharacter.h">
+			<Option virtualFolder="lib-avr/" />
 		</Unit>
-		<Unit filename="lib-avr\arduino\WConstants.h">
-			<Option virtualFolder="lib-avr\" />
+		<Unit filename="lib-avr/arduino/WConstants.h">
+			<Option virtualFolder="lib-avr/" />
 		</Unit>
-		<Unit filename="lib-avr\arduino\WProgram.h">
-			<Option virtualFolder="lib-avr\" />
+		<Unit filename="lib-avr/arduino/WProgram.h">
+			<Option virtualFolder="lib-avr/" />
 		</Unit>
-		<Unit filename="lib-avr\arduino\WString.h">
-			<Option virtualFolder="lib-avr\" />
+		<Unit filename="lib-avr/arduino/WString.h">
+			<Option virtualFolder="lib-avr/" />
 		</Unit>
-		<Unit filename="lib-avr\arduino\binary.h">
-			<Option virtualFolder="lib-avr\" />
+		<Unit filename="lib-avr/arduino/binary.h">
+			<Option virtualFolder="lib-avr/" />
 		</Unit>
-		<Unit filename="lib-avr\arduino\pins_arduino.h">
-			<Option virtualFolder="lib-avr\" />
+		<Unit filename="lib-avr/arduino/pins_arduino.h">
+			<Option virtualFolder="lib-avr/" />
 		</Unit>
-		<Unit filename="lib-avr\arduino\wiring.h">
-			<Option virtualFolder="lib-avr\" />
+		<Unit filename="lib-avr/arduino/wiring.h">
+			<Option virtualFolder="lib-avr/" />
 		</Unit>
-		<Unit filename="lib-avr\arduino\wiring_private.h">
-			<Option virtualFolder="lib-avr\" />
+		<Unit filename="lib-avr/arduino/wiring_private.h">
+			<Option virtualFolder="lib-avr/" />
 		</Unit>
-		<Unit filename="lib-avr\avr_twi.h">
-			<Option virtualFolder="lib-avr\" />
+		<Unit filename="lib-avr/avr_twi.h">
+			<Option virtualFolder="lib-avr/" />
 		</Unit>
-		<Unit filename="lib-avr\avr_usart.h">
-			<Option virtualFolder="lib-avr\" />
+		<Unit filename="lib-avr/avr_usart.h">
+			<Option virtualFolder="lib-avr/" />
 		</Unit>
-		<Unit filename="src\RX.h">
-			<Option virtualFolder="Subsystems\" />
+		<Unit filename="src/RX.h">
+			<Option virtualFolder="Subsystems/" />
 		</Unit>
-		<Unit filename="src\config.h">
-			<Option virtualFolder="Config\" />
+		<Unit filename="src/config.h">
+			<Option virtualFolder="Config/" />
 		</Unit>
-		<Unit filename="src\config_data.h">
-			<Option virtualFolder="Config\" />
+		<Unit filename="src/config_data.h">
+			<Option virtualFolder="Config/" />
 		</Unit>
-		<Unit filename="src\core.h">
-			<Option virtualFolder="Core\" />
+		<Unit filename="src/core.h">
+			<Option virtualFolder="Core/" />
 		</Unit>
-		<Unit filename="src\debug.h">
-			<Option virtualFolder="Subsystems\" />
+		<Unit filename="src/debug.h">
+			<Option virtualFolder="Subsystems/" />
 		</Unit>
-		<Unit filename="src\global.h">
-			<Option virtualFolder="Core\" />
+		<Unit filename="src/global.h">
+			<Option virtualFolder="Core/" />
 		</Unit>
-		<Unit filename="src\hal\bs.h">
-			<Option virtualFolder="HAL\" />
+		<Unit filename="src/hal/bs.h">
+			<Option virtualFolder="HAL/" />
 			<Option target="bs" />
 			<Option target="qynx" />
 			<Option target="rb50a" />
 		</Unit>
-		<Unit filename="src\hal\bs_nfet.h">
-			<Option virtualFolder="HAL\" />
+		<Unit filename="src/hal/bs_nfet.h">
+			<Option virtualFolder="HAL/" />
 			<Option target="bs_nfet" />
 			<Option target="bs" />
 			<Option target="qynx" />
 			<Option target="rb50a" />
 		</Unit>
-		<Unit filename="src\hal\m8_int.h">
-			<Option virtualFolder="HAL\" />
+		<Unit filename="src/hal/m8.h">
+			<Option virtualFolder="HAL/" />
 		</Unit>
-		<Unit filename="src\hal\qynx.h">
-			<Option virtualFolder="HAL\" />
+		<Unit filename="src/hal/m8_int.h">
+			<Option virtualFolder="HAL/" />
+		</Unit>
+		<Unit filename="src/hal/qynx.h">
+			<Option virtualFolder="HAL/" />
 			<Option target="qynx" />
 		</Unit>
-		<Unit filename="src\hal\rb50a.h">
-			<Option virtualFolder="HAL\" />
+		<Unit filename="src/hal/rb50a.h">
+			<Option virtualFolder="HAL/" />
 			<Option target="rb50a" />
 		</Unit>
-		<Unit filename="src\hal\tgy.h">
-			<Option virtualFolder="HAL\" />
+		<Unit filename="src/hal/tgy.h">
+			<Option virtualFolder="HAL/" />
 			<Option target="tgy" />
 			<Option target="tgy_8" />
 		</Unit>
-		<Unit filename="src\hal\tp.h">
-			<Option virtualFolder="HAL\" />
+		<Unit filename="src/hal/tp.h">
+			<Option virtualFolder="HAL/" />
 			<Option target="tp" />
 			<Option target="tp_nfet" />
 		</Unit>
-		<Unit filename="src\hal\tp_nfet.h">
-			<Option virtualFolder="HAL\" />
+		<Unit filename="src/hal/tp_nfet.h">
+			<Option virtualFolder="HAL/" />
 			<Option target="tp_nfet" />
 		</Unit>
-		<Unit filename="src\power_stage.h">
-			<Option virtualFolder="Core\" />
+		<Unit filename="src/power_stage.h">
+			<Option virtualFolder="Core/" />
 		</Unit>
-		<Unit filename="src\run.h">
-			<Option virtualFolder="Core\" />
+		<Unit filename="src/run.h">
+			<Option virtualFolder="Core/" />
 		</Unit>
-		<Unit filename="src\sdm.h">
-			<Option virtualFolder="Subsystems\" />
+		<Unit filename="src/sdm.h">
+			<Option virtualFolder="Subsystems/" />
 		</Unit>
-		<Unit filename="src\start.h">
-			<Option virtualFolder="Core\" />
+		<Unit filename="src/start.h">
+			<Option virtualFolder="Core/" />
 		</Unit>
-		<Unit filename="src\storage.h">
-			<Option virtualFolder="Subsystems\" />
+		<Unit filename="src/storage.h">
+			<Option virtualFolder="Subsystems/" />
 		</Unit>
-		<Unit filename="src\wii_esc_ng.cpp">
-			<Option virtualFolder="Core\" />
+		<Unit filename="src/wii_esc_ng.cpp">
+			<Option virtualFolder="Core/" />
 		</Unit>
-		<Unit filename="src\zc.h">
-			<Option virtualFolder="Subsystems\" />
+		<Unit filename="src/zc.h">
+			<Option virtualFolder="Subsystems/" />
 		</Unit>
 		<Extensions>
 			<code_completion>

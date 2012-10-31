@@ -54,7 +54,8 @@
 #define    RCP_FULL            1860
 #define    RCP_DEADBAND        5
 #define    RCP_TIMEOUT_MS      2500
-#define    RCP_CAL             1000
+#define    RCP_CAL             0
+#define    RCP_STICK_CAL       1460
 
 #endif
 
