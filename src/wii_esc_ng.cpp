@@ -43,19 +43,6 @@ void setup_to_rt() {
   sdm_setup_rt(rx.rcp_start, US_TO_TICKS(cfg.rcp_full_us));
 }
 
-void setup() {
-  cli();
-  Board_Init();
-  PowerStage_Init();
-  RX_Init();
-  Debug_Init();
-  Storage_Init();
-  sei();
-  sdm_reset();
-  setup_to_rt();
-  __delay_ms(250);
-}
-
 void beep(uint8_t khz, uint8_t len) {
  uint16_t off = 10000 / khz;
  uint16_t cnt = khz * len;
@@ -123,21 +110,26 @@ static void throttle_range_calibration_apply_correction() {
 }
 
 void wait_for_arm() {
-  wait_for(rx.rcp_min, rx.rcp_max, 10);
-  if ((!cfg.stick_cal_dis) && (rx_get_frame() > US_TO_TICKS(RCP_STICK_CAL))) {
-    throttle_range_calibration_high();
-    beep(10, 10); __delay_ms(200); beep(10, 10);
-    wait_for(rx.rcp_min, US_TO_TICKS(RCP_STICK_CAL), 25);
-    throttle_range_calibration_low();
-    throttle_range_calibration_apply_correction();
-    write_storage();
-    setup_to_rt();
-  }
   wait_for(rx.rcp_min, rx.rcp_start, 50);
 }
 
 void wait_for_power_on() {
   wait_for(rx.rcp_start + US_TO_TICKS(cfg.rcp_deadband_us), rx.rcp_max, 15);
+}
+
+void check_for_stick_cal() {
+  if (!cfg.stick_cal_dis) {
+    wait_for(rx.rcp_min, rx.rcp_max, 10);
+    if ((rx_get_frame() > US_TO_TICKS(RCP_STICK_CAL))) {
+      throttle_range_calibration_high();
+      beep(10, 10); __delay_ms(200); beep(10, 10);
+      wait_for(rx.rcp_min, US_TO_TICKS(RCP_STICK_CAL), 25);
+      throttle_range_calibration_low();
+      throttle_range_calibration_apply_correction();
+      write_storage();
+      setup_to_rt();
+    }
+  }
 }
 
 void calibrate_osc() {
@@ -158,11 +150,25 @@ void calibrate_osc() {
 #endif
 }
 
-void loop() {
+void setup() {
+  cli();
+  Board_Init();
+  PowerStage_Init();
+  RX_Init();
+  Debug_Init();
+  Storage_Init();
+  sei();
+  sdm_reset();
+  setup_to_rt();
+  __delay_ms(250);
   startup_sound();
-  wait_for_arm();
+  check_for_stick_cal();
   calibrate_osc();
-  beep(12, 50);
+}
+
+void loop() {
+  wait_for_arm();
+  set_comm_state(); beep(12, 50);
   for (;;) {
     free_spin(); sdm_reset();
     if (pwr_stage.braking_enabled) brake();
