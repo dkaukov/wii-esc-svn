@@ -28,12 +28,16 @@ static int16_t sys_limit;
 #define RUN_RES_TIMEOUT    1
 #define RUN_RES_UNKNOWN    255
 
-void run_power_control() {
+void run_syslimit_control() {
+  if (sys_limit < sdm_rt.sdm_top) sys_limit += 5;
+}
+
+inline void run_power_control() {
+  if ((pwr_stage.recovery) || (!rx.frame_received)) return;
   filter_ppm_data();
   int16_t tmp = rcp_to_sdm(rx.raw);
   if (tmp < sdm_rt.sdm_run_min) tmp = 0;
   if (tmp > sdm_rt.sdm_top)     tmp = sdm_rt.sdm_top;
-  if (sys_limit < sdm_rt.sdm_top) sys_limit += 5;
   if (tmp > sys_limit) tmp = sys_limit;
   sdm_ref = tmp;
 }
@@ -114,7 +118,7 @@ static PT_THREAD(thread_run(struct pt *pt, uint16_t dt)) {
     Debug_TraceToggle();
     ppm_timeout(dt);
     PT_YIELD(pt);
-    run_power_control();
+    run_syslimit_control();
     if (pwr_stage.braking_enabled && (sdm_ref == 0)) PT_EXIT_EX(pt, RUN_RES_OK);
     timer_zc_blank.last_systick = dt;
   }
@@ -128,7 +132,7 @@ static uint8_t run() {
   run_init();
   while (1) {
     aco_sample();
-    if (sdm_clk++ & 0x01) sdm();
+    if (sdm_clk++ & 0x01) sdm(); else run_power_control();
     if (!PT_SCHEDULE(thread_run(&thread_run_pt, __systick()))) break;
   };
   free_spin(); sdm_reset();
