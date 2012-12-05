@@ -16,7 +16,6 @@
 #define AnFET           0
 #define PORTB_INIT      0
 #define PORTB_DD        (1<<AnFET)+(1<<DbgLED)+(1<<DbgStr)
-#define BRAKE_PB        (1<<CnFET)
 
 inline void DebugLEDOn()     {PORTB |= _BV(DbgLED);}
 inline void DebugLEDOff()    {PORTB &= ~_BV(DbgLED);}
@@ -35,7 +34,6 @@ inline void DebugStrToggle() {PORTB ^= _BV(DbgStr);}
 #define BpFET           5
 #define PORTC_INIT      (1<<AnRef)
 #define PORTC_DD        (1<<AnRef)+(1<<CpFET)+(1<<BnFET)+(1<<BpFET)
-#define BRAKE_PC        (1<<BnFET)
 
 //*********************
 // PORT D definitions *
@@ -46,8 +44,6 @@ inline void DebugStrToggle() {PORTB ^= _BV(DbgStr);}
 #define rcp_in          2
 #define PORTD_INIT      0
 #define PORTD_DD        (1<<ApFET)+(1<<CnFET)
-#define BRAKE_PD        (1<<AnFET)
-
 
 inline void ApFETOn()  {PORTD |=  _BV(ApFET);}
 inline void ApFETOff() {PORTD &= ~_BV(ApFET);}
