@@ -64,3 +64,9 @@
   #include "hal/rb50a.h"
   #include "hal/m8_int.h"
 #endif
+
+#if (BOARD == _BS40A_)
+  #include "hal/m8.h"
+  #include "hal/bs40a.h"
+  #include "hal/m8_int.h"
+#endif
