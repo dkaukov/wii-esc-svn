@@ -1,14 +1,21 @@
-#ifndef _BS_H_
-#define _BS_H_
+#ifndef BS40A_H_INCLUDED
+#define BS40A_H_INCLUDED
+
+/**
+***************************************************************
+* For HK Blue Series 40A (not F-40A) -- the same as "bs" but  *
+* with flipped AnFET and CnFET pins.                          *
+***************************************************************
+*/
 
 //*********************
 // PORT B definitions *
 //*********************
 #define DbgLED          5
 #define DbgStr          4
-#define CnFET           0
+#define AnFET           0
 #define PORTB_INIT      0
-#define PORTB_DD        (1<<CnFET)+(1<<DbgLED)+(1<<DbgStr)
+#define PORTB_DD        (1<<AnFET)+(1<<DbgLED)+(1<<DbgStr)
 
 inline void DebugLEDOn()     {PORTB |= _BV(DbgLED);}
 inline void DebugLEDOff()    {PORTB &= ~_BV(DbgLED);}
@@ -32,16 +39,16 @@ inline void DebugStrToggle() {PORTB ^= _BV(DbgStr);}
 // PORT D definitions *
 //*********************
 #define c_comp          6
-#define AnFET           5
+#define CnFET           5
 #define ApFET           4
 #define rcp_in          2
 #define PORTD_INIT      0
-#define PORTD_DD        (1<<ApFET)+(1<<AnFET)
+#define PORTD_DD        (1<<ApFET)+(1<<CnFET)
 
 inline void ApFETOn()  {PORTD |=  _BV(ApFET);}
 inline void ApFETOff() {PORTD &= ~_BV(ApFET);}
-inline void AnFETOn()  {PORTD |=  _BV(AnFET);}
-inline void AnFETOff() {PORTD &= ~_BV(AnFET);}
+inline void AnFETOn()  {PORTB |=  _BV(AnFET);}
+inline void AnFETOff() {PORTB &= ~_BV(AnFET);}
 
 inline void BpFETOn()  {PORTC |=  _BV(BpFET);}
 inline void BpFETOff() {PORTC &= ~_BV(BpFET);}
@@ -50,8 +57,8 @@ inline void BnFETOff() {PORTC &= ~_BV(BnFET);}
 
 inline void CpFETOn()  {PORTC |=  _BV(CpFET);}
 inline void CpFETOff() {PORTC &= ~_BV(CpFET);}
-inline void CnFETOn()  {PORTB |=  _BV(CnFET);}
-inline void CnFETOff() {PORTB &= ~_BV(CnFET);}
+inline void CnFETOn()  {PORTD |=  _BV(CnFET);}
+inline void CnFETOff() {PORTD &= ~_BV(CnFET);}
 
 #define mux_c           0
 #define mux_a           6
@@ -89,4 +96,4 @@ inline void Board_Init() {
   ACInit();
 }
 
-#endif // _BS_NFET_H_
+#endif // BS40A_H_INCLUDED

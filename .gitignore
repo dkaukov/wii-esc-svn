@@ -1,5 +1,6 @@
 bin/*.*
 bin/avr/*.*
+bin/avr/conf/*.eep
 obj/*.*
 obj/avr/*.*
 obj/avr/lib-avr/*.*
