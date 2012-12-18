@@ -8,6 +8,8 @@ OBJCOPY = $(TCHAIN)avr-objcopy
 AR = $(TCHAIN)avr-ar
 RM = rm -rf
 SIZE = $(TCHAIN)avr-size
+OBJDUMP = $(TCHAIN)avr-objdump
+NM = $(TCHAIN)avr-nm
 AVRDUDE ?= c:/bin/avrdude
 COMPORT ?= com5
 BOARD ?= _BS_NFET_
@@ -70,8 +72,8 @@ all: $(BIN_DIR)/$(OUT_FILE).elf
 	@$(OBJCOPY) -j free_flight_eep --change-section-lma free_flight_eep=0 -O ihex "$(OBJECT_DIR)/src/wii_esc_ng.o" "$(BIN_DIR)/conf/free_flight.eep"
 	@$(OBJCOPY) -j ultra_pwm_eep --change-section-lma ultra_pwm_eep=0 -O ihex "$(OBJECT_DIR)/src/wii_esc_ng.o" "$(BIN_DIR)/conf/ultra_pwm.eep"
 	@$(OBJCOPY) -j multiwii_eep --change-section-lma multiwii_eep=0 -O ihex "$(OBJECT_DIR)/src/wii_esc_ng.o" "$(BIN_DIR)/conf/multiwii.eep"
-	@avr-objdump -d -C "$(BIN_DIR)/$(OUT_FILE).elf" > "$(BIN_DIR)/$(OUT_FILE).asm"
-	@avr-nm -C -n -S -l "$(BIN_DIR)/$(OUT_FILE).elf" > "$(BIN_DIR)/$(OUT_FILE).mem"
+	@$(OBJDUMP) -d -C "$(BIN_DIR)/$(OUT_FILE).elf" > "$(BIN_DIR)/$(OUT_FILE).asm"
+	@$(NM) -C -n -S -l "$(BIN_DIR)/$(OUT_FILE).elf" > "$(BIN_DIR)/$(OUT_FILE).mem"
 	@$(SIZE) --mcu=$(MCU) -C "$(BIN_DIR)/$(OUT_FILE).elf"
 	@cp "$(BIN_DIR)/$(OUT_FILE).hex" "$(BIN_DIR)/$(call lc,$(patsubst _%_,%,$(BOARD))).hex"
 
