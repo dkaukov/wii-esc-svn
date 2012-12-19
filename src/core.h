@@ -70,3 +70,11 @@
   #include "hal/bs40a.h"
   #include "hal/m8_int.h"
 #endif
+
+#if (BOARD == _A32U4ESC_)
+  #include "hal/a32u4.h"
+  #include "hal/A32u4ESC.h"
+  #include "hal/a32u4_int.h"
+#endif
+
+

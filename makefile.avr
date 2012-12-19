@@ -34,7 +34,7 @@ COMPILER_FLAGS=-c -g -mmcu=$(MCU) $(OPT) -ffunction-sections -fdata-sections -fn
   -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums \
   -fno-split-wide-types \
   -mcall-prologues \
-  -DF_CPU=$(F_CPU) -DARDUINO=22 -DBOARD=$(BOARD) -Isrc -Ilib-avr/arduino -Ilib/MWC_PT -Ilib-avr -Ilib-avr/nvram
+  -DF_CPU=$(F_CPU) -DARDUINO=22 -DBOARD=$(BOARD) -DUSB_VID=0x2341 -DUSB_PID=0x8036 -Isrc -Ilib-avr/arduino -Ilib/MWC_PT -Ilib-avr -Ilib-avr/nvram
 
 # Define sources and objects
 LSRC := $(wildcard  lib-avr/*/*/*/*/*/*/*.c) \

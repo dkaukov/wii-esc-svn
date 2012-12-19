@@ -16,7 +16,7 @@
   You should have received a copy of the GNU Lesser General Public
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-  
+
   Modified 23 November 2006 by David A. Mellis
   Modified 28 September 2010 by Mark Sproul
 */
@@ -28,7 +28,7 @@
 #include "wiring.h"
 #include "wiring_private.h"
 
-// this next line disables the entire HardwareSerial.cpp, 
+// this next line disables the entire HardwareSerial.cpp,
 // this is so I can support Attiny series and any other chip without a uart
 #if defined(UBRRH) || defined(UBRR0H) || defined(UBRR1H) || defined(UBRR2H) || defined(UBRR3H)
 
@@ -129,8 +129,6 @@ inline void store_char(unsigned char c, ring_buffer *rx_buffer)
     store_char(c, &rx_buffer);
   }
 #elif defined(USBCON)
-  #warning No interrupt handler for usart 0
-  #warning Serial(0) is on USB interface
 #else
   #error No interrupt handler for usart 0
 #endif
@@ -205,7 +203,7 @@ void HardwareSerial::begin(long baud)
     use_u2x = false;
   }
 #endif
-  
+
   if (use_u2x) {
     *_ucsra = 1 << _u2x;
     baud_setting = (F_CPU / 4 / baud - 1) / 2;
@@ -227,7 +225,7 @@ void HardwareSerial::end()
 {
   cbi(*_ucsrb, _rxen);
   cbi(*_ucsrb, _txen);
-  cbi(*_ucsrb, _rxcie);  
+  cbi(*_ucsrb, _rxcie);
 }
 
 int HardwareSerial::available(void)
@@ -285,7 +283,6 @@ void HardwareSerial::write(uint8_t c)
 #elif defined(UBRR0H) && defined(UBRR0L)
   HardwareSerial Serial(&rx_buffer, &UBRR0H, &UBRR0L, &UCSR0A, &UCSR0B, &UDR0, RXEN0, TXEN0, RXCIE0, UDRE0, U2X0);
 #elif defined(USBCON)
-  #warning no serial port defined  (port 0)
 #else
   #error no serial port defined  (port 0)
 #endif
