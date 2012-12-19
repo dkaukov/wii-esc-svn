@@ -4,8 +4,8 @@
 //*********************
 // PORT B definitions *
 //*********************
-#define DbgLED          5
-#define DbgStr          4
+#define DbgLED          1
+#define DbgStr          3
 #define BnFET           5
 #define BpFET           6
 #define PORTB_INIT      0
@@ -51,9 +51,9 @@ inline void CpFETOff() {PORTC &= ~_BV(CpFET);}
 inline void CnFETOn()  {PORTC |=  _BV(CnFET);}
 inline void CnFETOff() {PORTC &= ~_BV(CnFET);}
 
-#define mux_c           6
-#define mux_a           5
-#define mux_b           4
+#define mux_a           6
+#define mux_b           5
+#define mux_c           4
 
 inline void ACInit() {
   ACMultiplexed();

@@ -283,8 +283,8 @@
 				<Option object_output="C:/Ziss/mwc-ng/trunk/crosscomp/.objs" />
 				<Option type="3" />
 				<Option compiler="avrgcc" />
-				<Option parameters="-p m8 -P com3  -c arduino -b 57600 -U flash:w:wii_esc_ng.hex " />
-				<Option host_application="avrdude.exe" />
+				<Option parameters="/c mode com5 baud=1200 &amp; sleep 6 &amp; avrdude.exe -p m32u4 -P com5  -c avr109 -b 57600 -U flash:w:wii_esc_ng.hex " />
+				<Option host_application="cmd" />
 				<Option run_host_application_in_terminal="1" />
 				<Compiler>
 					<Add option="-O2" />
