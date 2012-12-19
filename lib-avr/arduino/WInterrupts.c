@@ -19,7 +19,7 @@
   Public License along with this library; if not, write to the
   Free Software Foundation, Inc., 59 Temple Place, Suite 330,
   Boston, MA  02111-1307  USA
-  
+
   Modified 24 November 2006 by David A. Mellis
   Modified 1 August 2010 by Mark Sproul
 */
@@ -39,14 +39,14 @@ volatile static voidFuncPtr intFunc[EXTERNAL_NUM_INTERRUPTS];
 void attachInterrupt(uint8_t interruptNum, void (*userFunc)(void), int mode) {
   if(interruptNum < EXTERNAL_NUM_INTERRUPTS) {
     intFunc[interruptNum] = userFunc;
-    
+
     // Configure the interrupt mode (trigger on low input, any change, rising
     // edge, or falling edge).  The mode constants were chosen to correspond
     // to the configuration bits in the hardware register, so we simply shift
     // the mode into place.
-      
+
     // Enable the interrupt.
-      
+
     switch (interruptNum) {
 #if defined(EICRA) && defined(EICRB) && defined(EIMSK)
     case 2:
@@ -119,7 +119,7 @@ void attachInterrupt(uint8_t interruptNum, void (*userFunc)(void), int mode) {
 void detachInterrupt(uint8_t interruptNum) {
   if(interruptNum < EXTERNAL_NUM_INTERRUPTS) {
     // Disable the interrupt.  (We can't assume that interruptNum is equal
-    // to the number of the EIMSK bit to clear, as this isn't true on the 
+    // to the number of the EIMSK bit to clear, as this isn't true on the
     // ATmega8.  There, INT0 is 6 and INT1 is 7.)
     switch (interruptNum) {
 #if defined(EICRA) && defined(EICRB) && defined(EIMSK)
@@ -173,7 +173,7 @@ void detachInterrupt(uint8_t interruptNum) {
       break;
 #endif
     }
-      
+
     intFunc[interruptNum] = 0;
   }
 }
@@ -184,7 +184,28 @@ void attachInterruptTwi(void (*userFunc)(void) ) {
 }
 */
 
-#if defined(EICRA) && defined(EICRB)
+#if defined(__AVR_ATmega32U4__)
+SIGNAL(INT0_vect) {
+	if(intFunc[EXTERNAL_INT_0])
+		intFunc[EXTERNAL_INT_0]();
+}
+
+SIGNAL(INT1_vect) {
+	if(intFunc[EXTERNAL_INT_1])
+		intFunc[EXTERNAL_INT_1]();
+}
+
+SIGNAL(INT2_vect) {
+    if(intFunc[EXTERNAL_INT_2])
+		intFunc[EXTERNAL_INT_2]();
+}
+
+SIGNAL(INT3_vect) {
+    if(intFunc[EXTERNAL_INT_3])
+		intFunc[EXTERNAL_INT_3]();
+}
+
+#elif defined(EICRA) && defined(EICRB)
 
 SIGNAL(INT0_vect) {
   if(intFunc[EXTERNAL_INT_2])
@@ -237,6 +258,13 @@ SIGNAL(INT1_vect) {
   if(intFunc[EXTERNAL_INT_1])
     intFunc[EXTERNAL_INT_1]();
 }
+
+#if defined(EICRA) && defined(ISC20)
+SIGNAL(INT2_vect) {
+  if(intFunc[EXTERNAL_INT_2])
+    intFunc[EXTERNAL_INT_2]();
+}
+#endif
 
 #endif
 
