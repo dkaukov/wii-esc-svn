@@ -1,6 +1,6 @@
 /**
  * Wii ESC NG 2.0 - 2012
- * Atmega8 API RX input capture
+ * Atmega32u4 API RX input capture
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,13 +26,15 @@ ISR(TIMER1_CAPT_vect) {
   uint16_t time = ICR1;
   uint8_t state = (TCCR1B & _BV(ICES1));
   if (state) TCCR1B &= ~_BV(ICES1); else TCCR1B |= _BV(ICES1);
+  TIFR1 = _BV(ICF1);
   rx_ppm_callback(time, state);
 }
 
 inline void AttachPPM() {
   PORTD  |= _BV(4);
-  TCCR1B |= _BV(ICES1);
+  TCCR1B |= _BV(ICES1) | _BV(ICNC1);
   TIMSK1 |= _BV(ICIE1);
+  TIFR1 = _BV(ICF1);
 }
 #endif
 
