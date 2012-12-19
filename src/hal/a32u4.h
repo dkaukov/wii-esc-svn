@@ -21,7 +21,6 @@
 
 #include "WProgram.h"
 #include <avr/pgmspace.h>
-#include "USBAPI.h"
 
 // Workaround for http://gcc.gnu.org/bugzilla/show_bug.cgi?id=34734
 #ifdef PROGMEM
