@@ -22,6 +22,7 @@
 static struct timer_small  timer_comm_delay;
 static struct timer_small  timer_comm_timeout;
 static struct timer_small  timer_zc_blank;
+static struct timer_small  timer_gov_interval;
 static int16_t sys_limit;
 
 #define RUN_RES_OK         0
@@ -59,6 +60,7 @@ void run_init() {
   __result = RUN_RES_UNKNOWN;
   pwr_stage.recovery = 0;
   sys_limit = sdm_ref;
+  timer_gov_interval.interval = 10000 * 2;
   run_timing_control(last_tick);
 }
 
@@ -121,15 +123,25 @@ static PT_THREAD(thread_run(struct pt *pt, uint16_t dt)) {
   PT_END(pt);
 }
 
+static PT_THREAD(thread_run_gov(struct pt *pt, uint16_t dt)) {
+  PT_BEGIN(pt);
+  PT_WAIT_UNTIL(pt, timer_expired(&timer_gov_interval, dt));
+  PT_END(pt);
+}
+
+
 static uint8_t run() {
   uint8_t sdm_clk = 0;
   struct pt thread_run_pt;
+  struct pt thread_run_gov_pt;
   PT_INIT(&thread_run_pt);
+  PT_INIT(&thread_run_gov_pt);
   run_init();
   while (1) {
     aco_sample();
     if (sdm_clk++ & 0x01) sdm();
     if (!PT_SCHEDULE(thread_run(&thread_run_pt, __systick()))) break;
+    PT_SCHEDULE(thread_run_gov(&thread_run_gov_pt, __systick()));
   };
   free_spin(); sdm_reset();
   return __result;
