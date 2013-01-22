@@ -26,7 +26,7 @@
 #include "config.h"
 #include "core.h"
 #include "debug.h"
-#include "RX.h"
+#include "rx.h"
 #include "power_stage.h"
 #include "sdm.h"
 #include "zc.h"
