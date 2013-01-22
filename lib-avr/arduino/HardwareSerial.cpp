@@ -117,9 +117,9 @@ inline void store_char(unsigned char c, ring_buffer *rx_buffer)
   #endif
     store_char(c, &rx_buffer);
   }
-#elif defined(SIG_UART_RECV)
+#elif defined(USART_RXC_vect)
   // this is for atmega8
-  SIGNAL(SIG_UART_RECV)
+  ISR(USART_RXC_vect)
   {
   #if defined(UDR0)
     unsigned char c  =  UDR0;  //  atmega645
