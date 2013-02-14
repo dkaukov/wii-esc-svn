@@ -56,9 +56,9 @@ static uint8_t start_wait_for_zc() {
     aco_sample();
     sdm();
     if (timer_expired(&timer_start, __systick())) return 0;
-    if (zc_start_detected(pwr_stage.com_state)) return 1;
+    if (zc_start_detected()) return 1;
     aco_sample();
-    if (zc_start_detected(pwr_stage.com_state)) return 1;
+    if (zc_start_detected()) return 1;
   }
  }
 

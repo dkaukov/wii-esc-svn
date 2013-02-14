@@ -98,6 +98,7 @@ struct pwr_stage_data {
   uint8_t aco: 1;
   uint8_t recovery: 1;
   uint8_t braking_enabled: 1;
+  uint8_t zc_sign: 1;
 };
 register struct pwr_stage_data pwr_stage asm("r16");
 

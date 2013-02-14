@@ -21,12 +21,15 @@
 
 static uint8_t state_table_nxt[6] = {1, 2, 3, 4, 5, 0};
 static uint8_t state_table_prv[6] = {5, 0, 1, 2, 3, 4};
+static uint8_t state_table_zcs[6] = {0, 1, 0, 1, 0, 1};
 
 void set_reverse() {
   static uint8_t state_table_tmp[6];
   memcpy(state_table_tmp, state_table_nxt, 6);
   memcpy(state_table_nxt, state_table_prv, 6);
   memcpy(state_table_prv, state_table_tmp, 6);
+  for (uint8_t i = 0; i < 6; i++)
+    state_table_zcs[i] ^= 0x01;
 }
 
 
@@ -188,6 +191,7 @@ void set_ac_state(uint8_t state) {
 
 inline void next_comm_state() {
   pwr_stage.com_state = state_table_nxt[pwr_stage.com_state];
+  pwr_stage.zc_sign = state_table_zcs[pwr_stage.com_state];
 }
 
 inline void next_comm_state(uint8_t n) {
@@ -195,6 +199,7 @@ inline void next_comm_state(uint8_t n) {
   for (uint8_t i = 0; i < n; i++)
     tmp = state_table_nxt[tmp];
   pwr_stage.com_state  = tmp;
+  pwr_stage.zc_sign = state_table_zcs[tmp];
 }
 
 void set_comm_state() {

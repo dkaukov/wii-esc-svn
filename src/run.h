@@ -71,7 +71,7 @@ static PT_THREAD(thread_run(struct pt *pt, uint16_t dt)) {
     PT_WAIT_UNTIL(pt, timer_expired(&timer_zc_blank, dt));
     Debug_TraceMark();
     zc_filter_run_reset();
-    if ((pwr_stage.com_state & 1)) {
+    if (pwr_stage.zc_sign) {
       PT_WAIT_UNTIL(pt, (timeout = timer_expired(&timer_comm_timeout, dt)) || zc_run_detected_lh());
     } else {
       PT_WAIT_UNTIL(pt, (timeout = timer_expired(&timer_comm_timeout, dt)) || zc_run_detected_hl());
