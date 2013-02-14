@@ -19,6 +19,17 @@
 #ifndef POWER_STAGE_H_INCLUDED
 #define POWER_STAGE_H_INCLUDED
 
+static uint8_t state_table_nxt[6] = {1, 2, 3, 4, 5, 0};
+static uint8_t state_table_prv[6] = {5, 0, 1, 2, 3, 4};
+
+void set_reverse() {
+  static uint8_t state_table_tmp[6];
+  memcpy(state_table_tmp, state_table_nxt, 6);
+  memcpy(state_table_nxt, state_table_prv, 6);
+  memcpy(state_table_prv, state_table_tmp, 6);
+}
+
+
 void free_spin() {
   AnFETOff(); BnFETOff(); CnFETOff();
   ApFETOff(); BpFETOff(); CpFETOff();
@@ -176,21 +187,18 @@ void set_ac_state(uint8_t state) {
 }
 
 inline void next_comm_state() {
-  uint8_t r = pwr_stage.com_state;
-  if (++r >= 6) r -= 6;
-  pwr_stage.com_state = r;
+  pwr_stage.com_state = state_table_nxt[pwr_stage.com_state];
 }
 
 inline void next_comm_state(uint8_t n) {
-  uint8_t r = pwr_stage.com_state + n;
-  if (r >= 6) r -= 6;
-  pwr_stage.com_state = r;
+  uint8_t tmp = pwr_stage.com_state;
+  for (uint8_t i = 0; i < n; i++)
+    tmp = state_table_nxt[tmp];
+  pwr_stage.com_state  = tmp;
 }
 
 void set_comm_state() {
-  uint8_t prev_state = pwr_stage.com_state ;
-  if (prev_state-- == 0xFF) prev_state = 5;
-  change_comm_state(prev_state);
+  change_comm_state(state_table_prv[pwr_stage.com_state]);
   change_comm_state(pwr_stage.com_state);
 }
 

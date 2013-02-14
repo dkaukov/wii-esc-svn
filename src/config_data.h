@@ -32,6 +32,7 @@ struct eeprom_layout __default_eep__  = {
     braking:         0,
     timing_adv:      0,
     stick_cal_dis:   0,
+    rev:             REVERSE,
   }
 };
 
@@ -48,6 +49,7 @@ struct eeprom_layout __extended_eep__  = {
     braking:         0,
     timing_adv:      0,
     stick_cal_dis:   1,
+    rev:             0,
   }
 };
 
@@ -64,6 +66,7 @@ struct eeprom_layout __free_flight_eep__  = {
     braking:         0,
     timing_adv:      0,
     stick_cal_dis:   1,
+    rev:             0,
   }
 };
 
@@ -80,6 +83,7 @@ struct eeprom_layout __ultra_pwm_eep__  = {
     braking:         0,
     timing_adv:      0,
     stick_cal_dis:   1,
+    rev:             0,
   }
 };
 
@@ -96,6 +100,7 @@ struct eeprom_layout __multiwii_eep__  = {
     braking:         0,
     timing_adv:      0,
     stick_cal_dis:   1,
+    rev:             0,
   }
 };
 

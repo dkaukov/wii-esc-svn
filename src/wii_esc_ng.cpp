@@ -41,6 +41,7 @@ void setup_to_rt() {
   timing_adv = cfg.timing_adv;
   rx_setup_rt();
   sdm_setup_rt(rx.rcp_start, US_TO_TICKS(cfg.rcp_full_us));
+  if (cfg.rev) set_reverse();
 }
 
 void beep(uint8_t khz, uint8_t len) {

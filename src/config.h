@@ -24,6 +24,7 @@
 //*************************
 //#define    OSC_DEBUG
 #define    READ_EXTERNAL_CONFIG
+#define    REVERSE             0
 
 //*************************
 // Power settings         *

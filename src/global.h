@@ -76,6 +76,7 @@ struct config_data {
   uint8_t  braking;
   int8_t   timing_adv;
   uint8_t  stick_cal_dis;
+  uint8_t  rev;
 };
 struct config_data cfg;
 
