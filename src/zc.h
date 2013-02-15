@@ -48,16 +48,16 @@ inline void zc_filter_start_reset() {
   zc_filter = ZC_FILTER_START_CONST;
 }
 
-inline uint8_t zc_kickback_end(uint8_t state) {
-  if (state & 1) {
+inline uint8_t zc_kickback_end() {
+  if (pwr_stage.com_state & 1) {
     return !pwr_stage.aco;
   } else {
     return pwr_stage.aco;
   }
 }
 
-uint8_t zc_start_detected(uint8_t state) {
-  if (state & 1) {
+uint8_t zc_start_detected() {
+  if (pwr_stage.com_state & 1) {
     if (pwr_stage.aco) zc_filter--; else zc_filter++;
   } else {
     if (!pwr_stage.aco) zc_filter--; else zc_filter++;
