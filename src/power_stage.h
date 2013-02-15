@@ -21,8 +21,7 @@
 
 
 #define __FWD__(x) (x)
-#define __REV__(x) (x + 0b1000)
-#define EXT_STATE(x) ((x) | (pwr_stage.rev << 3))
+#define __REV__(x) (x | 0b1000)
 
 
 void free_spin() {
@@ -65,7 +64,8 @@ static void set_pwm_on_comp_on(uint8_t ext_state) {
 }
 
 void set_pwm_on(uint8_t state) {
-  uint8_t ext_state = EXT_STATE(state);
+  uint8_t ext_state = state;
+  if (pwr_stage.rev) ext_state = __REV__(ext_state);
   #ifdef COMP_PWM
   switch (ext_state) {
     case __FWD__(1):
@@ -136,17 +136,19 @@ static void set_pwm_off_comp_on(uint8_t ext_state) {
 }
 
 void set_pwm_off(uint8_t state) {
-  uint8_t ext_state = EXT_STATE(state);
   AnFETOff();
   BnFETOff();
   CnFETOff();
   #ifdef COMP_PWM
+    uint8_t ext_state = state;
+    if (pwr_stage.rev) ext_state = __REV__(ext_state);
     set_pwm_off_comp_on(ext_state);
   #endif
 }
 
 void change_comm_state(uint8_t state) {
-  uint8_t ext_state = EXT_STATE(state);
+  uint8_t ext_state = state;
+  if (pwr_stage.rev) ext_state = __REV__(ext_state);
   switch (ext_state) {
     // Forward
     case __FWD__(0):
@@ -232,7 +234,8 @@ void change_comm_state(uint8_t state) {
 }
 
 void set_ac_state(uint8_t state) {
-  uint8_t ext_state = EXT_STATE(state);
+  uint8_t ext_state = state;
+  if (pwr_stage.rev) ext_state = __REV__(ext_state);
   switch (ext_state) {
     case __FWD__(0):
     case __FWD__(3):
