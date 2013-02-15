@@ -19,18 +19,8 @@
 #ifndef POWER_STAGE_H_INCLUDED
 #define POWER_STAGE_H_INCLUDED
 
-static uint8_t state_table_nxt[6] = {1, 2, 3, 4, 5, 0};
-static uint8_t state_table_prv[6] = {5, 0, 1, 2, 3, 4};
-static uint8_t state_table_zcs[6] = {0, 1, 0, 1, 0, 1};
 
-void set_reverse() {
-  static uint8_t state_table_tmp[6];
-  memcpy(state_table_tmp, state_table_nxt, 6);
-  memcpy(state_table_nxt, state_table_prv, 6);
-  memcpy(state_table_prv, state_table_tmp, 6);
-  for (uint8_t i = 0; i < 6; i++) state_table_zcs[i] ^= 0x01;
-}
-
+#define REV(x) (x + 8)
 
 void free_spin() {
   AnFETOff(); BnFETOff(); CnFETOff();
@@ -52,49 +42,68 @@ static void set_pwm_on_comp_on(uint8_t state) {
   switch (state) {
     case 1:
     case 2:
-    case 6:
-    case 7:
+    case REV(3):
+    case REV(4):
       BnFETOn();
       break;
     case 3:
     case 4:
+    case REV(1):
+    case REV(2):
       AnFETOn();
       break;
     case 0:
     case 5:
+    case REV(0):
+    case REV(5):
       CnFETOn();
+      break;
   }
 }
 
 void set_pwm_on(uint8_t state) {
+  state |= pwr_stage.rev << 3;
   #ifdef COMP_PWM
   switch (state) {
     case 1:
     case 2:
+    case REV(3):
+    case REV(4):
       BpFETOff();
       set_pwm_on_comp_on(state);
       break;
     case 3:
     case 4:
+    case REV(1):
+    case REV(2):
       ApFETOff();
       set_pwm_on_comp_on(state);
       break;
-    default:
+    case 5:
+    case 0:
+    case REV(5):
+    case REV(0):
       CpFETOff();
       set_pwm_on_comp_on(state);
+      break;
   }
   #else
   switch (state) {
     case 1:
     case 2:
+    case REV(3):
+    case REV(4):
       BnFETOn();
       break;
     case 3:
     case 4:
+    case REV(1):
+    case REV(2):
       AnFETOn();
       break;
     default:
       CnFETOn();
+      break;
   }
   #endif
 }
@@ -115,10 +124,27 @@ static void set_pwm_off_comp_on(uint8_t state) {
     case 0:
     case 5:
       CpFETOn();
+      break;
+/////////////////////////////////////////////////
+    case REV(1):
+    case REV(2):
+    case REV(6):
+    case REV(7):
+      ApFETOn();
+      break;
+    case REV(3):
+    case REV(4):
+      BpFETOn();
+      break;
+    case REV(0):
+    case REV(5):
+      CpFETOn();
+      break;
   }
 }
 
 void set_pwm_off(uint8_t state) {
+  state |= pwr_stage.rev << 3;
   AnFETOff();
   BnFETOff();
   CnFETOff();
@@ -128,6 +154,7 @@ void set_pwm_off(uint8_t state) {
 }
 
 void change_comm_state(uint8_t state) {
+  state |= pwr_stage.rev << 3;
   switch (state) {
     case 0:
       BpFETOff();
@@ -168,41 +195,89 @@ void change_comm_state(uint8_t state) {
       if (pwr_stage.sdm_state) CnFETOn();
       ACPhaseA();
       break;
+/////////////////////////////////////////////////
+    case REV(0):
+      ApFETOff();
+      CpFETOff();
+      BpFETOn();
+      ACPhaseA();
+      break;
+    case REV(1):
+      CpFETOff();
+      CnFETOff();
+      BnFETOff();
+      if (pwr_stage.sdm_state) AnFETOn();
+      ACPhaseC();
+      break;
+    case REV(2):
+      ApFETOff();
+      BpFETOff();
+      CpFETOn();
+      ACPhaseB();
+      break;
+    case REV(3):
+      ApFETOff();
+      AnFETOff();
+      BnFETOff();
+      if (pwr_stage.sdm_state) BnFETOn();
+      ACPhaseA();
+      break;
+    case REV(4):
+      CpFETOff();
+      BpFETOff();
+      ApFETOn();
+      ACPhaseC();
+      break;
+    case REV(5):
+      BpFETOff();
+      BnFETOff();
+      AnFETOff();
+      if (pwr_stage.sdm_state) CnFETOn();
+      ACPhaseA();
+      break;
   }
-  pwr_stage.zc_sign = state_table_zcs[state];
 }
 
 void set_ac_state(uint8_t state) {
+  state |= pwr_stage.rev << 3;
   switch (state) {
     case 0:
     case 3:
+    case REV(2):
+    case REV(5):
       ACPhaseB();
       break;
     case 1:
     case 4:
+    case REV(1):
+    case REV(4):
       ACPhaseC();
       break;
     case 2:
     case 5:
+    case REV(0):
+    case REV(3):
       ACPhaseA();
       break;
   }
-  pwr_stage.zc_sign = state_table_zcs[state];
 }
 
 inline void next_comm_state() {
-  pwr_stage.com_state = state_table_nxt[pwr_stage.com_state];
+  uint8_t r = pwr_stage.com_state;
+  if (++r >= 6) r -= 6;
+  pwr_stage.com_state = r;
 }
 
 inline void next_comm_state(uint8_t n) {
-  uint8_t tmp = pwr_stage.com_state;
-  for (uint8_t i = 0; i < n; i++)
-    tmp = state_table_nxt[tmp];
-  pwr_stage.com_state  = tmp;
+  uint8_t r = pwr_stage.com_state + n;
+  if (r >= 6) r -= 6;
+  pwr_stage.com_state = r;
 }
 
 void set_comm_state() {
-  change_comm_state(state_table_prv[pwr_stage.com_state]);
+  uint8_t prev_state = pwr_stage.com_state ;
+  if (prev_state-- == 0xFF) prev_state = 5;
+  change_comm_state(prev_state);
   change_comm_state(pwr_stage.com_state);
 }
 
