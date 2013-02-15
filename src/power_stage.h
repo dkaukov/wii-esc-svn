@@ -228,7 +228,7 @@ void change_comm_state(uint8_t state) {
       BnFETOff();
       AnFETOff();
       if (pwr_stage.sdm_state) CnFETOn();
-      ACPhaseA();
+      ACPhaseB();
       break;
   }
 }
