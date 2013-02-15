@@ -20,8 +20,8 @@
 #define POWER_STAGE_H_INCLUDED
 
 
-#define FWD(x) (x)
-#define REV(x) (x + 0b1000)
+#define __FWD__(x) (x)
+#define __REV__(x) (x + 0b1000)
 #define EXT_STATE(x) ((x) | (pwr_stage.rev << 3))
 
 
@@ -43,22 +43,22 @@ inline void precharge_bootstrap_caps() {
 __attribute__ ((noinline))
 static void set_pwm_on_comp_on(uint8_t ext_state) {
   switch (ext_state) {
-    case FWD(1):
-    case FWD(2):
-    case REV(3):
-    case REV(4):
+    case __FWD__(1):
+    case __FWD__(2):
+    case __REV__(3):
+    case __REV__(4):
       BnFETOn();
       break;
-    case FWD(3):
-    case FWD(4):
-    case REV(1):
-    case REV(2):
+    case __FWD__(3):
+    case __FWD__(4):
+    case __REV__(1):
+    case __REV__(2):
       AnFETOn();
       break;
-    case FWD(0):
-    case FWD(5):
-    case REV(0):
-    case REV(5):
+    case __FWD__(0):
+    case __FWD__(5):
+    case __REV__(0):
+    case __REV__(5):
       CnFETOn();
       break;
   }
@@ -68,40 +68,40 @@ void set_pwm_on(uint8_t state) {
   uint8_t ext_state = EXT_STATE(state);
   #ifdef COMP_PWM
   switch (ext_state) {
-    case FWD(1):
-    case FWD(2):
-    case REV(3):
-    case REV(4):
+    case __FWD__(1):
+    case __FWD__(2):
+    case __REV__(3):
+    case __REV__(4):
       BpFETOff();
       set_pwm_on_comp_on(ext_state);
       break;
-    case FWD(3):
-    case FWD(4):
-    case REV(1):
-    case REV(2):
+    case __FWD__(3):
+    case __FWD__(4):
+    case __REV__(1):
+    case __REV__(2):
       ApFETOff();
       set_pwm_on_comp_on(ext_state);
       break;
-    case FWD(5):
-    case FWD(0):
-    case REV(5):
-    case REV(0):
+    case __FWD__(5):
+    case __FWD__(0):
+    case __REV__(5):
+    case __REV__(0):
       CpFETOff();
       set_pwm_on_comp_on(ext_state);
       break;
   }
   #else
   switch (ext_state) {
-    case FWD(1):
-    case FWD(2):
-    case REV(3):
-    case REV(4):
+    case __FWD__(1):
+    case __FWD__(2):
+    case __REV__(3):
+    case __REV__(4):
       BnFETOn();
       break;
-    case FWD(3):
-    case FWD(4):
-    case REV(1):
-    case REV(2):
+    case __FWD__(3):
+    case __FWD__(4):
+    case __REV__(1):
+    case __REV__(2):
       AnFETOn();
       break;
     default:
@@ -114,22 +114,22 @@ void set_pwm_on(uint8_t state) {
 __attribute__ ((noinline))
 static void set_pwm_off_comp_on(uint8_t ext_state) {
   switch (ext_state) {
-    case FWD(1):
-    case FWD(2):
-    case REV(3):
-    case REV(4):
+    case __FWD__(1):
+    case __FWD__(2):
+    case __REV__(3):
+    case __REV__(4):
       BpFETOn();
       break;
-    case FWD(3):
-    case FWD(4):
-    case REV(1):
-    case REV(2):
+    case __FWD__(3):
+    case __FWD__(4):
+    case __REV__(1):
+    case __REV__(2):
       ApFETOn();
       break;
-    case FWD(0):
-    case FWD(5):
-    case REV(0):
-    case REV(5):
+    case __FWD__(0):
+    case __FWD__(5):
+    case __REV__(0):
+    case __REV__(5):
       CpFETOn();
       break;
   }
@@ -149,39 +149,39 @@ void change_comm_state(uint8_t state) {
   uint8_t ext_state = EXT_STATE(state);
   switch (ext_state) {
     // Forward
-    case FWD(0):
+    case __FWD__(0):
       BpFETOff();
       CpFETOff();
       ApFETOn();
       ACPhaseB();
       break;
-    case FWD(1):
+    case __FWD__(1):
       CpFETOff();
       CnFETOff();
       AnFETOff();
       if (pwr_stage.sdm_state) BnFETOn();
       ACPhaseC();
       break;
-    case FWD(2):
+    case __FWD__(2):
       BpFETOff();
       ApFETOff();
       CpFETOn();
       ACPhaseA();
       break;
-    case FWD(3):
+    case __FWD__(3):
       BpFETOff();
       BnFETOff();
       AnFETOff();
       if (pwr_stage.sdm_state) AnFETOn();
       ACPhaseB();
       break;
-    case FWD(4):
+    case __FWD__(4):
       CpFETOff();
       ApFETOff();
       BpFETOn();
       ACPhaseC();
       break;
-    case FWD(5):
+    case __FWD__(5):
       ApFETOff();
       AnFETOff();
       BnFETOff();
@@ -189,39 +189,39 @@ void change_comm_state(uint8_t state) {
       ACPhaseA();
       break;
     // Rererse
-    case REV(0):
+    case __REV__(0):
       ApFETOff();
       CpFETOff();
       BpFETOn();
       ACPhaseA();
       break;
-    case REV(1):
+    case __REV__(1):
       CpFETOff();
       CnFETOff();
       BnFETOff();
       if (pwr_stage.sdm_state) AnFETOn();
       ACPhaseC();
       break;
-    case REV(2):
+    case __REV__(2):
       ApFETOff();
       BpFETOff();
       CpFETOn();
       ACPhaseB();
       break;
-    case REV(3):
+    case __REV__(3):
       ApFETOff();
       AnFETOff();
       BnFETOff();
       if (pwr_stage.sdm_state) BnFETOn();
       ACPhaseA();
       break;
-    case REV(4):
+    case __REV__(4):
       CpFETOff();
       BpFETOff();
       ApFETOn();
       ACPhaseC();
       break;
-    case REV(5):
+    case __REV__(5):
       BpFETOff();
       BnFETOff();
       AnFETOff();
@@ -234,22 +234,22 @@ void change_comm_state(uint8_t state) {
 void set_ac_state(uint8_t state) {
   uint8_t ext_state = EXT_STATE(state);
   switch (ext_state) {
-    case FWD(0):
-    case FWD(3):
-    case REV(2):
-    case REV(5):
+    case __FWD__(0):
+    case __FWD__(3):
+    case __REV__(2):
+    case __REV__(5):
       ACPhaseB();
       break;
-    case FWD(1):
-    case FWD(4):
-    case REV(1):
-    case REV(4):
+    case __FWD__(1):
+    case __FWD__(4):
+    case __REV__(1):
+    case __REV__(4):
       ACPhaseC();
       break;
-    case FWD(2):
-    case FWD(5):
-    case REV(0):
-    case REV(3):
+    case __FWD__(2):
+    case __FWD__(5):
+    case __REV__(0):
+    case __REV__(3):
       ACPhaseA();
       break;
   }
