@@ -1,5 +1,5 @@
 /**
- * Wii ESC NG 2.0 - 2012
+ * Wii ESC NG 2.0 - 2013
  * Permanent storage for parameters
  *
  * This program is free software: you can redistribute it and/or modify
