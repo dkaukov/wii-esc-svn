@@ -162,6 +162,9 @@ void change_comm_state(uint8_t state) {
       CnFETOff();
       AnFETOff();
       if (pwr_stage.sdm_state) BnFETOn();
+      #ifdef COMP_PWM
+        else BpFETOn();
+      #endif
       ACPhaseC();
       break;
     case __FWD__(2):
@@ -175,6 +178,9 @@ void change_comm_state(uint8_t state) {
       BnFETOff();
       AnFETOff();
       if (pwr_stage.sdm_state) AnFETOn();
+      #ifdef COMP_PWM
+        else ApFETOn();
+      #endif
       ACPhaseB();
       break;
     case __FWD__(4):
@@ -188,6 +194,9 @@ void change_comm_state(uint8_t state) {
       AnFETOff();
       BnFETOff();
       if (pwr_stage.sdm_state) CnFETOn();
+      #ifdef COMP_PWM
+        else CpFETOn();
+      #endif
       ACPhaseA();
       break;
     // Rererse
@@ -202,6 +211,9 @@ void change_comm_state(uint8_t state) {
       CnFETOff();
       BnFETOff();
       if (pwr_stage.sdm_state) AnFETOn();
+      #ifdef COMP_PWM
+        else ApFETOn();
+      #endif
       ACPhaseC();
       break;
     case __REV__(2):
@@ -215,6 +227,9 @@ void change_comm_state(uint8_t state) {
       AnFETOff();
       BnFETOff();
       if (pwr_stage.sdm_state) BnFETOn();
+      #ifdef COMP_PWM
+        else BpFETOn();
+      #endif
       ACPhaseA();
       break;
     case __REV__(4):
@@ -228,6 +243,9 @@ void change_comm_state(uint8_t state) {
       BnFETOff();
       AnFETOff();
       if (pwr_stage.sdm_state) CnFETOn();
+      #ifdef COMP_PWM
+        else CpFETOn();
+      #endif
       ACPhaseB();
       break;
   }
