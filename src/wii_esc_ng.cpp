@@ -36,11 +36,11 @@
 #include "config_data.h"
 
 void setup_to_rt() {
-  pwr_stage.braking_enabled = 0;
+  pwr_stage.braking_enabled = 1;
   if (cfg.braking) pwr_stage.braking_enabled = 1;
   timing_adv = cfg.timing_adv;
   rx_setup_rt();
-  sdm_setup_rt(rx.rcp_start, US_TO_TICKS(cfg.rcp_full_us));
+  sdm_setup_rt(0, (rx.rcp_full_forw - rx.rcp_zero));
   pwr_stage.rev = 0;
   if (cfg.rev) pwr_stage.rev = 1;
 }
@@ -112,11 +112,28 @@ static void throttle_range_calibration_apply_correction() {
 }
 
 void wait_for_arm() {
-  wait_for(rx.rcp_min, rx.rcp_start, 50);
+  wait_for(rx.rcp_zero - US_TO_TICKS(cfg.rcp_deadband_us), rx.rcp_zero + US_TO_TICKS(cfg.rcp_deadband_us), 50);
 }
 
 void wait_for_power_on() {
-  wait_for(rx.rcp_start + US_TO_TICKS(cfg.rcp_deadband_us), rx.rcp_max, 15);
+  //wait_for(rx.rcp_start + US_TO_TICKS(cfg.rcp_deadband_us), rx.rcp_max, 15);
+  int8_t cnt = 0;
+  while (1) {
+    uint16_t tmp = rx_get_frame();
+    if (tmp > rx.rcp_zero + US_TO_TICKS(cfg.rcp_deadband_us))
+      cnt++;
+    else
+    if (tmp < rx.rcp_zero - US_TO_TICKS(cfg.rcp_deadband_us))
+      cnt--;
+    else
+      cnt = 0;
+    if (abs(cnt) > 5) break;
+  }
+  if (cnt > 0) {
+    pwr_stage.rev = 0;
+  } else {
+    pwr_stage.rev = 1;
+  }
 }
 
 void check_for_stick_cal() {
@@ -164,8 +181,8 @@ void setup() {
   setup_to_rt();
   __delay_ms(250);
   startup_sound();
-  check_for_stick_cal();
-  calibrate_osc();
+  //check_for_stick_cal();
+  //calibrate_osc();
 }
 
 void loop() {

@@ -80,6 +80,8 @@ static void rx_setup_rt() {
   rx.rcp_min = US_TO_TICKS(cfg.rcp_min_us);
   rx.rcp_max = US_TO_TICKS(cfg.rcp_max_us);
   rx.rcp_start = US_TO_TICKS(cfg.rcp_start_us);
+  rx.rcp_full_forw = US_TO_TICKS(cfg.rcp_full_us);
+  rx.rcp_zero = (rx.rcp_start + rx.rcp_full_forw) >> 1;
   rx.rcp_cal = US_TO_TICKS(cfg.rcp_cal_us);
 }
 

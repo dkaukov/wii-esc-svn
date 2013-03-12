@@ -33,7 +33,7 @@ void run_power_control() {
   int16_t tmp = rcp_to_sdm(rx.raw);
   if (tmp < sdm_rt.sdm_run_min) tmp = 0;
   if (tmp > sdm_rt.sdm_top)     tmp = sdm_rt.sdm_top;
-  if (sys_limit < sdm_rt.sdm_top) sys_limit += 5;
+  if (sys_limit < sdm_rt.sdm_top) sys_limit += 20;
   if (tmp > sys_limit) tmp = sys_limit;
   sdm_ref = tmp;
 }

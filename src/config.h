@@ -39,7 +39,7 @@
 #define    PCT_PWR_STARTUP     8
 #define    PCT_PWR_MAX_STARTUP 25
 #define    RPM_START_MIN_RPM   5600
-#define    ENOUGH_GOODIES      120
+#define    ENOUGH_GOODIES      30
 
 //*************************
 // Run settings           *
@@ -53,7 +53,7 @@
 #define    RCP_MAX             2200
 #define    RCP_START           1060
 #define    RCP_FULL            1860
-#define    RCP_DEADBAND        5
+#define    RCP_DEADBAND        50
 #define    RCP_TIMEOUT_MS      2500
 #define    RCP_CAL             0
 #define    RCP_STICK_CAL       1460

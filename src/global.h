@@ -87,7 +87,12 @@ struct rx_data {
   uint8_t frame_received;
   uint16_t rcp_min;
   uint16_t rcp_max;
-  uint16_t rcp_start;
+  union {
+    uint16_t rcp_start;
+    uint16_t rcp_full_rev;
+  };
+  uint16_t rcp_full_forw;
+  uint16_t rcp_zero;
   uint16_t rcp_cal;
 };
 struct rx_data rx;
