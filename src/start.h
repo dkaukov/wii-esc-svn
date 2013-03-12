@@ -74,7 +74,7 @@ static uint8_t start() {
       start_timing += ((int16_t)est_comm_time - start_timing) >> 2;
       if (++good_com >= ENOUGH_GOODIES) {
         good_com = ENOUGH_GOODIES;
-        if ((start_timing <= RPM_TO_COMM_TIME(RPM_START_MIN_RPM) * 2)) {
+        if ((start_timing <= (int16_t)RPM_TO_COMM_TIME(RPM_START_MIN_RPM) * 2)) {
           next_comm_state();
           change_comm_state(pwr_stage.com_state);
           return START_RES_OK;
