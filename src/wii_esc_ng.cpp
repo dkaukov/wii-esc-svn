@@ -35,14 +35,18 @@
 #include "storage.h"
 #include "config_data.h"
 
+#define SECT_NONE          0
+#define SECT_FWD           1
+#define SECT_REV           2
+
 void setup_to_rt() {
   pwr_stage.braking_enabled = 1;
   if (cfg.braking) pwr_stage.braking_enabled = 1;
   timing_adv = cfg.timing_adv;
   rx_setup_rt();
-  sdm_setup_rt(0, (rx.rcp_full_forw - rx.rcp_zero));
-  pwr_stage.rev = 0;
-  if (cfg.rev) pwr_stage.rev = 1;
+//  sdm_setup_rt(0, (rx.rcp_full_forw - rx.rcp_zero));
+//  pwr_stage.rev = 0;
+//  if (cfg.rev) pwr_stage.rev = 1;
 }
 
 void beep(uint8_t khz, uint8_t len) {
@@ -66,11 +70,31 @@ void startup_sound() {
   }
 }
 
+/*
 void wait_for(uint16_t low, uint16_t high, uint8_t cnt) {
   uint8_t _cnt = cnt;
   while (1) {
     uint16_t tmp = rx_get_frame();
     if ((tmp >= low) && (tmp <= high)) {
+      if (!(--_cnt)) break;
+    } else _cnt = cnt;
+  }
+}
+*/
+
+uint8_t get_sector() {
+  uint16_t tmp = rx_get_frame();
+  if ((tmp > rx.rcp_start + US_TO_TICKS(cfg.rcp_deadband_us)) && (rx.rcp_start < rx.rcp_full_fwd))
+    return SECT_FWD;
+  if ((tmp < rx.rcp_start - US_TO_TICKS(cfg.rcp_deadband_us)) && (rx.rcp_full_rev < rx.rcp_start))
+    return SECT_REV;
+  return  SECT_NONE;
+}
+
+void wait_for_sector(uint8_t sect, uint8_t cnt) {
+  uint8_t _cnt = cnt;
+  while (1) {
+    if (get_sector() == sect) {
       if (!(--_cnt)) break;
     } else _cnt = cnt;
   }
@@ -94,7 +118,7 @@ static void throttle_range_calibration_high() {
   do {
     tmp = get_stable_ppm_value();
   } while (!tmp);
-  cfg.rcp_full_us = tmp / TICKS_PER_US;
+  cfg.rcp_full_fwd_us = tmp / TICKS_PER_US;
 }
 
 static void throttle_range_calibration_low() {
@@ -106,43 +130,43 @@ static void throttle_range_calibration_low() {
 }
 
 static void throttle_range_calibration_apply_correction() {
-  uint16_t reserve = ((cfg.rcp_full_us - cfg.rcp_start_us) * 4) / 100;
-  cfg.rcp_full_us  -= reserve;
-  cfg.rcp_start_us += reserve;
+  uint16_t reserve = ((cfg.rcp_full_fwd_us - cfg.rcp_start_us) * 4) / 100;
+  cfg.rcp_full_fwd_us  -= reserve;
+  cfg.rcp_start_us     += reserve;
+  cfg.rcp_full_rev_us  =  cfg.rcp_start_us;
 }
 
 void wait_for_arm() {
-  wait_for(rx.rcp_zero - US_TO_TICKS(cfg.rcp_deadband_us), rx.rcp_zero + US_TO_TICKS(cfg.rcp_deadband_us), 50);
+  wait_for_sector(SECT_NONE, 50);
 }
 
 void wait_for_power_on() {
-  //wait_for(rx.rcp_start + US_TO_TICKS(cfg.rcp_deadband_us), rx.rcp_max, 15);
   int8_t cnt = 0;
   while (1) {
-    uint16_t tmp = rx_get_frame();
-    if (tmp > rx.rcp_zero + US_TO_TICKS(cfg.rcp_deadband_us))
-      cnt++;
+    uint8_t tmp = get_sector();
+    if (tmp == SECT_FWD) cnt++;
     else
-    if (tmp < rx.rcp_zero - US_TO_TICKS(cfg.rcp_deadband_us))
-      cnt--;
-    else
-      cnt = 0;
+    if (tmp == SECT_REV) cnt--;
+    else cnt = 0;
     if (abs(cnt) > 5) break;
   }
+  pwr_stage.rev = 0;
   if (cnt > 0) {
-    pwr_stage.rev = 0;
+    if (cfg.rev) pwr_stage.rev = 1;
+    sdm_setup_rt(rx.rcp_start, rx.rcp_full_fwd);
   } else {
-    pwr_stage.rev = 1;
+    if (!cfg.rev) pwr_stage.rev = 1;
+    sdm_setup_rt(rx.rcp_start, rx.rcp_full_rev);
   }
 }
 
 void check_for_stick_cal() {
   if (!cfg.stick_cal_dis) {
-    wait_for(rx.rcp_min, rx.rcp_max, 10);
+    for (uint8_t i = 0; i++; i < 10) rx_get_frame();
     if ((rx_get_frame() > US_TO_TICKS(RCP_STICK_CAL))) {
       throttle_range_calibration_high();
       beep(10, 10); __delay_ms(200); beep(10, 10);
-      wait_for(rx.rcp_min, US_TO_TICKS(RCP_STICK_CAL), 25);
+      while (rx_get_frame() >= US_TO_TICKS(RCP_STICK_CAL));
       throttle_range_calibration_low();
       throttle_range_calibration_apply_correction();
       write_storage();
@@ -181,8 +205,8 @@ void setup() {
   setup_to_rt();
   __delay_ms(250);
   startup_sound();
-  //check_for_stick_cal();
-  //calibrate_osc();
+  check_for_stick_cal();
+  calibrate_osc();
 }
 
 void loop() {

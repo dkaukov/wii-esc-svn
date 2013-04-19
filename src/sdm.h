@@ -20,9 +20,8 @@
 #define SDM_H_INCLUDED
 
 static int16_t rcp_to_sdm(uint16_t rcp) {
-  int16_t val = rcp - rx.rcp_zero;
-  if (pwr_stage.rev) val = -val;
-  val -= sdm_rt.sdm_left;
+  int16_t val = rcp - sdm_rt.sdm_left;
+  if (sdm_rt.sdm_rev) val = -val;
   return val;
 }
 
@@ -38,6 +37,12 @@ uint16_t pct_to_val(uint8_t pct) {
 
 static void sdm_setup_rt(uint16_t _min, uint16_t _max) {
   int16_t range = _max - _min;
+  if (range < 0) {
+    sdm_rt.sdm_rev = 1;
+    range = -range;
+  } else {
+    sdm_rt.sdm_rev = 0;
+  }
   int16_t shift = (range * PCT_PWR_MIN) / 100;
   sdm_rt.sdm_top = range + shift;
   sdm_rt.sdm_left = _min - shift;

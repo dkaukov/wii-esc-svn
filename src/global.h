@@ -69,8 +69,9 @@
 struct config_data {
   uint16_t rcp_min_us;
   uint16_t rcp_max_us;
+  uint16_t rcp_full_rev_us;
   uint16_t rcp_start_us;
-  uint16_t rcp_full_us;
+  uint16_t rcp_full_fwd_us;
   uint16_t rcp_cal_us;
   uint8_t  rcp_deadband_us;
   uint8_t  braking;
@@ -87,12 +88,9 @@ struct rx_data {
   uint8_t frame_received;
   uint16_t rcp_min;
   uint16_t rcp_max;
-  union {
-    uint16_t rcp_start;
-    uint16_t rcp_full_rev;
-  };
-  uint16_t rcp_full_forw;
-  uint16_t rcp_zero;
+  uint16_t rcp_full_rev;
+  uint16_t rcp_start;
+  uint16_t rcp_full_fwd;
   uint16_t rcp_cal;
 };
 struct rx_data rx;
@@ -116,6 +114,7 @@ struct sdm_rt_data {
   int16_t sdm_run_min;
   int16_t sdm_start_min;
   int16_t sdm_start_max;
+  uint8_t sdm_rev;
 };
 struct sdm_rt_data sdm_rt;
 
