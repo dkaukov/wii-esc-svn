@@ -89,5 +89,10 @@
   #include "hal/m8_int.h"
 #endif
 
+#if (BOARD == _MS_)
+  #include "hal/m8.h"
+  #include "hal/ms.h"
+  #include "hal/m8_int.h"
+#endif
 
 
