@@ -6,8 +6,8 @@
 ********************************************
 */
 
-#ifndef MS_H_INCLUDED
-#define MS_H_INCLUDED
+#ifndef KDA_H_INCLUDED
+#define KDA_H_INCLUDED
 
 
 //*********************
@@ -98,4 +98,4 @@ inline void Board_Init() {
   ACInit();
 }
 
-#endif // MS_H_INCLUDED
+#endif // KDA_H_INCLUDED

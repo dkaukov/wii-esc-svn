@@ -365,7 +365,7 @@
 					<SilentBuild command="$make -f $makefile.avr MCU=$(mcu) BOARD=$(board) F_CPU=$(f_cpu)" />
 				</MakeCommands>
 			</Target>
-			<Target title="ms">
+			<Target title="kda">
 				<Option output="bin/avr/wii_esc_ng.elf" imp_lib="lib$(TARGET_OUTPUT_BASENAME).a" def_file="$(TARGET_OUTPUT_BASENAME).def" prefix_auto="0" extension_auto="0" />
 				<Option working_dir="bin/avr" />
 				<Option object_output="C:/Ziss/mwc-ng/trunk/crosscomp/.objs" />
@@ -381,7 +381,7 @@
 					<Add option="-s" />
 				</Linker>
 				<Environment>
-					<Variable name="BOARD" value="_MS_" />
+					<Variable name="BOARD" value="_KDA_" />
 					<Variable name="F_CPU" value="16000000" />
 					<Variable name="MCU" value="atmega8" />
 				</Environment>
@@ -464,14 +464,14 @@
 			<Option target="A32U4ESC" />
 			<Option target="rct45nfs" />
 			<Option target="rct30nfs" />
-			<Option target="ms" />
+			<Option target="kda" />
 		</Unit>
 		<Unit filename="src/hal/a32u4_int.h">
 			<Option virtualFolder="HAL/" />
 			<Option target="A32U4ESC" />
 			<Option target="rct45nfs" />
 			<Option target="rct30nfs" />
-			<Option target="ms" />
+			<Option target="kda" />
 		</Unit>
 		<Unit filename="src/hal/bs.h">
 			<Option virtualFolder="HAL/" />
@@ -482,7 +482,7 @@
 			<Option target="A32U4ESC" />
 			<Option target="rct45nfs" />
 			<Option target="rct30nfs" />
-			<Option target="ms" />
+			<Option target="kda" />
 		</Unit>
 		<Unit filename="src/hal/bs40a.h">
 			<Option virtualFolder="HAL/" />
@@ -498,17 +498,17 @@
 			<Option target="A32U4ESC" />
 			<Option target="rct45nfs" />
 			<Option target="rct30nfs" />
-			<Option target="ms" />
+			<Option target="kda" />
+		</Unit>
+		<Unit filename="src/hal/kda.h">
+			<Option virtualFolder="HAL/" />
+			<Option target="kda" />
 		</Unit>
 		<Unit filename="src/hal/m8.h">
 			<Option virtualFolder="HAL/" />
 		</Unit>
 		<Unit filename="src/hal/m8_int.h">
 			<Option virtualFolder="HAL/" />
-		</Unit>
-		<Unit filename="src/hal/ms.h">
-			<Option virtualFolder="HAL/" />
-			<Option target="ms" />
 		</Unit>
 		<Unit filename="src/hal/qynx.h">
 			<Option virtualFolder="HAL/" />
@@ -521,13 +521,13 @@
 		<Unit filename="src/hal/rct30nfs.h">
 			<Option virtualFolder="HAL/" />
 			<Option target="rct30nfs" />
-			<Option target="ms" />
+			<Option target="kda" />
 		</Unit>
 		<Unit filename="src/hal/rct45nfs.h">
 			<Option virtualFolder="HAL/" />
 			<Option target="rct45nfs" />
 			<Option target="rct30nfs" />
-			<Option target="ms" />
+			<Option target="kda" />
 		</Unit>
 		<Unit filename="src/hal/tgy.h">
 			<Option virtualFolder="HAL/" />
