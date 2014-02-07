@@ -21,6 +21,24 @@
 
 // RX input capture
 
+#if (rcp_in == 0)
+ISR(TIMER1_CAPT_vect) {
+  uint16_t time = ICR1;
+  uint8_t state = (TCCR1B & _BV(ICES1));
+  if (state) TCCR1B &= ~_BV(ICES1); else TCCR1B |= _BV(ICES1);
+  TIFR = _BV(ICF1);
+  rx_ppm_callback(time, state);
+}
+
+inline void AttachPPM() {
+  PORTB |= _BV(PINB0);
+  DDRB &= ~_BV(PINB0);
+  TCCR1B |= _BV(ICNC1) | _BV(ICES1);
+  TIMSK |= _BV(TICIE1);
+  TIFR = _BV(ICF1);
+}
+#endif
+
 #if (rcp_in == 2)
 ISR(INT0_vect) {
   uint16_t time = TCNT1;

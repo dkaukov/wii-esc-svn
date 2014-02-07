@@ -77,4 +77,17 @@
   #include "hal/a32u4_int.h"
 #endif
 
+#if (BOARD == _RCT45NFS_)
+  #include "hal/m8.h"
+  #include "hal/rct45nfs.h"
+  #include "hal/m8_int.h"
+#endif
+
+#if (BOARD == _RCT30NFS_)
+  #include "hal/m8.h"
+  #include "hal/rct30nfs.h"
+  #include "hal/m8_int.h"
+#endif
+
+
 
