@@ -29,10 +29,10 @@ inline void DebugStrToggle() {PORTB ^= _BV(DbgStr);}
 //*********************
 // PORT C definitions *
 //*********************
-#define AnRef           1
+#define AnRef           2
 
-#define PORTC_INIT      0
-#define PORTC_DD        0
+#define PORTC_INIT      _BV(AnRef)
+#define PORTC_DD        _BV(AnRef)
 #define BRAKE_PC        0
 
 //*********************
@@ -49,21 +49,20 @@ inline void DebugStrToggle() {PORTB ^= _BV(DbgStr);}
 #define PORTD_DD        _BV(ApFET) | _BV(AnFET) | _BV(BpFET) | _BV(BnFET) | _BV(CpFET)
 #define BRAKE_PD        0
 
+inline void ApFETOn()   {PORTD &= ~_BV(ApFET);}
+inline void ApFETOff()  {PORTD |=  _BV(ApFET);}
+inline void AnFETOn()   {PORTD |= _BV(AnFET);}
+inline void AnFETOff()  {PORTD &= ~_BV(AnFET);}
 
-inline void ApFETOn()  {PORTD &= ~_BV(ApFET);}
-inline void ApFETOff() {PORTD |=  _BV(ApFET);}
-inline void AnFETOn()  {PORTD |=  _BV(AnFET);}
-inline void AnFETOff() {PORTD &= ~_BV(AnFET);}
+inline void BpFETOn()   {PORTD &= ~_BV(BpFET);}
+inline void BpFETOff()  {PORTD |=  _BV(BpFET);}
+inline void BnFETOn()   {PORTD |=  _BV(BnFET);}
+inline void BnFETOff()  {PORTD &= ~_BV(BnFET);}
 
-inline void BpFETOn()  {PORTC &= ~_BV(BpFET);}
-inline void BpFETOff() {PORTC |=  _BV(BpFET);}
-inline void BnFETOn()  {PORTC |=  _BV(BnFET);}
-inline void BnFETOff() {PORTC &= ~_BV(BnFET);}
-
-inline void CpFETOn()  {PORTC &= ~_BV(CpFET);}
-inline void CpFETOff() {PORTC |=  _BV(CpFET);}
-inline void CnFETOn()  {PORTB |=  _BV(CnFET);}
-inline void CnFETOff() {PORTB &= ~_BV(CnFET);}
+inline void CpFETOn()   {PORTD &= ~_BV(CpFET);}
+inline void CpFETOff()  {PORTD |=  _BV(CpFET);}
+inline void CnFETOn()   {PORTB |=  _BV(CnFET);}
+inline void CnFETOff()  {PORTB &= ~_BV(CnFET);}
 
 #define mux_c           0
 #define mux_a           6
