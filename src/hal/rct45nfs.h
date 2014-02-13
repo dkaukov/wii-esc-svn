@@ -69,8 +69,6 @@ inline void CnFETOff() {PORTB &= ~_BV(CnFET);}
 #define mux_b           4
 
 inline void ACInit() {
-  ACMultiplexed();
-  ACSR |= _BV(ACIC);
 }
 
 inline void ACPhaseA() {

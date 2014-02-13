@@ -71,7 +71,6 @@ inline void CnFETOff() {PORTC &= ~_BV(CnFET);}
 
 inline void ACInit() {
   ACMultiplexed();
-  ACSR |= _BV(ACIC);
 }
 
 inline void ACPhaseA() {
