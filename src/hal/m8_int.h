@@ -31,8 +31,7 @@ ISR(TIMER1_CAPT_vect) {
 }
 
 inline void AttachPPM() {
-  PORTB |= _BV(PINB0);
-  DDRB &= ~_BV(PINB0);
+  PORTB |= _BV(0);
   TCCR1B |= _BV(ICNC1) | _BV(ICES1);
   TIMSK |= _BV(TICIE1);
   TIFR = _BV(ICF1);
