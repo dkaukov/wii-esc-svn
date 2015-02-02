@@ -104,5 +104,22 @@ struct eeprom_layout __multiwii_eep__  = {
   }
 };
 
+__attribute__((section("oneshot125_eep")))
+struct eeprom_layout __oneshot125_eep__  = {
+  __ver_magic:       ver_magic,
+  cfg: {
+    rcp_min_us:      121,
+    rcp_max_us:      254,
+    rcp_start_us:    127,
+    rcp_full_us:     250,
+    rcp_cal_us:      125,
+    rcp_deadband_us: 2,
+    braking:         0,
+    timing_adv:      0,
+    stick_cal_dis:   1,
+    rev:             0,
+  }
+};
+
 
 #endif // CONFIG_DATA_H_INCLUDED
