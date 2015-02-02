@@ -92,6 +92,7 @@ struct rx_data {
   uint16_t rcp_max;
   uint16_t rcp_start;
   uint16_t rcp_cal;
+  uint16_t rcp_stick_cal;
 };
 struct rx_data rx;
 

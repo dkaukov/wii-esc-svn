@@ -79,6 +79,7 @@ uint16_t rx_get_frame() {
 static void rx_setup_rt() {
   rx.rcp_min = US_TO_TICKS(cfg.rcp_min_us);
   rx.rcp_max = US_TO_TICKS(cfg.rcp_max_us);
+  rx.rcp_stick_cal =  (rx.rcp_min + rx.rcp_max) >> 1;
   rx.rcp_start = US_TO_TICKS(cfg.rcp_start_us);
   rx.rcp_cal = US_TO_TICKS(cfg.rcp_cal_us);
 }

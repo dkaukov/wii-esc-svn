@@ -122,10 +122,10 @@ void wait_for_power_on() {
 void check_for_stick_cal() {
   if (!cfg.stick_cal_dis) {
     wait_for(rx.rcp_min, rx.rcp_max, 10);
-    if ((rx_get_frame() > US_TO_TICKS(RCP_STICK_CAL))) {
+    if ((rx_get_frame() > US_TO_TICKS(rx.rcp_stick_cal))) {
       throttle_range_calibration_high();
       beep(10, 10); __delay_ms(200); beep(10, 10);
-      wait_for(rx.rcp_min, US_TO_TICKS(RCP_STICK_CAL), 25);
+      wait_for(rx.rcp_min, US_TO_TICKS(rx.rcp_stick_cal), 25);
       throttle_range_calibration_low();
       throttle_range_calibration_apply_correction();
       write_storage();
