@@ -1,5 +1,5 @@
 /**
- * Wii-ESC NG 1.0 - 2013
+ * Wii-ESC NG 1.0 - 2015
  * Main program file.
  *
  * This program is free software: you can redistribute it and/or modify
