@@ -19,6 +19,8 @@
 #ifndef POWER_STAGE_H_INCLUDED
 #define POWER_STAGE_H_INCLUDED
 
+// Added to use complementary mode
+#define COMP_PWM
 
 #define __FWD__(x) (x)
 #define __REV__(x) (x | 0b1000)
