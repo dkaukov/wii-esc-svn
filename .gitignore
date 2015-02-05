@@ -1,3 +1,7 @@
+.cproject
+.project
+wii_esc_ng.cbp
+wii_esc_ng.layout
 bin/*.*
 bin/avr/*.*
 bin/avr/conf/*.eep
