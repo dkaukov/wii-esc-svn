@@ -56,7 +56,8 @@
 #define    RCP_DEADBAND        5
 #define    RCP_TIMEOUT_MS      2500
 #define    RCP_CAL             0
-
+#define    RCP_OS125_MIN       110
+#define    RCP_OS125_MAX       255
 
 #endif
 

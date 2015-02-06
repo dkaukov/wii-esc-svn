@@ -39,6 +39,9 @@ void filter_ppm_data() {
     rx.raw = tmp;
   #endif
   }
+  else if ((cfg.oneshot125 != 0) && (tmp >= rx.rcp_os125_min) && (tmp <= rx.rcp_os125_max)) {
+    rx.raw = tmp << 3;
+  }
 }
 
 static void ppm_timeout(uint16_t tick) {
@@ -82,6 +85,8 @@ static void rx_setup_rt() {
   rx.rcp_stick_cal =  (rx.rcp_min + rx.rcp_max) >> 1;
   rx.rcp_start = US_TO_TICKS(cfg.rcp_start_us);
   rx.rcp_cal = US_TO_TICKS(cfg.rcp_cal_us);
+  rx.rcp_os125_min = US_TO_TICKS(RCP_OS125_MIN);
+  rx.rcp_os125_max = US_TO_TICKS(RCP_OS125_MAX);
 }
 
 inline void RX_Init() {

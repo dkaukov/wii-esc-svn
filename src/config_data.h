@@ -33,6 +33,7 @@ struct eeprom_layout __default_eep__  = {
     timing_adv:      0,
     stick_cal_dis:   0,
     rev:             REVERSE,
+    oneshot125:      0,
   }
 };
 
@@ -50,6 +51,7 @@ struct eeprom_layout __extended_eep__  = {
     timing_adv:      0,
     stick_cal_dis:   1,
     rev:             0,
+    oneshot125:      0,
   }
 };
 
@@ -67,6 +69,7 @@ struct eeprom_layout __free_flight_eep__  = {
     timing_adv:      0,
     stick_cal_dis:   1,
     rev:             0,
+    oneshot125:      0,
   }
 };
 
@@ -84,6 +87,7 @@ struct eeprom_layout __ultra_pwm_eep__  = {
     timing_adv:      0,
     stick_cal_dis:   1,
     rev:             0,
+    oneshot125:      0,
   }
 };
 
@@ -101,6 +105,7 @@ struct eeprom_layout __multiwii_eep__  = {
     timing_adv:      0,
     stick_cal_dis:   1,
     rev:             0,
+    oneshot125:      0,
   }
 };
 
@@ -108,16 +113,17 @@ __attribute__((section("oneshot125_eep")))
 struct eeprom_layout __oneshot125_eep__  = {
   __ver_magic:       ver_magic,
   cfg: {
-    rcp_min_us:      121,
-    rcp_max_us:      254,
-    rcp_start_us:    127,
-    rcp_full_us:     250,
-    rcp_cal_us:      125,
-    rcp_deadband_us: 2,
+    rcp_min_us:      900,
+    rcp_max_us:      2200,
+    rcp_start_us:    1000,
+    rcp_full_us:     2000,
+    rcp_cal_us:      1000,
+    rcp_deadband_us: 5,
     braking:         0,
     timing_adv:      0,
-    stick_cal_dis:   1,
+    stick_cal_dis:   0,
     rev:             0,
+    oneshot125:      1,
   }
 };
 
