@@ -27,13 +27,13 @@ struct eeprom_layout __default_eep__  = {
     rcp_max_us:      RCP_MAX,
     rcp_start_us:    RCP_START,
     rcp_full_us:     RCP_FULL,
-    rcp_cal_us:      0,
+    rcp_cal_us:      RCP_CAL,
     rcp_deadband_us: RCP_DEADBAND,
-    braking:         0,
-    timing_adv:      0,
-    stick_cal_dis:   0,
+    braking:         BRAKING,
+    timing_adv:      TIMING_ADV,
+    stick_cal_dis:   STICK_CAL_DIS,
     rev:             REVERSE,
-    oneshot125:      0,
+    oneshot125:      ONESHOT125,
   }
 };
 
@@ -106,24 +106,6 @@ struct eeprom_layout __multiwii_eep__  = {
     stick_cal_dis:   1,
     rev:             0,
     oneshot125:      0,
-  }
-};
-
-__attribute__((section("oneshot125_eep")))
-struct eeprom_layout __oneshot125_eep__  = {
-  __ver_magic:       ver_magic,
-  cfg: {
-    rcp_min_us:      900,
-    rcp_max_us:      2200,
-    rcp_start_us:    1000,
-    rcp_full_us:     2000,
-    rcp_cal_us:      1000,
-    rcp_deadband_us: 5,
-    braking:         0,
-    timing_adv:      0,
-    stick_cal_dis:   0,
-    rev:             0,
-    oneshot125:      1,
   }
 };
 

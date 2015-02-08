@@ -53,16 +53,6 @@ static void ppm_timeout(uint16_t tick) {
   }
 }
 
-inline void init_ppm() {
-  raw_ppm_data = 0;
-  cfg.rcp_cal_us = RCP_CAL;
-  cfg.rcp_min_us = RCP_MIN;
-  cfg.rcp_max_us = RCP_MAX;
-  cfg.rcp_start_us = RCP_START;
-  cfg.rcp_full_us = RCP_FULL;
-  cfg.rcp_deadband_us = RCP_DEADBAND;
-}
-
 inline void rx_ppm_callback(uint16_t time, uint8_t state) {
   if (state) {
     ppm_edge_time = time;
@@ -91,7 +81,7 @@ static void rx_setup_rt() {
 
 inline void RX_Init() {
   AttachPPM();
-  init_ppm();
+  raw_ppm_data = 0;
   timer_ppm_timeout_prescaler.interval = 0xFFFFU;
 }
 
