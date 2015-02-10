@@ -39,6 +39,9 @@ void filter_ppm_data() {
     rx.raw = tmp;
   #endif
   }
+  else if ((cfg.oneshot125 != 0) && (tmp >= rx.rcp_os125_min) && (tmp <= rx.rcp_os125_max)) {
+    rx.raw = tmp << 3;
+  }
 }
 
 static void ppm_timeout(uint16_t tick) {
@@ -48,16 +51,6 @@ static void ppm_timeout(uint16_t tick) {
       raw_ppm_data = 0;
     }
   }
-}
-
-inline void init_ppm() {
-  raw_ppm_data = 0;
-  cfg.rcp_cal_us = RCP_CAL;
-  cfg.rcp_min_us = RCP_MIN;
-  cfg.rcp_max_us = RCP_MAX;
-  cfg.rcp_start_us = RCP_START;
-  cfg.rcp_full_us = RCP_FULL;
-  cfg.rcp_deadband_us = RCP_DEADBAND;
 }
 
 inline void rx_ppm_callback(uint16_t time, uint8_t state) {
@@ -82,11 +75,13 @@ static void rx_setup_rt() {
   rx.rcp_stick_cal =  (rx.rcp_min + rx.rcp_max) >> 1;
   rx.rcp_start = US_TO_TICKS(cfg.rcp_start_us);
   rx.rcp_cal = US_TO_TICKS(cfg.rcp_cal_us);
+  rx.rcp_os125_min = US_TO_TICKS(RCP_OS125_MIN);
+  rx.rcp_os125_max = US_TO_TICKS(RCP_OS125_MAX);
 }
 
 inline void RX_Init() {
   AttachPPM();
-  init_ppm();
+  raw_ppm_data = 0;
   timer_ppm_timeout_prescaler.interval = 0xFFFFU;
 }
 

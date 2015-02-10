@@ -156,6 +156,7 @@ void setup() {
   cli();
   Board_Init();
   PowerStage_Init();
+  Config_Init();
   RX_Init();
   Debug_Init();
   Storage_Init();

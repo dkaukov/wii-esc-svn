@@ -24,10 +24,24 @@
 
 register uint8_t zc_filter asm("r2");
 
+#if (ZC_FILTER_NUMBER == 1)  // original
 const uint8_t PROGMEM zc_filter_table[64]=   {0 ,2 ,4 ,6 ,8 ,10,12,14,16,18,20,22,24,26,28,30,
                                               32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,
                                               0 ,2 ,4 ,6 ,8 ,10,12,14,16,18,1 ,22,1 ,26,28,30,
                                               32,34,36,38,1 ,42,44,46,1 ,1 ,1 ,54,56,58,60,62};
+#endif
+#if (ZC_FILTER_NUMBER == 2)  // adapted filter Dmitry #1 150203001
+const uint8_t PROGMEM zc_filter_table[64]=   {0 ,2 ,4 ,6 ,8 ,10,12,14,16,18,20,22,24,26,28,30,
+                                              32,34,36,38,40,42,44,46,1 ,1 ,1 ,54 ,1,58,60,62,
+                                              0 ,2 ,4 ,6 ,8 ,10,12,14,1 ,1 ,1 ,22 ,1,26,28,30,
+                                              1 ,1 ,1 ,38,1 ,42,44,46,1 ,1 ,1 ,54 ,1,58,60,62};
+#endif
+#if (ZC_FILTER_NUMBER == 3)  // adapted filter Dmitry #2 150204001
+const uint8_t PROGMEM zc_filter_table[64]=   {0 ,2 ,4 ,6 ,8 ,10,12,14,16,18,20,22,24,26,28,30,
+                                              32,34,36,38,40,42,44,46,1 ,1 ,1 ,54,1 ,58,60,62,
+                                              0 ,2 ,4 ,6 ,8 ,10,12,14,1 ,1 ,20,22,1 ,26,28,30,
+                                              1 ,1 ,1 ,38,1 ,42,44,46,1 ,1 ,1 ,54,1 ,58,60,62};
+#endif
 
 void update_timing(uint16_t tick) {
   uint16_t comm_time = __interval(last_tick, tick);

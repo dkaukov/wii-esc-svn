@@ -80,6 +80,7 @@ struct config_data {
   int8_t   timing_adv;
   uint8_t  stick_cal_dis;
   uint8_t  rev;
+  uint8_t  oneshot125;
 };
 struct config_data cfg;
 
@@ -93,6 +94,8 @@ struct rx_data {
   uint16_t rcp_start;
   uint16_t rcp_cal;
   uint16_t rcp_stick_cal;
+  uint16_t rcp_os125_min;
+  uint16_t rcp_os125_max;
 };
 struct rx_data rx;
 
