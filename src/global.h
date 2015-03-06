@@ -69,17 +69,22 @@
     break;                              \
   }
 
-struct config_data {
+struct profile_config {
   uint16_t rcp_min_us;
   uint16_t rcp_max_us;
   uint16_t rcp_start_us;
   uint16_t rcp_full_us;
   uint16_t rcp_cal_us;
   uint8_t  rcp_deadband_us;
+};
+
+struct config_data {
   uint8_t  braking;
   int8_t   timing_adv;
   uint8_t  stick_cal_dis;
   uint8_t  rev;
+  uint8_t  profile_cnt;
+  struct   profile_config profile[2];
 };
 struct config_data cfg;
 
@@ -93,6 +98,7 @@ struct rx_data {
   uint16_t rcp_start;
   uint16_t rcp_cal;
   uint16_t rcp_stick_cal;
+  uint8_t  active_profile;
 };
 struct rx_data rx;
 

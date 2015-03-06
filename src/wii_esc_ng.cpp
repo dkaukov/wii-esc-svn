@@ -1,5 +1,5 @@
 /**
- * Wii-ESC NG 1.0 - 2015
+ * Wii-ESC NG 1.0 - 2013
  * Main program file.
  *
  * This program is free software: you can redistribute it and/or modify
@@ -40,7 +40,7 @@ void setup_to_rt() {
   if (cfg.braking) pwr_stage.braking_enabled = 1;
   timing_adv = cfg.timing_adv;
   rx_setup_rt();
-  sdm_setup_rt(rx.rcp_start, US_TO_TICKS(cfg.rcp_full_us));
+  sdm_setup_rt(rx.rcp_start, US_TO_TICKS(cfg.profile[rx.active_profile].rcp_full_us));
   pwr_stage.rev = 0;
   if (cfg.rev) pwr_stage.rev = 1;
 }
@@ -89,12 +89,26 @@ uint16_t get_stable_ppm_value() {
   return (frame_max + frame_min) >> 1;
 }
 
+void detect_profile() {
+  while (1) {
+    uint16_t tmp = get_stable_ppm_value();
+    for (uint8_t p = 0; p < cfg.profile_cnt; p++) {
+      uint16_t frame_min = US_TO_TICKS(cfg.profile[p].rcp_min_us);
+      uint16_t frame_max = US_TO_TICKS(cfg.profile[p].rcp_min_us);
+      if ((tmp > frame_max) && (tmp < frame_min)) {
+        rx.active_profile = p;
+        return;
+      }
+    }
+  }
+}
+
 static void throttle_range_calibration_high() {
   uint16_t tmp;
   do {
     tmp = get_stable_ppm_value();
   } while (!tmp);
-  cfg.rcp_full_us = tmp / TICKS_PER_US;
+  cfg.profile[rx.active_profile].rcp_full_us = tmp / TICKS_PER_US;
 }
 
 static void throttle_range_calibration_low() {
@@ -102,13 +116,14 @@ static void throttle_range_calibration_low() {
   do {
     tmp = get_stable_ppm_value();
   } while (!tmp);
-  cfg.rcp_start_us = (tmp / TICKS_PER_US);
+  cfg.profile[rx.active_profile].rcp_start_us = (tmp / TICKS_PER_US);
 }
 
 static void throttle_range_calibration_apply_correction() {
-  uint16_t reserve = ((cfg.rcp_full_us - cfg.rcp_start_us) * 4) / 100;
-  cfg.rcp_full_us  -= reserve;
-  cfg.rcp_start_us += reserve;
+  uint8_t pr = rx.active_profile;
+  uint16_t reserve = ((cfg.profile[pr].rcp_full_us - cfg.profile[pr].rcp_start_us) * 4) / 100;
+  cfg.profile[pr].rcp_full_us  -= reserve;
+  cfg.profile[pr].rcp_start_us += reserve;
 }
 
 void wait_for_arm() {
@@ -116,7 +131,7 @@ void wait_for_arm() {
 }
 
 void wait_for_power_on() {
-  wait_for(rx.rcp_start + US_TO_TICKS(cfg.rcp_deadband_us), rx.rcp_max, 15);
+  wait_for(rx.rcp_start + US_TO_TICKS(cfg.profile[rx.active_profile].rcp_deadband_us), rx.rcp_max, 15);
 }
 
 void check_for_stick_cal() {
@@ -161,9 +176,10 @@ void setup() {
   Storage_Init();
   sei();
   sdm_reset();
-  setup_to_rt();
   __delay_ms(250);
   startup_sound();
+  detect_profile();
+  setup_to_rt();
   check_for_stick_cal();
   calibrate_osc();
 }
